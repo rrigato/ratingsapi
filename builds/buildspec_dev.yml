@@ -1,0 +1,60 @@
+############################
+#Television ratings api built with an api gateway frontend as a lambda proxy
+#
+#1) Runs the cloudformation template to create dev environment
+#
+#
+############################
+version: 0.2
+
+phases:
+  ###########################################
+  #Uses a python runtime
+  #Note that you do not need the \ to escape
+  #aws cli commands
+  ###########################################
+  install:
+    runtime-versions:
+       python: 3.8
+    commands:
+      - echo Entered the install phase...
+      - BUILD_ENVIRONMENT=dev-ratingsapi
+      - DEV_TEST_STACK="${BUILD_ENVIRONMENT}-dev"      
+      - pip install -r tests/requirements_dev.txt
+  build:
+    commands:
+      - echo Defined build variables
+      - echo $BUILD_ENVIRONMENT
+      - echo $DEV_TEST_STACK
+
+
+      
+      - echo "Creating $DEV_TEST_STACK"
+      - aws cloudformation create-stack --stack-name $DEV_TEST_STACK
+          --template-body file://templates/bucket_template.yml
+          --capabilities CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM
+
+      #Waits until the stack has been successfully created
+      - aws cloudformation wait stack-create-complete
+        --stack-name $DEV_TEST_STACK
+
+
+      #run tests after stack has built
+      - python -m unittest tests.test_dev_aws_resources
+
+
+  post_build:
+    commands:
+      - echo cleaning up resources
+
+      - aws cloudformation delete-stack --stack-name $DEV_TEST_STACK
+
+
+artifacts:
+  files:
+    ##########################
+    #Adds artifact that can be referenced in later stages from 
+    #${CODEBUILD_SRC_DIR_BuildDevratingsapi}
+    ##########################
+    - 'logs/*'
+  name: 'BuildDevratingsapi'

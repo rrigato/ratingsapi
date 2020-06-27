@@ -1,0 +1,42 @@
+############################
+#Prod deployment
+#
+#Merges dev branch into master branch for
+#ratingsapi
+############################
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+       python: 3.8
+    commands:
+      - echo Entered the install phase...
+
+      - BUILD_ENVIRONMENT=prod
+      - REPO_NAME=ratingsapi
+      - pip install -r tests/requirements_prod.txt
+      - ls -l
+    finally:
+
+  build:
+    commands:
+      - echo Defined build variables
+      - echo $BUILD_ENVIRONMENT
+      - echo $REPO_NAME
+
+      #runs prod tests
+      - python -m unittest tests.test_prod_aws_resources
+
+      #merges dev branch into master now that all tests have
+      #been passed and artifacts created
+      - aws codecommit merge-branches-by-fast-forward
+        --source-commit-specifier dev
+        --destination-commit-specifier master
+        --repository-name $REPO_NAME
+
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+
