@@ -127,9 +127,12 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 #### templates
 
-- bucket_template.yml = Simple Cloudformation template that creates an s3 bucket
 
 - code_pipeline.yml = Creates CodeCommit, CodeBuild, and Code Pipeline resources necessary for CI/CD pipeline
+
+- http_api.yml = Cloudformation for creating an HTTP API
+
+- openapi3_spec.yml = openapi version 3 specification for ratings
 
 
 #### tests
