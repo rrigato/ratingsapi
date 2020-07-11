@@ -26,17 +26,18 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    RATINGS_OCCURRED_ON:
-                      type: string
-                      format: date
-                      examples:
-                        '2013-04-27'
+                  type: 
+                    $ref: '#/components/schemas/televisionRating'
+                  examples:
+                    RATINGS_OCCURRED_ON: '2013-04-27'
                 
                   
   
 components:
   schemas:
     televisionRating:
- 
+      type: object
+      properties:
+        RATINGS_OCCURRED_ON:
+          type: string
+          format: date 
