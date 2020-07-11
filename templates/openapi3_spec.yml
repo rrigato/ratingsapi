@@ -24,10 +24,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/show'
+                  type: object
+                  properties:
+                    RATINGS_OCCURRED_ON:
+                      type: string
+                      format: date
+                      examples:
+                        '2013-04-27'
+                
+                  
   
 components:
   schemas:
+    televisionRating:
  
