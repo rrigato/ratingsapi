@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  version: 1.0
+  version: '1.0'
   title: RatingsAPI
   description: Televison Ratings api for Adult Swim Saturday Night Toonami Block
 servers:
@@ -12,10 +12,9 @@ paths:
         Returns all the ratings associated with the given show
       parameters:
         - name: show
-          in: query
+          in: path
           description: name of the show to return
           required: true
-          style: form
           schema:
             type: string
       responses:
@@ -23,13 +22,12 @@ paths:
           description: show response
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  type: 
-                    $ref: '#/components/schemas/televisionRating'
-                  examples:
-                    RATINGS_OCCURRED_ON: '2013-04-27'
+              schema: 
+                $ref: '#/components/schemas/televisionRating'
+              examples:
+                  showOne:
+                    value:
+                      RATINGS_OCCURRED_ON: '2013-04-27'
                 
                   
   
