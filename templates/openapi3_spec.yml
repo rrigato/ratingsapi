@@ -22,12 +22,13 @@ paths:
           description: show response
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/televisionRating'
-              examples:
-                  showOne:
-                    value:
-                      RATINGS_OCCURRED_ON: '2013-04-27'
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/televisionRating'
+                example:
+                  - RATINGS_OCCURRED_ON: '2013-04-27'
+                  - RATINGS_OCCURRED_ON: '2013-05-04'
                 
                   
   
