@@ -28,7 +28,11 @@ paths:
                     $ref: '#/components/schemas/televisionRating'
                 example:
                   - RATINGS_OCCURRED_ON: '2013-04-27'
+                    TIME: '2:00'
+                    SHOW: IGPX
                   - RATINGS_OCCURRED_ON: '2013-05-04'
+                    TIME: '2:00'
+                    SHOW: IGPX
                 
                   
   
@@ -40,3 +44,7 @@ components:
         RATINGS_OCCURRED_ON:
           type: string
           format: date 
+        TIME:
+          type: string          
+        SHOW:
+          type: string
