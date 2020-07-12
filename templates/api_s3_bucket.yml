@@ -24,5 +24,5 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256    
-      BucketName: !Sub '${EnvironPrefix}-${ProjectName}-template-bucket'
+      BucketName: !Sub '${EnvironPrefix}-${ProjectName}-openapi-dependency'
     Type: "AWS::S3::Bucket"
