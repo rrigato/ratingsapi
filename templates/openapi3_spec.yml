@@ -40,7 +40,7 @@ components:
   schemas:
     televisionRating:
       type: object
-      required: [RATINGS_OCCURRED_ON]
+      required: [RATINGS_OCCURRED_ON, TIME, SHOW, TOTAL_VIEWERS, YEAR]
         
       properties:
         RATINGS_OCCURRED_ON:
@@ -61,25 +61,27 @@ components:
 
         PERCENTAGE_OF_HOUSEHOLDS:
           description: |
-            Number of people who watched the show in thousands.
-          type: integer
+            Percentage of households where watching the show. 
+            1.0 equates to one percent of households with a television
+            on at that time for all viewers were watching the show.
+          type: number
 
         TOTAL_VIEWERS_AGE_18_49:
           description: |
-            Number of people who watched the show in thousands.
+            Number of viewers age 18 to 49 who watched the show in thousands.
           type: integer
 
         PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49:
           description: |
-            Number of people who watched the show in thousands.
-          type: integer
+            Percentage of households where the viewer is age 18 to 49 watching
+            the show. 1.0 equates to one percent of households with a television
+            on at that time for viewers age 18 to 49 were watching the show.
+          type: number
 
         YEAR:
-          description: |
-            Number of people who watched the show in thousands.
+          description: Year the television rating occurred in
           type: integer
 
         IS_RERUN:
-          description: |
-            Number of people who watched the show in thousands.
-          type: integer
+          description: If the show is a rerun          
+          type: boolean
