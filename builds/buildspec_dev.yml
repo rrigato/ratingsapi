@@ -16,17 +16,20 @@ phases:
   install:
     runtime-versions:
        python: 3.8
+       
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
-      - DEV_TEST_STACK="${BUILD_ENVIRONMENT}-dev"
-      - S3_DEPENDENCY_STACK="${DEV_TEST_STACK}-s3-dependency"      
+      - HTTP_API_STACK="${BUILD_ENVIRONMENT}-http-apigw"
+      - S3_DEPENDENCY_STACK="${BUILD_ENVIRONMENT}-s3-dependency"      
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
       - echo $DEV_TEST_STACK
+      - echo $HTTP_API_STACK
+      - echo $S3_DEPENDENCY_STACK
 
 
       
@@ -47,7 +50,7 @@ phases:
     commands:
       - echo cleaning up resources
 
-      - aws cloudformation delete-stack --stack-name $DEV_TEST_STACK
+      # - aws cloudformation delete-stack --stack-name $DEV_TEST_STACK
 
 
 artifacts:

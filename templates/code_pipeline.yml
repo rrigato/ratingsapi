@@ -202,7 +202,7 @@ Resources:
   #stage 2) Build = Runs the CodeBuild Project associated 
   #with the builds/buildspec_dev.yml file
   #
-  #stage 3) Deploy = creates/updates templates/bucket_template.yml
+  #stage 3) Deploy = creates/updates templates/api_s3_bucket.yml
   #stage 4) Build = CodeBuild project for builds/buildspec_prod.yml
   ###########################################
   CodePipelineStack:
@@ -295,7 +295,7 @@ Resources:
         - Name: DeployProd
           Actions:
         ############################
-        #Creates/updates the templates/bucket_template.yml
+        #Creates/updates the templates/api_s3_bucket.yml
         ############################
           - Name: DeployProdStaticWebpage
             ActionTypeId:
@@ -328,7 +328,7 @@ Resources:
               #is what the deploy stage is expecting as input for the
               #cloudformation template location
               TemplatePath:
-                  !Join ['::', [!Ref ProjectName, 'templates/bucket_template.yml']]
+                  !Join ['::', [!Ref ProjectName, 'templates/api_s3_bucket.yml']]
             RunOrder: 1
 
 
