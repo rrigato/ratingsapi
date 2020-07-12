@@ -42,9 +42,49 @@ components:
       type: object
       properties:
         RATINGS_OCCURRED_ON:
-          type: string
+          description: Saturday night of the adult swim toonami block
           format: date 
+          required: true
+          type: string
         TIME:
+          description: timeslot of the show
           type: string          
         SHOW:
+          description: Name of show
           type: string
+
+        TOTAL_VIEWERS:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
+
+        PERCENTAGE_OF_HOUSEHOLDS:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
+
+        TOTAL_VIEWERS_AGE_18_49:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
+
+        PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
+
+        YEAR:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
+
+        IS_RERUN:
+          description: |
+            Number of people who watched the show in thousands.
+          required: true
+          type: integer
