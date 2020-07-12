@@ -29,11 +29,12 @@ Resources:
 
 
   RatingsHttpApi:
-  Type: AWS::ApiGatewayV2::Api
-  Properties:
-    BodyS3Location: 
-      Bucket: !R
-    Name: HTTP api using openapi spec
-    Description: HTTP API for lambda proxy using openapi spec
-    ProtocolType: HTTP
-    #Target: arn:aws:apigateway:{region}:lambda:path/2015-03-31/functions/arn:aws:lambda:{region}:{account-id}:function:{function-name}/invocations
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      BodyS3Location: 
+        Bucket: !Ref ProjectBucket
+        Key: v1/openapi3_spec.yml
+      Name: HTTP api using openapi spec
+      Description: HTTP API for lambda proxy using openapi spec
+      ProtocolType: HTTP
+      #Target: arn:aws:apigateway:{region}:lambda:path/2015-03-31/functions/arn:aws:lambda:{region}:{account-id}:function:{function-name}/invocations
