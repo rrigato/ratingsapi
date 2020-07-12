@@ -9,7 +9,8 @@ paths:
   /shows/{show}:
     get:
       description: |
-        Returns all the ratings associated with the given show
+        Returns all the ratings associated with the given show. Can span years
+        if the show was on during multiple years
       parameters:
         - name: show
           in: path
@@ -30,11 +31,26 @@ paths:
                   - RATINGS_OCCURRED_ON: '2013-04-27'
                     TIME: '2:00'
                     SHOW: IGPX
+                    TOTAL_VIEWERS: 848
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.80
+                    TOTAL_VIEWERS_AGE_18_49: 404
+
+
                   - RATINGS_OCCURRED_ON: '2013-05-04'
                     TIME: '2:00'
                     SHOW: IGPX
-                
-                  
+                    TOTAL_VIEWERS: 776
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.60
+                    TOTAL_VIEWERS_AGE_18_49: 392
+
+                  - RATINGS_OCCURRED_ON: '2014-01-04'
+                    TIME: '4:30'
+                    SHOW: IGPX
+                    TOTAL_VIEWERS: 462
+                    YEAR: 2014
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.40                  
   
 components:
   schemas:
@@ -59,9 +75,13 @@ components:
             Number of people who watched the show in thousands.
           type: integer
 
+        YEAR:
+          description: Year the television rating occurred in
+          type: integer
+
         PERCENTAGE_OF_HOUSEHOLDS:
           description: |
-            Percentage of households where watching the show. 
+            Percentage of households who were watching the show. 
             1.0 equates to one percent of households with a television
             on at that time for all viewers were watching the show.
           type: number
@@ -73,14 +93,11 @@ components:
 
         PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49:
           description: |
-            Percentage of households where the viewer is age 18 to 49 watching
-            the show. 1.0 equates to one percent of households with a television
+            Percentage of households where the viewer is age 18 to 49 
+            with a televion on at that time watching the show. 
+            1.0 equates to one percent of households with a television
             on at that time for viewers age 18 to 49 were watching the show.
           type: number
-
-        YEAR:
-          description: Year the television rating occurred in
-          type: integer
 
         IS_RERUN:
           description: If the show is a rerun          
