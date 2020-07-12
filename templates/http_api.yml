@@ -21,6 +21,6 @@ Resources:
     Type: AWS::ApiGatewayV2::Api
     Properties:
       BodyS3Location: 
-        Bucket: !Sub '${EnvironPrefix}-${ProjectName}-template-bucket'
+        Bucket: !Sub '${EnvironPrefix}-${ProjectName}-openapi-dependency'
         Key: v1/openapi3_spec.yml
       #Target: arn:aws:apigateway:{region}:lambda:path/2015-03-31/functions/arn:aws:lambda:{region}:{account-id}:function:{function-name}/invocations
