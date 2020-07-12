@@ -19,7 +19,8 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
-      - DEV_TEST_STACK="${BUILD_ENVIRONMENT}-dev"      
+      - DEV_TEST_STACK="${BUILD_ENVIRONMENT}-dev"
+      - S3_DEPENDENCY_STACK="${DEV_TEST_STACK}-s3-dependency"      
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
@@ -30,9 +31,8 @@ phases:
 
       
       - echo "Creating $DEV_TEST_STACK"
-      - aws cloudformation create-stack --stack-name $DEV_TEST_STACK
-          --template-body file://templates/bucket_template.yml
-          --capabilities CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM
+      - aws cloudformation create-stack --stack-name ${S3_DEPENDENCY_STACK}
+          --template-body file://templates/api_s3_bucket.yml
 
       #Waits until the stack has been successfully created
       - aws cloudformation wait stack-create-complete
