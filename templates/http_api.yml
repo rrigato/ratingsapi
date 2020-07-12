@@ -17,22 +17,11 @@ Parameters:
 
 
 Resources:
-
-  ProjectBucket:
-    Properties:
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256    
-      BucketName: !Sub '${EnvironPrefix}-${ProjectName}-template-bucket'
-    Type: "AWS::S3::Bucket"
-
-
   RatingsHttpApi:
     Type: AWS::ApiGatewayV2::Api
     Properties:
       BodyS3Location: 
-        Bucket: !Ref ProjectBucket
+        Bucket: !Sub '${EnvironPrefix}-${ProjectName}-template-bucket'
         Key: v1/openapi3_spec.yml
       Name: HTTP api using openapi spec
       Description: HTTP API for lambda proxy using openapi spec

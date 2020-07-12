@@ -1,0 +1,28 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+  'Television ratings api built with an api gateway frontend as a lambda proxy'
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: 'ratingsapi'
+    Description: Simple S3 Bucket for openapi dependencies
+
+  EnvironPrefix:
+    Type: String
+    Default: dev
+    Description: String for prefixing resources to differentiate prod/dev
+
+
+Resources:
+
+  ProjectBucket:
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256    
+      BucketName: !Sub '${EnvironPrefix}-${ProjectName}-template-bucket'
+    Type: "AWS::S3::Bucket"

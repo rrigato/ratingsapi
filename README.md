@@ -127,6 +127,8 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 #### templates
 
+- api_s3_bucket.yml = dependencies such as openapi3_spec.yml which need
+to be in s3 for api gateway to be created in http_api.yml
 
 - code_pipeline.yml = Creates CodeCommit, CodeBuild, and Code Pipeline resources necessary for CI/CD pipeline
 
