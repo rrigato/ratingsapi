@@ -16,7 +16,7 @@ phases:
   install:
     runtime-versions:
        python: 3.8
-       
+
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
@@ -27,19 +27,19 @@ phases:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
-      - echo $DEV_TEST_STACK
+      - echo $S3_DEPENDENCY_STACK
       - echo $HTTP_API_STACK
       - echo $S3_DEPENDENCY_STACK
 
 
       
-      - echo "Creating $DEV_TEST_STACK"
-      - aws cloudformation create-stack --stack-name ${S3_DEPENDENCY_STACK}
+      - echo "Creating $S3_DEPENDENCY_STACK"
+      - aws cloudformation create-stack --stack-name $S3_DEPENDENCY_STACK
           --template-body file://templates/api_s3_bucket.yml
 
       #Waits until the stack has been successfully created
       - aws cloudformation wait stack-create-complete
-        --stack-name $DEV_TEST_STACK
+        --stack-name $S3_DEPENDENCY_STACK
 
 
       #run tests after stack has built
@@ -50,7 +50,7 @@ phases:
     commands:
       - echo cleaning up resources
 
-      # - aws cloudformation delete-stack --stack-name $DEV_TEST_STACK
+      # - aws cloudformation delete-stack --stack-name $S3_DEPENDENCY_STACK
 
 
 artifacts:
