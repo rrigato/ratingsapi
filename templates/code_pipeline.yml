@@ -464,7 +464,7 @@ Resources:
                   Action:
                     - awsapigateway:*
                   Resource:
-                    - !Sub 'arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:restapis'
+                    - !Sub 'arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}::/restapis'
 
 
 
