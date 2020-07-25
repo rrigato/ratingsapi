@@ -20,26 +20,24 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
-      - APIGW_STACK="${BUILD_ENVIRONMENT}-apigw"
-      - S3_DEPENDENCY_STACK="${BUILD_ENVIRONMENT}-s3-dependency"      
+      - APIGW_STACK="${BUILD_ENVIRONMENT}-apigw"     
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
-      - echo $S3_DEPENDENCY_STACK
       - echo $APIGW_STACK
-      - echo $S3_DEPENDENCY_STACK
+
 
 
       
-      - echo "Creating $S3_DEPENDENCY_STACK"
-      - aws cloudformation create-stack --stack-name $S3_DEPENDENCY_STACK
+      - echo "Creating $APIGW_STACK"
+      - aws cloudformation create-stack --stack-name $APIGW_STACK
           --template-body file://templates/api_s3_bucket.yml
 
       #Waits until the stack has been successfully created
       - aws cloudformation wait stack-create-complete
-        --stack-name $S3_DEPENDENCY_STACK
+        --stack-name $APIGW_STACK
 
 
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
@@ -60,7 +58,7 @@ phases:
     commands:
       - echo cleaning up resources
 
-      - aws cloudformation delete-stack --stack-name $S3_DEPENDENCY_STACK
+      - aws cloudformation delete-stack --stack-name $APIGW_STACK
 
 
 artifacts:
