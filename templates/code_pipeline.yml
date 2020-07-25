@@ -508,7 +508,26 @@ Resources:
                     - secretsmanager:UpdateSecret
                   Resource:
                     - "*"
-  
+                - Sid: IAMallow
+                  Effect: Allow
+                  #######################################
+                  #Allowing lambda to perform a PutItem on
+                  #DynamoDB
+                  #
+                  #######################################
+                  Action:
+                    - iam:PassRole
+                    - iam:CreateRole
+                    - iam:DeleteRole
+                    - iam:GetRole
+                    - iam:UpdateAssumeRolePolicy
+                    - iam:DetachRolePolicy
+                    - iam:DeleteRolePolicy
+                    - iam:PutRolePolicy
+                    - iam:AttachRolePolicy
+                    - iam:TagRole
+                  Resource:
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/ratingsapi*"
 ####################################
 #Role that will be assumed when
 #CodeBuild runs for Prod
