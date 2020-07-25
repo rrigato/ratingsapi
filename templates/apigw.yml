@@ -5,6 +5,11 @@ Description:
   'Television ratings api built with an api gateway frontend as a lambda proxy'
 
 Parameters:
+  dynamoDbTableName:
+    Type: String
+    Default: 'prod_toonami_ratings'
+    Description: Name of the dynamodb table
+    
   ProjectName:
     Type: String
     Default: 'ratingsapi'
@@ -20,7 +25,8 @@ Resources:
   ratingsApiGw:
     Type: AWS::ApiGateway::RestApi
     Properties:
-
+      Name: !Sub '${ProjectName}Api'
+      Description: API used for television ratings
 
   apiGatewayInvokeLambda:
     Type: AWS::IAM::Role
@@ -46,4 +52,51 @@ Resources:
                   - lambda:GetFunctionConfiguration
                 Resource: '*'
                   #- !GetAtt 'LambdaFunction.Arn'
-                  
+  UpdateRatings:
+    Type: AWS::Serverless::Function
+    Properties:      
+                                
+      Description: |
+        Lambda function to handle shows endpoint
+      #passed to os.environ for python used to
+      #determine which table to update in scripts.reddit_ratings.main
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
+
+      FunctionName: !Sub '{ProjectName}-show-endpoint']]
+      Handler: index.handler
+
+      #Policies to include in the lambda basic execution role
+      #created by SAM
+      Policies:
+        Version: '2012-10-17'
+        Statement: 
+          #dynamodb permissions     
+          - Sid: !Sub '${ProjectName}LambdaDynamoDbAllow'
+            Effect: Allow
+            Action:
+              - dynamodb:ListTables
+              - dynamodb:GetItem
+
+            Resource:
+              - !Sub 'arn:aws:dynamodb:{Aws::Region}:{Aws::AccountId}:table/{dynamoDbTableName}'       
+
+      Runtime: python3.8
+      Tracing: Active
+      #60 second timeout
+      Timeout: 5
+      #Default code that will be updated by
+      #CodeBuild Job
+      InlineCode: |
+        def handler(event, context):
+          print("Hello, world!")
+    Tags:
+        -
+          Key: keep
+          Value: 'yes'
+        -
+          Key: source
+          Value: !Ref ProjectName
+
+
