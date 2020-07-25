@@ -20,7 +20,8 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
-      - APIGW_STACK="${BUILD_ENVIRONMENT}-apigw"     
+      - APIGW_STACK="${BUILD_ENVIRONMENT}-apigw"
+      - PROJECT_NAME=ratingsapi     
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
@@ -34,7 +35,9 @@ phases:
       - echo "Creating $APIGW_STACK"
       - aws cloudformation create-stack --stack-name $APIGW_STACK
           --template-body file://templates/api_s3_bucket.yml
-
+          --capabilities CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM
+          --tags Key=source,Value=$PROJECT_NAME
+          
       #Waits until the stack has been successfully created
       - aws cloudformation wait stack-create-complete
         --stack-name $APIGW_STACK
