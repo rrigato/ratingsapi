@@ -1,5 +1,8 @@
 ---
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
+
+#Transforms any serverless code to cloudformation
+Transform: AWS::Serverless-2016-10-31
 
 Description:
   'Television ratings api built with an api gateway frontend as a lambda proxy'
@@ -62,7 +65,7 @@ Resources:
                   - lambda:GetFunctionConfiguration
                 Resource: '*'
                   #- !GetAtt 'LambdaFunction.Arn'
-  UpdateRatings:
+  showEndpoint:
     Type: AWS::Serverless::Function
     Properties:      
                                 
@@ -72,9 +75,9 @@ Resources:
       #determine which table to update in scripts.reddit_ratings.main
       Environment:
         Variables:
-          DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
+          DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
 
-      FunctionName: !Sub '{ProjectName}-show-endpoint']]
+      FunctionName: !Sub '{ProjectName}-show-endpoint'
       Handler: index.handler
 
       #Policies to include in the lambda basic execution role
@@ -102,11 +105,11 @@ Resources:
         def handler(event, context):
           print("Hello, world!")
     Tags:
-        -
-          Key: keep
-          Value: 'yes'
-        -
-          Key: source
-          Value: !Ref ProjectName
+      -
+        Key: keep
+        Value: 'yes'
+      -
+        Key: source
+        Value: !Ref ProjectName
 
 
