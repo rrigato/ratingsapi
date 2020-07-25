@@ -458,16 +458,13 @@ Resources:
                   Resource:
                     - "*"
 
-                #######################
-                #Permissions needed for aws
-                #CodeBuild to access client secrets
-                #######################
-                - Sid: SecretsManagerAccess
+
+                - Sid: ApiGatewayAccess
                   Effect: Allow
                   Action:
                     - awsapigateway:*
                   Resource:
-                    - !Sub 'arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:restapis/${ProjectName}*'
+                    - !Sub 'arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:restapis'
 
 
 
