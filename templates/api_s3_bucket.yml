@@ -77,7 +77,7 @@ Resources:
         Variables:
           DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
 
-      FunctionName: !Sub '${ProjectName}-show-endpoint'
+      FunctionName: !Sub '${ProjectName}-show-endpoint-${EnvironPrefix}'
       Handler: index.handler
 
       #Policies to include in the lambda basic execution role
