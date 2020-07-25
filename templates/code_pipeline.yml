@@ -467,7 +467,7 @@ Resources:
                   Action:
                     - awsapigateway:*
                   Resource:
-                    - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:restapis/${ProjectName}*'
+                    - !Sub 'arn:aws:apigateway:${AWS::Region}:${AWS::AccountId}:restapis/${ProjectName}*'
 
 
 
