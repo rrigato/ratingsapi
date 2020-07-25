@@ -316,6 +316,7 @@ Resources:
               #it will be created, otherwise the stack will be updated
               #with the template provided in TemplatePath
               ActionMode: CREATE_UPDATE
+              Capabilities: CAPABILITY_AUTO_EXPAND,CAPABILITY_NAMED_IAM
               RoleArn: !GetAtt [ProdCodeDeployRole, Arn]
               #Used to pass parameters to Cloudformation template
               ParameterOverrides: |
@@ -480,6 +481,8 @@ Resources:
         Version: '2012-10-17'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator        
       Path: /
       #Ability to create record sets in Route53
       Policies:
