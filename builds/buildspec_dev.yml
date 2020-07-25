@@ -20,7 +20,7 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratingsapi
-      - HTTP_API_STACK="${BUILD_ENVIRONMENT}-http-apigw"
+      - HTTP_API_STACK="${BUILD_ENVIRONMENT}-apigw"
       - S3_DEPENDENCY_STACK="${BUILD_ENVIRONMENT}-s3-dependency"      
       - pip install -r tests/requirements_dev.txt
   build:

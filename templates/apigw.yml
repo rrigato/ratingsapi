@@ -1,0 +1,49 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+  'Television ratings api built with an api gateway frontend as a lambda proxy'
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: 'ratingsapi'
+    Description: Name of the project
+
+  EnvironPrefix:
+    Type: String
+    Default: dev
+    Description: String for prefixing resources to differentiate prod/dev
+
+
+Resources:
+  ratingsApiGw:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+
+
+  apiGatewayInvokeLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub '${ProjectName}LambdaPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: LambdaAccess
+                Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:GetFunctionConfiguration
+                Resource: '*'
+                  #- !GetAtt 'LambdaFunction.Arn'
+                  
