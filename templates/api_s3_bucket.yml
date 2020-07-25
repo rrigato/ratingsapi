@@ -95,7 +95,7 @@ Resources:
             Resource:
               - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'       
 
-      Runtime: python3.8
+      Runtime: python3.7
       Tracing: Active
       #60 second timeout
       Timeout: 5

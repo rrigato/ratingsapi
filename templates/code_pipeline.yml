@@ -390,6 +390,7 @@ Resources:
         - arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
         - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
       Path: /
       Policies:
           - PolicyName: CodeBuildCustomerManaged
@@ -459,13 +460,7 @@ Resources:
                     - "*"
 
 
-                - Sid: ApiGatewayAccess
-                  Effect: Allow
-                  Action:
-                    - awsapigateway:*
-                  Resource:
-                    - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
-
+ 
 
 
 ####################
