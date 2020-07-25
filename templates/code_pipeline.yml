@@ -458,6 +458,16 @@ Resources:
                   Resource:
                     - "*"
 
+                #######################
+                #Permissions needed for aws
+                #CodeBuild to access client secrets
+                #######################
+                - Sid: SecretsManagerAccess
+                  Effect: Allow
+                  Action:
+                    - awsapigateway:*
+                  Resource:
+                    - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:restapis/${ProjectName}*'
 
 
 
