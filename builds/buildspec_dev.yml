@@ -19,9 +19,9 @@ phases:
 
     commands:
       - echo Entered the install phase...
-      - BUILD_ENVIRONMENT=dev-ratingsapi
-      - APIGW_STACK="${BUILD_ENVIRONMENT}-apigw"
-      - PROJECT_NAME=ratingsapi     
+      - ENVIRON_PREFIX=dev
+      - PROJECT_NAME=ratingsapi       
+      - APIGW_STACK="${ENVIRON_PREFIX}-${PROJECT_NAME}-apigw"    
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
@@ -47,8 +47,13 @@ phases:
       - for lambda_code in */ ; do 
         - if [[ -d "$lambda_code" && ! -L "$lambda_code" ]]; then
           #shows/ to shows
-          - clean_function_name="${lambda_code%/}"
-          - echo "$clean_function_name is a directory"; 
+          - endpoint_name="${lambda_code%/}"
+          - echo "$endpoint_name is a directory"; 
+          #create deployment archive
+          - zip -r9 "${endpoint_name}.zip" .
+
+          #lambda function name
+          - echo "${PROJECT_NAME}-${endpoint_name}-endpoint-${ENVIRON_PREFIX}"
         - fi; 
       - done
 
@@ -56,7 +61,7 @@ phases:
       #     --template-body file://templates/api_s3_bucket.yml
       #     --capabilities CAPABILITY_NAMED_IAM
 
-      # - aws s3 cp templates/openapi3_spec.yml "s3://${BUILD_ENVIRONMENT}/v1"
+      # - aws s3 cp templates/openapi3_spec.yml "s3://${ENVIRON_PREFIX}-${PROJECT_NAME}/v1"
 
       # #Waits until the stack has been successfully created
       # - aws cloudformation wait stack-create-complete
