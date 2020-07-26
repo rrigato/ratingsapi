@@ -41,6 +41,13 @@ Resources:
       Name: !Sub '${ProjectName}Api${EnvironPrefix}'
       Description: API used for television ratings
 
+  ratingsVersionPathParam:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !GetAtt ratingsApiGw.RootResourceId
+      PathPart: versionNumber
+
   apiGatewayInvokeLambda:
     Type: AWS::IAM::Role
     Properties:

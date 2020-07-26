@@ -74,6 +74,7 @@ phases:
         - fi; 
       - done
 
+      - cd ..
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
       #     --template-body file://templates/api_s3_bucket.yml
       #     --capabilities CAPABILITY_NAMED_IAM
