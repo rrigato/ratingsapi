@@ -6,12 +6,19 @@ info:
 servers:
   - url: https
 paths:
-  /shows/{show}:
+  /{version}/shows/{show}:
     get:
       description: |
         Returns all the ratings associated with the given show. Can span years
         if the show was on during multiple years
       parameters:
+        - name: version
+          in: path
+          description: Version of api to use
+          required: true
+          schema:
+            type: string  
+                
         - name: show
           in: path
           description: name of the show to return
