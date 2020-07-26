@@ -56,6 +56,13 @@ Resources:
       HttpMethod: GET
       AuthorizationType: NONE
 
+  ratingsDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      Description: Single stage deployment
+      StageName: api
+
 
   apiGatewayInvokeLambda:
     Type: AWS::IAM::Role

@@ -52,3 +52,9 @@ aws cloudformation describe-stack-events \
 --stack-name ratingsapi-pipeline > pipeline_cf_events.json
 
 
+
+
+#local testing apigw
+aws cloudformation create-stack --stack-name dev-ratingsapi-apigw \
+ --template-body file://templates/api_s3_bucket.yml \
+ --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
