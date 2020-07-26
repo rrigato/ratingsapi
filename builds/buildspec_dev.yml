@@ -48,7 +48,7 @@ phases:
         - if [[ -d "$lambda_code" && ! -L "$lambda_code" ]]; then
           #shows/ to shows
           - endpoint_name="${lambda_code%/}"
-          - echo "$endpoint_name is a directory"; 
+          - echo "Updating lambda function ${endpoint_name} "; 
 
           - cd $endpoint_name
           #create deployment archive
@@ -63,6 +63,7 @@ phases:
           - aws lambda update-function-configuration
             --function-name "${PROJECT_NAME}-${endpoint_name}-endpoint-${ENVIRON_PREFIX}"
             --handler "${endpoint_name}.lambda_handler"
+            --runtime python3.8
 
           - mv "${endpoint_name}.zip" ..
           
