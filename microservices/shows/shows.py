@@ -68,7 +68,13 @@ def main():
         Raises
         ------
     """
-    pass
+    return(
+        {
+            "statusCode": 200,
+            "headers": { "headerName": "headerValue"},
+            "body": "..."
+        }
+    )
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
