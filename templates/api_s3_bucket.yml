@@ -87,25 +87,32 @@ Resources:
         RateLimit: 100
       UsagePlanName: all_clients
 
-  # ratingsShowsProxyResource:
-  #   Type: 'AWS::ApiGateway::Resource'
-  #   Properties:
-  #     RestApiId: !Ref ratingsApiGw
-  #     ParentId: !Ref ratingsVersionPathParamResource
-  #     PathPart: '{proxy}'
+  ratingsShowsResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !Ref ratingsVersionPathParamResource
+      PathPart: 'shows'
 
-  # ratingsShowsProxyMethod:
-  #   Type: 'AWS::ApiGateway::Method'
-  #   Properties:
-  #     RestApiId: !Ref ratingsApiGw
-  #     ResourceId: !Ref ratingsShowsProxyResource
-  #     HttpMethod: GET
-  #     AuthorizationType: NONE
-  #     Integration:
-  #       Type: AWS_PROXY
-  #       IntegrationHttpMethod: POST
-  #       Uri: !Sub >-
-  #         arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
+  ratingsShowsProxyResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !Ref ratingsVersionPathParamResource
+      PathPart: '{showName}'
+
+  ratingsShowsProxyMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ResourceId: !Ref ratingsShowsProxyResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
 
 
   apiGatewayInvokeLambda:
