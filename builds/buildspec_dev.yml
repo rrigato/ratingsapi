@@ -42,6 +42,15 @@ phases:
       - aws cloudformation wait stack-create-complete
         --stack-name $APIGW_STACK
 
+      - cd microservices
+
+      - for lambda_code in */ ; do 
+        - if [[ -d "$lambda_code" && ! -L "$lambda_code" ]]; then
+          #shows/ to shows
+          - clean_function_name="${lambda_code%/}"
+          - echo "$clean_function_name is a directory"; 
+        - fi; 
+      - done
 
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
       #     --template-body file://templates/api_s3_bucket.yml
