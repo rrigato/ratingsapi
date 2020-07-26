@@ -46,7 +46,7 @@ Resources:
     Properties:
       RestApiId: !Ref ratingsApiGw
       ParentId: !GetAtt ratingsApiGw.RootResourceId
-      PathPart: '{versionNumber}'
+      PathPart: 'versionNumber'
 
   ratingsVersionPathParamMethod:
     Type: 'AWS::ApiGateway::Method'
@@ -55,6 +55,12 @@ Resources:
       ResourceId: !Ref ratingsVersionPathParamResource
       HttpMethod: GET
       AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
+
 
   ratingsDeployment:
     Type: 'AWS::ApiGateway::Deployment'
