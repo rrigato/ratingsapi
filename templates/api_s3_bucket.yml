@@ -58,6 +58,7 @@ Resources:
 
   ratingsDeployment:
     Type: 'AWS::ApiGateway::Deployment'
+    DependsOn: ratingsVersionPathParamMethod
     Properties:
       RestApiId: !Ref ratingsApiGw
       Description: Single stage deployment
@@ -66,6 +67,7 @@ Resources:
 
   ratingsUsagePlan:
     Type: 'AWS::ApiGateway::UsagePlan'
+    DependsOn: ratingsDeployment
     Properties:
       ApiStages:
         - ApiId: !Ref ratingsApiGw
@@ -78,6 +80,27 @@ Resources:
         BurstLimit: 200
         RateLimit: 100
       UsagePlanName: all_clients
+
+  # ratingsShowsProxyResource:
+  #   Type: 'AWS::ApiGateway::Resource'
+  #   Properties:
+  #     RestApiId: !Ref ratingsApiGw
+  #     ParentId: !Ref ratingsVersionPathParamResource
+  #     PathPart: '{proxy}'
+
+  # ratingsShowsProxyMethod:
+  #   Type: 'AWS::ApiGateway::Method'
+  #   Properties:
+  #     RestApiId: !Ref ratingsApiGw
+  #     ResourceId: !Ref ratingsShowsProxyResource
+  #     HttpMethod: GET
+  #     AuthorizationType: NONE
+  #     Integration:
+  #       Type: AWS_PROXY
+  #       IntegrationHttpMethod: POST
+  #       Uri: !Sub >-
+  #         arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
+
 
   apiGatewayInvokeLambda:
     Type: AWS::IAM::Role
@@ -103,10 +126,9 @@ Resources:
                   - lambda:GetFunctionConfiguration
                 Resource: '*'
                   #- !GetAtt 'LambdaFunction.Arn'
-  showEndpoint:
+  showsEndpoint:
     Type: AWS::Serverless::Function
-    Properties:      
-                                
+    Properties:                               
       Description: |
         Lambda function to handle shows endpoint
       #passed to os.environ for python used to
