@@ -64,6 +64,21 @@ Resources:
       StageName: api
 
 
+  ratingsUsagePlan:
+    Type: 'AWS::ApiGateway::UsagePlan'
+    Properties:
+      ApiStages:
+        - ApiId: !Ref ratingsApiGw
+          Stage: api
+      Description: Generic Usage plan
+      Quota:
+        Limit: 1000
+        Period: MONTH
+      Throttle:
+        BurstLimit: 200
+        RateLimit: 100
+      UsagePlanName: all_clients
+
   apiGatewayInvokeLambda:
     Type: AWS::IAM::Role
     Properties:
