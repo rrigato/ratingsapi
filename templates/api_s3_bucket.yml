@@ -37,6 +37,13 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256    
       BucketName: !Sub '${EnvironPrefix}-${ProjectName}-openapi-dependency'
+      Tags:
+          -
+            Key: keep
+            Value: 'yes'
+          -
+            Key: source
+            Value: !Ref ProjectName
     Type: "AWS::S3::Bucket"
 
 
@@ -61,6 +68,13 @@ Resources:
         DataTraceEnabled: True
         LoggingLevel: INFO
         TracingEnabled: True
+        Tags:
+            -
+              Key: keep
+              Value: 'yes'
+            -
+              Key: source
+              Value: !Ref ProjectName
       StageName: !Ref apiStageName
 
 
