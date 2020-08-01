@@ -94,7 +94,7 @@ Resources:
       ParentId: !Ref ratingsVersionPathParamResource
       PathPart: 'shows'
 
-  ratingsShowProxyResource:
+  ratingsShowsProxyResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       RestApiId: !Ref ratingsApiGw
