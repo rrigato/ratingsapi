@@ -216,19 +216,10 @@ class AwsDevBuild(unittest.TestCase):
         for apigw_resource in apigw_resources:
             if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:
 
-                apigw_method = apigw_client.get_method(
+                apigw_response = apigw_client.test_invoke_method(
                     restApiId=self.restapi_id,
                     resourceId=apigw_resource["id"],
                     httpMethod="GET"
                 )
 
-                self.assertTrue(apigw_method["apiKeyRequired"])
-                '''
-                    Test pattern of lambda for endpoint
-                '''
-                self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
-                    self.PROJECT_NAME + "-" + 
-                     apigw_resource["path"].split("/")[1] + 
-                    "-endpoint-" + BUILD_ENVIRONMENT + 
-                    "/invocations"
-                ))
+                import pdb; pdb.set_trace()
