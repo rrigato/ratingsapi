@@ -425,7 +425,7 @@ Resources:
                     - iam:GetServiceLinkedRoleDeletionStatus
                     - iam:UpdateRoleDescription
                   Resource:
-                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/AWSServiceRoleForAPIGateway"
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
               
                 #######################
                 #Permissions needed for aws
