@@ -510,11 +510,6 @@ Resources:
                     - "*"
                 - Sid: IAMallow
                   Effect: Allow
-                  #######################################
-                  #Allowing lambda to perform a PutItem on
-                  #DynamoDB
-                  #
-                  #######################################
                   Action:
                     - iam:PassRole
                     - iam:CreateRole
@@ -528,6 +523,18 @@ Resources:
                     - iam:TagRole
                   Resource:
                     - !Sub "arn:aws:iam::${AWS::AccountId}:role/ratingsapi*"
+                    - !Sub 'arn:aws:iam::${AWS::AccountId}:role/aws-service-role/apigateway.amazonaws.com/AWSServiceRoleForAPIGateway'
+
+                - Sid: ServiceLinkRole
+                  Effect: Allow
+                  Action:
+                    - iam:CreateServiceLinkedRole
+                    - iam:DeleteServiceLinkedRole
+                    - iam:GetServiceLinkedRoleDeletionStatus
+                    - iam:UpdateRoleDescription
+                  Resource:
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/AWSServiceRoleForAPIGateway"
+                  
 ####################################
 #Role that will be assumed when
 #CodeBuild runs for Prod
