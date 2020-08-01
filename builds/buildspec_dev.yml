@@ -6,7 +6,8 @@
 #
 ############################
 version: 0.2
-
+env: 
+  shell: bash
 phases:
   ###########################################
   #Uses a python runtime
@@ -50,7 +51,7 @@ phases:
       -     endpoint_name="${lambda_code%/}"
       -     echo "Updating lambda function ${endpoint_name} "; 
 
-      - cd $endpoint_name
+      -     cd $endpoint_name
       #create deployment archive
       -     zip -r9 "${endpoint_name}.zip" .
 
