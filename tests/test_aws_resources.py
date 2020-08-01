@@ -223,3 +223,26 @@ class AwsDevBuild(unittest.TestCase):
                 )
 
                 import pdb; pdb.set_trace()
+
+
+
+    def test_apigateway_stage(self):
+        '''tests the version stage
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+
+        apigw_client = get_boto_clients(resource_name="apigateway")
+
+        apigw_version_stage = apigw_client.get_resources(
+            restApiId=self.restapi_id,
+            stageName='v1'
+        )
+        import pdb; pdb.set_trace()
