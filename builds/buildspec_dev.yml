@@ -31,7 +31,8 @@ phases:
       - echo $APIGW_STACK
 
 
-
+      - echo "running unit test directory"
+      - python -m unittest discover -s tests.unit
       
       - echo "Creating $APIGW_STACK"
       - aws cloudformation create-stack --stack-name $APIGW_STACK
