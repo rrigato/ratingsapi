@@ -521,6 +521,7 @@ Resources:
                     - iam:PutRolePolicy
                     - iam:AttachRolePolicy
                     - iam:TagRole
+                    - iam:ListRoles
                   Resource:
                     - !Sub "arn:aws:iam::${AWS::AccountId}:role/ratingsapi*"
                     - !Sub 'arn:aws:iam::${AWS::AccountId}:role/aws-service-role/apigateway.amazonaws.com/AWSServiceRoleForAPIGateway'
@@ -556,7 +557,29 @@ Resources:
         - arn:aws:iam::aws:policy/AWSLambdaFullAccess
         - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
       Path: /
+      Policies:
+          - PolicyName: ProdServiceRole
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: IAMallow
+                  Effect: Allow
+                  Action:
+                    - iam:PassRole
+                    - iam:ListRoles
+                  Resource:
+                    - !Sub 'arn:aws:iam::${AWS::AccountId}:role/aws-service-role/apigateway.amazonaws.com/AWSServiceRoleForAPIGateway'
 
+                - Sid: ServiceLinkRole
+                  Effect: Allow
+                  Action:
+                    - iam:CreateServiceLinkedRole
+                    - iam:DeleteServiceLinkedRole
+                    - iam:GetServiceLinkedRoleDeletionStatus
+                    - iam:UpdateRoleDescription
+                  Resource:
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/AWSServiceRoleForAPIGateway"
+            
 
   CodePipelineRole:
     Type: AWS::IAM::Role
