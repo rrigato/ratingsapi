@@ -168,11 +168,21 @@ class AwsDevBuild(unittest.TestCase):
             Gets all resources defined in api gateway
         '''
         for apigw_resource in apigw_resources:
-            if apigw_resource["pathPart"] in self.CALLABLE_ENDPOINTS:
+            if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:
 
                 apigw_method = apigw_client.get_method(
                     restApiId=self.restapi_id,
                     resourceId=apigw_resource["id"],
                     httpMethod="GET"
                 )
-        import pdb; pdb.set_trace()
+
+                self.assertTrue(apigw_method["apiKeyRequired"])
+                '''
+                    Test pattern of lambda for endpoint
+                '''
+                self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+                    self.PROJECT_NAME + "-" + 
+                     apigw_resource["path"].split("/")[1] + 
+                    "-endpoint-" + BUILD_ENVIRONMENT + 
+                    "/invocations"
+                ))

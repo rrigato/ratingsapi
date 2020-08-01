@@ -93,7 +93,7 @@ Resources:
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-
+      ApiKeyRequired: True
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsShowsProxyResource
       HttpMethod: GET
