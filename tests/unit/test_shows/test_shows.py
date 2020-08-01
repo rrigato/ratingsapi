@@ -62,11 +62,11 @@ class ShowsUnitTests(unittest.TestCase):
 
 
         self.assertEqual(
-            {
+            json.dumps({
                     "statusCode": 200,
                     "headers": { "headerName": "headerValue"},
                     "body": "..."
-            },
+            }),
             apigw_response
         )
 

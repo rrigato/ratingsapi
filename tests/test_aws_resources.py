@@ -143,8 +143,7 @@ class AwsDevBuild(unittest.TestCase):
         
 
     def test_apigateway_methods(self):
-        '''Tests validates all paths in self.CALLABLE_ENDPOINTS have 
-            a corresponding resource
+        '''Tests all lambda proxy integrations in self.CALLABLE_ENDPOINTS
 
             Parameters
             ----------
@@ -165,7 +164,54 @@ class AwsDevBuild(unittest.TestCase):
 
         apigw_path_list = []
         '''
-            Gets all resources defined in api gateway
+            Testing the lambda function integration settings
+            for each resource match
+        '''
+        for apigw_resource in apigw_resources:
+            if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:
+
+                apigw_method = apigw_client.get_method(
+                    restApiId=self.restapi_id,
+                    resourceId=apigw_resource["id"],
+                    httpMethod="GET"
+                )
+
+                self.assertTrue(apigw_method["apiKeyRequired"])
+                '''
+                    Test pattern of lambda for endpoint
+                '''
+                self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+                    self.PROJECT_NAME + "-" + 
+                     apigw_resource["path"].split("/")[1] + 
+                    "-endpoint-" + BUILD_ENVIRONMENT + 
+                    "/invocations"
+                ))
+
+    @unittest.skip("Skipping for now")
+    def test_apigateway_method_invoke(self):
+        '''Simulates a method response invoke for each self.CALLABLE_ENDPOINTS
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+
+        apigw_client = get_boto_clients(resource_name="apigateway")
+
+        apigw_resources = apigw_client.get_resources(
+            restApiId=self.restapi_id,
+            limit=100
+        )["items"]
+
+        apigw_path_list = []
+        '''
+            Testing the lambda function integration settings
+            for each resource match
         '''
         for apigw_resource in apigw_resources:
             if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:

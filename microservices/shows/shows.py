@@ -1,4 +1,5 @@
 import boto3
+import json
 import logging
 
 
@@ -68,12 +69,13 @@ def main():
         Raises
         ------
     """
-    return(
-        {
-            "statusCode": 200,
-            "headers": { "headerName": "headerValue"},
-            "body": "..."
-        }
+    return(json.dumps(
+            {
+                "statusCode": 200,
+                "headers": { "headerName": "headerValue"},
+                "body": "..."
+            }
+        )
     )
 
 def lambda_handler(event, context):
