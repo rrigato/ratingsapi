@@ -98,10 +98,15 @@ class AwsProdBuild(unittest.TestCase):
         for rest_api in all_rest_apis:
             if rest_api["name"] == (cls.PROJECT_NAME + "-" + ENVIRON_DEF):
                 cls.restapi_id = rest_api["id"]
+
+        cls.CALLABLE_ENDPOINTS = [
+            "v1/shows/{show}"
+        ]
        
 
-    def test_stub(self):
-        '''Test stub
+
+    def test_apigateway_resources(self):
+        '''Tests the lambda proxy resources
 
             Parameters
             ----------
@@ -113,10 +118,10 @@ class AwsProdBuild(unittest.TestCase):
             ------
         '''
 
-        """
-            Creates dynamodb client
-        """
-        dynamo_client = get_boto_clients(
-            resource_name="dynamodb",
-            region_name="us-east-1"
-        )        
+        apigw_client = get_boto_clients(resource_name="apigateway")
+
+        apigw_resources = apigw_client.get_resources(
+            restApiId=self.restapi_id,
+            limit=100
+        )["items"]
+        import pdb; pdb.set_trace()

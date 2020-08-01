@@ -99,8 +99,8 @@ class AwsDevBuild(unittest.TestCase):
             if rest_api["name"] == (cls.PROJECT_NAME + "-" + ENVIRON_DEF):
                 cls.restapi_id = rest_api["id"]
 
-    def test_stub(self):
-        '''Test stub
+    def test_apigateway_resources(self):
+        '''Tests the lambda proxy resources
 
             Parameters
             ----------
@@ -112,10 +112,6 @@ class AwsDevBuild(unittest.TestCase):
             ------
         '''
 
-        """
-            Creates dynamodb client
-        """
-        dynamo_client = get_boto_clients(
-            resource_name="dynamodb",
-            region_name="us-east-1"
-        )        
+        apigw_client = get_boto_clients(resource_name="apigateway")
+
+        import pdb; pdb.set_trace()

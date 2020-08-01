@@ -44,34 +44,14 @@ Resources:
       Name: !Sub '${ProjectName}-${EnvironPrefix}'
       Description: API used for television ratings
 
-  ratingsVersionPathParamResource:
-    Type: 'AWS::ApiGateway::Resource'
-    Properties:
-      RestApiId: !Ref ratingsApiGw
-      ParentId: !GetAtt ratingsApiGw.RootResourceId
-      PathPart: 'versionNumber'
-
-  ratingsVersionPathParamMethod:
-    Type: 'AWS::ApiGateway::Method'
-    Properties:
-      RestApiId: !Ref ratingsApiGw
-      ResourceId: !Ref ratingsVersionPathParamResource
-      HttpMethod: GET
-      AuthorizationType: NONE
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri: !Sub >-
-          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
-
 
   ratingsDeployment:
     Type: 'AWS::ApiGateway::Deployment'
-    DependsOn: ratingsVersionPathParamMethod
+    DependsOn: ratingsShowProxyMethod
     Properties:
       RestApiId: !Ref ratingsApiGw
       Description: Single stage deployment
-      StageName: api
+      StageName: v1
 
 
   ratingsUsagePlan:
@@ -94,14 +74,14 @@ Resources:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       RestApiId: !Ref ratingsApiGw
-      ParentId: !Ref ratingsVersionPathParamResource
+      ParentId: !GetAtt ratingsApiGw.RootResourceId
       PathPart: 'shows'
 
   ratingsShowsProxyResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       RestApiId: !Ref ratingsApiGw
-      ParentId: !Ref ratingsVersionPathParamResource
+      ParentId: !Ref ratingsShowsResource
       PathPart: '{show}'
 
   ratingsShowProxyMethod:
