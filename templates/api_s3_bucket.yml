@@ -55,7 +55,13 @@ Resources:
           - REGIONAL
       Name: !Sub '${ProjectName}-${EnvironPrefix}'
       Description: API used for television ratings
-      # Policy: !Ref apiGatewayInvokeLambda
+      Tags:
+          -
+            Key: keep
+            Value: 'yes'
+          -
+            Key: source
+            Value: !Ref ProjectName
 
 
   ratingsV1Deployment:
