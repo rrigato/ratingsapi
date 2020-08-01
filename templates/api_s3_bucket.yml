@@ -51,7 +51,7 @@ Resources:
       # Policy: !Ref apiGatewayInvokeLambda
 
 
-  ratingsDeployment:
+  ratingsV1Deployment:
     Type: 'AWS::ApiGateway::Deployment'
     DependsOn: ratingsShowProxyMethod
     Properties:
@@ -62,7 +62,7 @@ Resources:
 
   ratingsUsagePlan:
     Type: 'AWS::ApiGateway::UsagePlan'
-    DependsOn: ratingsDeployment
+    DependsOn: ratingsV1Deployment
     Properties:
       ApiStages:
         - ApiId: !Ref ratingsApiGw
