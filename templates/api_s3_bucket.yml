@@ -38,7 +38,10 @@ Resources:
   ratingsApiGw:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: !Sub '${ProjectName}Api${EnvironPrefix}'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: !Sub '${ProjectName}-${EnvironPrefix}'
       Description: API used for television ratings
 
   ratingsVersionPathParamResource:
