@@ -414,6 +414,7 @@ Resources:
                     - iam:ListRoles
                   Resource:
                     - !Sub "arn:aws:iam::${AWS::AccountId}:role/ratingsapi*"
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/dev-ratingsapi*"
                     - !Sub 'arn:aws:iam::${AWS::AccountId}:role/aws-service-role/apigateway.amazonaws.com/AWSServiceRoleForAPIGateway'
 
                 - Sid: ServiceLinkRole
