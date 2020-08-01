@@ -543,7 +543,7 @@ Resources:
                     - iam:GetServiceLinkedRoleDeletionStatus
                     - iam:UpdateRoleDescription
                   Resource:
-                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/AWSServiceRoleForAPIGateway"
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
                   
 ####################################
 #Role that will be assumed when
@@ -587,7 +587,7 @@ Resources:
                     - iam:GetServiceLinkedRoleDeletionStatus
                     - iam:UpdateRoleDescription
                   Resource:
-                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/AWSServiceRoleForAPIGateway"
+                    - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
             
 
   CodePipelineRole:
