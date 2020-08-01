@@ -8,7 +8,13 @@ import os
 import requests
 import unittest
 
-ENVIRON_DEF = "prod"
+'''
+    Load environment from environment variable
+'''
+ENVIRON_DEF = os.environ.get("")
+
+if ENVIRON_DEF is None:
+    ENVIRON_DEF = "dev"
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
@@ -62,8 +68,8 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
-class AwsProdBuild(unittest.TestCase):
-    """Tests AWS resources for prod environment
+class AwsDevBuild(unittest.TestCase):
+    """Tests AWS resources for dev environment
 
         Parameters
         ----------
@@ -102,8 +108,6 @@ class AwsProdBuild(unittest.TestCase):
         cls.CALLABLE_ENDPOINTS = [
             "v1/shows/{show}"
         ]
-       
-
 
     def test_apigateway_resources(self):
         '''Tests the lambda proxy resources
