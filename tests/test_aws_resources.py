@@ -241,8 +241,8 @@ class AwsDevBuild(unittest.TestCase):
 
         apigw_client = get_boto_clients(resource_name="apigateway")
 
-        apigw_version_stage = apigw_client.get_resources(
+        apigw_version_stage = apigw_client.get_stage(
             restApiId=self.restapi_id,
-            stageName='v1'
+            stageName="v1"
         )
         import pdb; pdb.set_trace()
