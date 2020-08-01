@@ -110,7 +110,8 @@ class AwsDevBuild(unittest.TestCase):
         ]
 
     def test_apigateway_resources(self):
-        '''Tests the lambda proxy resources
+        '''Tests validates all paths in self.CALLABLE_ENDPOINTS have 
+            a corresponding resource
 
             Parameters
             ----------
@@ -130,8 +131,48 @@ class AwsDevBuild(unittest.TestCase):
         )["items"]
 
         apigw_path_list = []
+        '''
+            Gets all resources defined in api gateway
+        '''
         for apigw_resource in apigw_resources:
             apigw_path_list.append(apigw_resource["path"])
 
         for api_endpoint in self.CALLABLE_ENDPOINTS:
             self.assertIn(api_endpoint, apigw_path_list)
+
+        
+
+    def test_apigateway_methods(self):
+        '''Tests validates all paths in self.CALLABLE_ENDPOINTS have 
+            a corresponding resource
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+
+        apigw_client = get_boto_clients(resource_name="apigateway")
+
+        apigw_resources = apigw_client.get_resources(
+            restApiId=self.restapi_id,
+            limit=100
+        )["items"]
+
+        apigw_path_list = []
+        '''
+            Gets all resources defined in api gateway
+        '''
+        for apigw_resource in apigw_resources:
+            if apigw_resource["pathPart"] in self.CALLABLE_ENDPOINTS:
+
+                apigw_method = apigw_client.get_method(
+                    restApiId=self.restapi_id,
+                    resourceId=apigw_resource["id"],
+                    httpMethod="GET"
+                )
+        import pdb; pdb.set_trace()
