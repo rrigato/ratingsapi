@@ -8,6 +8,11 @@ Description:
   'Television ratings api built with an api gateway frontend as a lambda proxy'
 
 Parameters:
+
+  apiStageName:
+    Type: String
+    Default: 'v1'   
+
   dynamoDbTableName:
     Type: String
     Default: 'prod_toonami_ratings'
@@ -51,7 +56,7 @@ Resources:
     Properties:
       RestApiId: !Ref ratingsApiGw
       Description: Single stage deployment
-      StageName: v1
+      StageName: !Ref apiStageName
 
 
   ratingsUsagePlan:
@@ -60,7 +65,7 @@ Resources:
     Properties:
       ApiStages:
         - ApiId: !Ref ratingsApiGw
-          Stage: api
+          Stage: !Ref apiStageName
       Description: Generic Usage plan
       Quota:
         Limit: 1000
