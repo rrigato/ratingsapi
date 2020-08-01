@@ -105,9 +105,17 @@ class AwsDevBuild(unittest.TestCase):
             if rest_api["name"] == (cls.PROJECT_NAME + "-" + BUILD_ENVIRONMENT):
                 cls.restapi_id = rest_api["id"]
 
-        cls.CALLABLE_ENDPOINTS = [
-            "/shows/{show}"
-        ]
+        cls.CALLABLE_ENDPOINTS = {
+            "/shows/{show}": {
+                "name": "shows",
+                "valid_response":{
+                    "statusCode": 200
+                },
+                "error_response":{
+                    "statusCode": 404
+                }
+            }
+        }
 
     def test_apigateway_resources(self):
         '''Tests validates all paths in self.CALLABLE_ENDPOINTS have 
@@ -137,7 +145,7 @@ class AwsDevBuild(unittest.TestCase):
         for apigw_resource in apigw_resources:
             apigw_path_list.append(apigw_resource["path"])
 
-        for api_endpoint in self.CALLABLE_ENDPOINTS:
+        for api_endpoint in list(self.CALLABLE_ENDPOINTS.keys()):
             self.assertIn(api_endpoint, apigw_path_list)
 
         
@@ -168,7 +176,7 @@ class AwsDevBuild(unittest.TestCase):
             for each resource match
         '''
         for apigw_resource in apigw_resources:
-            if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:
+            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
 
                 apigw_method = apigw_client.get_method(
                     restApiId=self.restapi_id,
@@ -214,7 +222,7 @@ class AwsDevBuild(unittest.TestCase):
             for each resource match
         '''
         for apigw_resource in apigw_resources:
-            if apigw_resource["path"] in self.CALLABLE_ENDPOINTS:
+            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
 
                 apigw_response = apigw_client.test_invoke_method(
                     restApiId=self.restapi_id,
