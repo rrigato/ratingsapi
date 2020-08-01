@@ -99,7 +99,7 @@ Resources:
       HttpMethod: GET
       AuthorizationType: NONE
       Integration:
-        Credentials: !Ref apiGatewayInvokeLambda
+        Credentials: !GetAtt apiGatewayInvokeLambda.Arn
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub >-

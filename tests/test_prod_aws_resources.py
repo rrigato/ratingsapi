@@ -124,4 +124,10 @@ class AwsProdBuild(unittest.TestCase):
             restApiId=self.restapi_id,
             limit=100
         )["items"]
-        import pdb; pdb.set_trace()
+
+        apigw_path_list = []
+        for apigw_resource in apigw_resources:
+            apigw_path_list.append(apigw_resource["path"])
+
+        for api_endpoint in self.CALLABLE_ENDPOINTS:
+            self.assertIn(api_endpoint, apigw_path_list)
