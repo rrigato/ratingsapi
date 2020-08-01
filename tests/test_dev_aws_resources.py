@@ -88,6 +88,16 @@ class AwsDevBuild(unittest.TestCase):
             ------
         '''
         cls.PROJECT_NAME="ratingsapi"
+        apigw_client = get_boto_clients(resource_name="apigateway")
+        all_rest_apis = apigw_client.get_rest_apis()["items"]
+
+        '''
+            iterates over all rest apis looking for the rest api id
+            with the api name ratingsapi-<environment>
+        '''
+        for rest_api in all_rest_apis:
+            if rest_api["name"] == (cls.PROJECT_NAME + "-" + ENVIRON_DEF):
+                cls.restapi_id = rest_api["id"]
 
     def test_stub(self):
         '''Test stub

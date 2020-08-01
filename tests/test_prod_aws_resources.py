@@ -8,7 +8,7 @@ import os
 import requests
 import unittest
 
-ENVIRON_DEF = "prod-ratingsapi"
+ENVIRON_DEF = "prod"
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
@@ -88,6 +88,17 @@ class AwsProdBuild(unittest.TestCase):
             ------
         '''
         cls.PROJECT_NAME="ratingsapi"
+        apigw_client = get_boto_clients(resource_name="apigateway")
+        all_rest_apis = apigw_client.get_rest_apis()["items"]
+
+        '''
+            iterates over all rest apis looking for the rest api id
+            with the api name ratingsapi-<environment>
+        '''
+        for rest_api in all_rest_apis:
+            if rest_api["name"] == (cls.PROJECT_NAME + "-" + ENVIRON_DEF):
+                cls.restapi_id = rest_api["id"]
+       
 
     def test_stub(self):
         '''Test stub
