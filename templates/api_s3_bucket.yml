@@ -30,6 +30,29 @@ Parameters:
 
 Resources:
 
+  #service linked role for apigateway to write to cloudwatch logs
+  #for the account
+  apigwToCwLogsServiceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+  #account setup for CW logs
+  restApiCwLogs:
+    Type: 'AWS::ApiGateway::Account'
+    Properties:
+      CloudWatchRoleArn: !GetAtt apigwToCwLogsServiceRole.Arn
+
+
   ProjectBucket:
     Properties:
       BucketEncryption:
