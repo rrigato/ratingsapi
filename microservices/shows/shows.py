@@ -92,7 +92,7 @@ def lambda_handler(event, context):
         Logging required for cloudwatch logs
     '''
     logging.getLogger().setLevel(logging.INFO)
-    main()
+    return(main())
 
 
 if __name__ == "__main__":   
