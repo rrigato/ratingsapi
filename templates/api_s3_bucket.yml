@@ -48,6 +48,7 @@ Resources:
           - REGIONAL
       Name: !Sub '${ProjectName}-${EnvironPrefix}'
       Description: API used for television ratings
+      # Policy: !Ref apiGatewayInvokeLambda
 
 
   ratingsDeployment:
@@ -92,11 +93,13 @@ Resources:
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
+
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsShowsProxyResource
       HttpMethod: GET
       AuthorizationType: NONE
       Integration:
+        Credentials: !Ref apiGatewayInvokeLambda
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub >-
@@ -113,6 +116,7 @@ Resources:
             Principal:
               Service:
                 - apigateway.amazonaws.com
+                - lambda.amazonaws.com
             Action:
               - sts:AssumeRole
       Policies:
