@@ -245,4 +245,5 @@ class AwsDevBuild(unittest.TestCase):
             restApiId=self.restapi_id,
             stageName="v1"
         )
-        import pdb; pdb.set_trace()
+        self.assertTrue(apigw_version_stage["tracingEnabled"])
+
