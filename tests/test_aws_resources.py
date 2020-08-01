@@ -11,10 +11,10 @@ import unittest
 '''
     Load environment from environment variable
 '''
-ENVIRON_DEF = os.environ.get("BUILD_ENVIRONMENT")
+BUILD_ENVIRONMENT = os.environ.get("BUILD_ENVIRONMENT")
 
-if ENVIRON_DEF is None:
-    ENVIRON_DEF = "dev"
+if BUILD_ENVIRONMENT is None:
+    BUILD_ENVIRONMENT = "dev"
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
@@ -102,11 +102,11 @@ class AwsDevBuild(unittest.TestCase):
             with the api name ratingsapi-<environment>
         '''
         for rest_api in all_rest_apis:
-            if rest_api["name"] == (cls.PROJECT_NAME + "-" + ENVIRON_DEF):
+            if rest_api["name"] == (cls.PROJECT_NAME + "-" + BUILD_ENVIRONMENT):
                 cls.restapi_id = rest_api["id"]
 
         cls.CALLABLE_ENDPOINTS = [
-            "v1/shows/{show}"
+            "/shows/{show}"
         ]
 
     def test_apigateway_resources(self):
