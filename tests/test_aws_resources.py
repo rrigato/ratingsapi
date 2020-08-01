@@ -11,7 +11,7 @@ import unittest
 '''
     Load environment from environment variable
 '''
-ENVIRON_DEF = os.environ.get("")
+ENVIRON_DEF = os.environ.get("BUILD_ENVIRONMENT")
 
 if ENVIRON_DEF is None:
     ENVIRON_DEF = "dev"

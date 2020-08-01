@@ -20,9 +20,9 @@ phases:
 
     commands:
       - echo Entered the install phase...
-      - ENVIRON_PREFIX=dev
+      - BUILD_ENVIRONMENT=dev
       - PROJECT_NAME=ratingsapi       
-      - APIGW_STACK="${ENVIRON_PREFIX}-${PROJECT_NAME}-apigw"    
+      - APIGW_STACK="${BUILD_ENVIRONMENT}-${PROJECT_NAME}-apigw"    
       - pip install -r tests/requirements_dev.txt
   build:
     commands:
@@ -50,14 +50,14 @@ phases:
       #     --template-body file://templates/api_s3_bucket.yml
       #     --capabilities CAPABILITY_NAMED_IAM
 
-      # - aws s3 cp templates/openapi3_spec.yml "s3://${ENVIRON_PREFIX}-${PROJECT_NAME}/v1"
+      # - aws s3 cp templates/openapi3_spec.yml "s3://${BUILD_ENVIRONMENT}-${PROJECT_NAME}/v1"
 
       # #Waits until the stack has been successfully created
       # - aws cloudformation wait stack-create-complete
       #   --stack-name $APIGW_STACK
 
       #run tests after stack has built
-      - python -m unittest tests.test_dev_aws_resources 
+      - python -m unittest tests.test_aws_resources 
 
 
   post_build:
