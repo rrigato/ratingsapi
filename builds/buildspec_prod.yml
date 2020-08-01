@@ -25,6 +25,9 @@ phases:
       - echo $BUILD_ENVIRONMENT
       - echo $REPO_NAME
 
+      - echo "Iterating lambda functions"
+      - ./builds/iterate_lambda.sh
+
       #runs prod tests
       - python -m unittest tests.test_aws_resources
 

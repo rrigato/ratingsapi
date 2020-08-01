@@ -44,6 +44,7 @@ phases:
       - aws cloudformation wait stack-create-complete
         --stack-name $APIGW_STACK
 
+      - echo "Iterating lambda functions"
       - ./builds/iterate_lambda.sh
 
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
