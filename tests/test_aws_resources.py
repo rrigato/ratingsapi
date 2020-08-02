@@ -190,12 +190,12 @@ class AwsDevBuild(unittest.TestCase):
                 '''
                 self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
                     self.PROJECT_NAME + "-" + 
-                     apigw_resource["path"].split("/")[1] + 
+                    self.CALLABLE_ENDPOINTS[apigw_resource["path"]]["name"] + 
                     "-endpoint-" + BUILD_ENVIRONMENT + 
                     "/invocations"
                 ))
 
-    @unittest.skip("Skipping for now")
+
     def test_apigateway_method_invoke(self):
         '''Simulates a method response invoke for each self.CALLABLE_ENDPOINTS
 
@@ -230,6 +230,7 @@ class AwsDevBuild(unittest.TestCase):
                     httpMethod="GET"
                 )
 
+                self.assertEqual(apigw_response["status"], 200)
                 import pdb; pdb.set_trace()
 
 

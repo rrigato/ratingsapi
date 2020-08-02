@@ -14,12 +14,12 @@ for lambda_code in */ ; do
 
     #updates zip deployment package
     aws lambda update-function-code \
-            --function-name "${PROJECT_NAME}-${endpoint_name}-endpoint-${ENVIRON_PREFIX}" \
+            --function-name "${PROJECT_NAME}-${endpoint_name}-endpoint-${BUILD_ENVIRONMENT}" \
             --zip-file "fileb://${endpoint_name}.zip"
 
     #changes lambda handler to shows.lambda_handler
     aws lambda update-function-configuration \
-            --function-name "${PROJECT_NAME}-${endpoint_name}-endpoint-${ENVIRON_PREFIX}" \
+            --function-name "${PROJECT_NAME}-${endpoint_name}-endpoint-${BUILD_ENVIRONMENT}" \
             --handler "${endpoint_name}.lambda_handler" \
             --runtime python3.8
 
@@ -28,7 +28,7 @@ for lambda_code in */ ; do
     cd ..
 
           #lambda function name
-    echo "${PROJECT_NAME}-${endpoint_name}-endpoint-${ENVIRON_PREFIX}"
+    echo "${PROJECT_NAME}-${endpoint_name}-endpoint-${BUILD_ENVIRONMENT}"
   fi; 
 done
 
