@@ -98,7 +98,7 @@ def main():
         Raises
         ------
     """
-    return(json.dumps(
+    return(
             {
                 "statusCode": 200,
                 "isBase64Encoded": False,
@@ -106,9 +106,9 @@ def main():
                     "headerName": "headerValue",
                     "Access-Control-Allow-Origin": "*"
                 },
-                "body": "..."
+                "body": json.dumps({})
             }
-        )
+        
     )
 
 def lambda_handler(event, context):
