@@ -58,8 +58,10 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
-        apigw_response = json.loads(main())
+        apigw_response = main()
 
+
+        self.assertEqual(type(apigw_response["body"]), str)
 
         self.assertEqual(apigw_response["statusCode"], 200 )
 
@@ -149,7 +151,7 @@ class ShowsUnitTests(unittest.TestCase):
 
 
     @patch("microservices.shows.shows.get_boto_clients")
-    def test_dynamodb_show_request(self):
+    def test_dynamodb_show_request(self, get_boto_clients_mock):
         """tests dynamodb_show_request is called with the correct arguements
 
             Parameters
@@ -161,4 +163,4 @@ class ShowsUnitTests(unittest.TestCase):
             Raises
             ------
         """
-        from microservices.shows.shows import get_boto_clients
+        from microservices.shows.shows import dynamodb_show_request
