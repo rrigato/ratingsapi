@@ -2,6 +2,8 @@ import boto3
 import json
 import logging
 
+from boto3.dynamodb.conditions import Key
+
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
@@ -55,6 +57,33 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
+def dynamodb_show_request(show_name):
+    """Query using the SHOW_ACCESS GSI
+
+        Parameters
+        ----------
+        show_name : str
+            Name of the show to request
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    dynamo_client, dynamo_table = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1",
+            table_name=self.DYNAMO_TABLE_NAME
+    )
+    
+    '''
+        Query one show using the GSI
+    '''
+    one_punch_man_ratings = dynamo_table.query(
+        IndexName="SHOW_ACCESS",
+        KeyConditionExpression=Key("SHOW").eq("One Punch Man")
+    )
 
 
 
@@ -98,6 +127,9 @@ def lambda_handler(event, context):
         Logging required for cloudwatch logs
     '''
     logging.getLogger().setLevel(logging.INFO)
+
+    logging.info("main - Lambda proxy event: ")
+    logging.info(event)
     return(main())
 
 
