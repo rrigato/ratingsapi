@@ -58,17 +58,10 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
-        apigw_response = main()
+        apigw_response = json.loads(main())
 
 
-        self.assertEqual(
-            json.dumps({
-                    "statusCode": 200,
-                    "headers": { "headerName": "headerValue"},
-                    "body": "..."
-            }),
-            apigw_response
-        )
+        self.assertEqual(apigw_response["statusCode"], 200 )
 
 
 

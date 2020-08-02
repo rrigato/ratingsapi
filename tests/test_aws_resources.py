@@ -259,3 +259,42 @@ class AwsDevBuild(unittest.TestCase):
         )
         self.assertTrue(apigw_version_stage["tracingEnabled"])
 
+
+
+    @unittest.skip("Skipping for now")
+    def test_shows_endpoint(self):
+        '''tests the shows endpoint
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        apigw_resources = apigw_client.get_resources(
+            restApiId=self.restapi_id,
+            limit=100
+        )["items"]
+
+        apigw_path_list = []
+        '''
+            Testing the lambda function integration settings
+            for each resource match
+        '''
+        for apigw_resource in apigw_resources:
+            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
+
+                '''
+                    invoke a test method
+                '''
+                apigw_response = apigw_client.test_invoke_method(
+                    restApiId=self.restapi_id,
+                    resourceId=apigw_resource["id"],
+                    httpMethod="GET"
+                )
+
+                self.assertEqual(apigw_response["status"], 200)
+
