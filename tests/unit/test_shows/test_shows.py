@@ -164,3 +164,7 @@ class ShowsUnitTests(unittest.TestCase):
             ------
         """
         from microservices.shows.shows import dynamodb_show_request
+
+        mock_dynamodb_resource = MagicMock()
+        get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
+        dynamodb_show_request(show_name="mock_show")

@@ -1,6 +1,7 @@
 import boto3
 import json
 import logging
+import os
 
 from boto3.dynamodb.conditions import Key
 
@@ -71,10 +72,15 @@ def dynamodb_show_request(show_name):
         Raises
         ------
     """
+    if os.environ.get("DYNAMO_TABLE_NAME") is None:
+        dynamo_table_name = "dev_toonami_ratings"
+    else:
+        dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
+
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
             region_name="us-east-1",
-            table_name=self.DYNAMO_TABLE_NAME
+            table_name=dynamo_table_name
     )
     
     '''
