@@ -147,3 +147,18 @@ class ShowsUnitTests(unittest.TestCase):
                 dir(dynamodb_table)
             )        
 
+
+    @patch("microservices.shows.shows.get_boto_clients")
+    def test_dynamodb_show_request(self):
+        """tests dynamodb_show_request is called with the correct arguements
+
+            Parameters
+            ----------
+            get_boto_clients_mock : Mocks the get_boto_clients call
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        from microservices.shows.shows import get_boto_clients
