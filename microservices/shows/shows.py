@@ -72,7 +72,8 @@ def main():
     return(json.dumps(
             {
                 "statusCode": 200,
-                "headers": { "headerName": "headerValue"},
+                # "headers": { "headerName": "headerValue",
+                # "Access-Control-Allow-Origin": "*"},
                 "body": "..."
             }
         )

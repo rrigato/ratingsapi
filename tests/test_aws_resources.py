@@ -224,6 +224,9 @@ class AwsDevBuild(unittest.TestCase):
         for apigw_resource in apigw_resources:
             if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
 
+                '''
+                    invoke a test method
+                '''
                 apigw_response = apigw_client.test_invoke_method(
                     restApiId=self.restapi_id,
                     resourceId=apigw_resource["id"],
@@ -231,7 +234,7 @@ class AwsDevBuild(unittest.TestCase):
                 )
 
                 self.assertEqual(apigw_response["status"], 200)
-                import pdb; pdb.set_trace()
+
 
 
 
