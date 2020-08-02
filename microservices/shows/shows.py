@@ -73,7 +73,7 @@ def dynamodb_show_request(show_name):
         ------
     """
     if os.environ.get("DYNAMO_TABLE_NAME") is None:
-        dynamo_table_name = "dev_toonami_ratings"
+        dynamo_table_name = "prod_toonami_ratings"
     else:
         dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
 
@@ -86,9 +86,9 @@ def dynamodb_show_request(show_name):
     '''
         Query one show using the GSI
     '''
-    one_punch_man_ratings = dynamo_table.query(
+    show_access_query = dynamo_table.query(
         IndexName="SHOW_ACCESS",
-        KeyConditionExpression=Key("SHOW").eq("One Punch Man")
+        KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
 

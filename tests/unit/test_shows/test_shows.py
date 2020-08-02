@@ -1,3 +1,4 @@
+
 from datetime import datetime
 from unittest.mock import MagicMock
 from unittest.mock import patch
@@ -164,7 +165,19 @@ class ShowsUnitTests(unittest.TestCase):
             ------
         """
         from microservices.shows.shows import dynamodb_show_request
+        from boto3.dynamodb.conditions import Key
 
         mock_dynamodb_resource = MagicMock()
+        
+        '''
+            return None for client, mock for dynamodb table resource
+        '''
         get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
-        dynamodb_show_request(show_name="mock_show")
+        
+        mock_show_name = "mock_show"
+        dynamodb_show_request(show_name=mock_show_name)
+
+        mock_dynamodb_resource.query.assert_called_once_with(
+            IndexName="SHOW_ACCESS",
+            KeyConditionExpression=Key("SHOW").eq(mock_show_name)
+        )
