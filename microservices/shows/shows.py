@@ -76,10 +76,44 @@ def clean_show_path_parameter(show_name):
     """
     if len(show_name) > 500:
         return (False)
-        
+
     return(show_name.isascii())
 
 
+def lambda_proxy_response(status_code, headers_dict, 
+    response_body):
+    """lambda proxy response handler
+
+        Parameters
+        ----------
+        status_code : int
+            status code of the response
+
+        headers_dict : dict 
+            dict for headers
+
+        response_body : dict
+            response body to return as string
+        
+
+        Returns
+        -------
+        lambda_proxy_response : dict
+            lambda proxy response formatted as apigateway 
+            version 2.0 payload
+            
+
+        Raises
+        ------
+    """
+    return(
+            {
+                "statusCode": status_code,
+                "isBase64Encoded": False,
+                "headers": headers_dict,
+                "body": json.dumps(response_body)
+            }
+    )
 
 def dynamodb_show_request(show_name):
     """Query using the SHOW_ACCESS GSI

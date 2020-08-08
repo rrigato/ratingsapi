@@ -165,8 +165,35 @@ class ShowsUnitTests(unittest.TestCase):
         from microservices.shows.shows import clean_show_path_parameter
 
         self.assertFalse(clean_show_path_parameter(show_name="a" * 501))
-        self.assertTrue(show_name="A show with & and ; and '")
+        self.assertTrue(clean_show_path_parameter(show_name="A show with & and ; and '"))
 
+
+    def test_lambda_proxy_response(self):
+        '''validates lambda_proxy_response
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        from microservices.shows.shows import lambda_proxy_response
+
+        mock_success_response = [
+                {"showname": "mockshow", "show_rating": 1500},
+                {"showname": "mockshow2", "show_rating": 2000}
+        ]
+        
+        lambda_success_response = lambda_proxy_response(
+            status_code=200,
+            headers_dict={},
+            response_body=mock_success_response
+        )
+
+        self.assertEqual(lambda_success_response["statusCode"], 200)
 
     @patch("microservices.shows.shows.get_boto_clients")
     def test_dynamodb_show_request(self, get_boto_clients_mock):
