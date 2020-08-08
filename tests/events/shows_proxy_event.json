@@ -13,7 +13,7 @@
       ]
     },
     "pathParameters": {
-      "show": "mockpath"
+      "show": "mockpathparam"
     },
     "stageVariables": {
       "baz": "qux"

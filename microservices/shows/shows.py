@@ -65,6 +65,7 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
+    return(show_access_query)
 
 
 def main(event):
@@ -81,6 +82,9 @@ def main(event):
         Raises
         ------
     """
+    show_access_query = dynamodb_show_request(
+        show_name=event["pathParameters"]["show"]
+    )
     return(
         lambda_proxy_response(status_code=200, headers_dict={}, 
         response_body={"response": "stub"})

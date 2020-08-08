@@ -34,11 +34,12 @@ class ShowsUnitTests(unittest.TestCase):
             Raises
             ------
         """
-        pass
+        with open("tests/events/shows_proxy_event.json", "r") as lambda_event:
+            cls.shows_proxy_event = json.load(lambda_event)
 
     @patch("microservices.shows.shows.dynamodb_show_request")
     @patch("microservices.shows.shows.get_boto_clients")
-    def test_main(self, get_boto_clients_mock):
+    def test_main(self, get_boto_clients_mock, dynamodb_show_request_mock):
         '''Test for main function
 
             Parameters
@@ -58,14 +59,16 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
-        apigw_response = main()
+        apigw_response = main(event=self.shows_proxy_event)
 
 
         self.assertEqual(type(apigw_response["body"]), str)
 
         self.assertEqual(apigw_response["statusCode"], 200 )
 
-        dynamodb_show_request_mock.assert_called_once_with
+        dynamodb_show_request_mock.assert_called_once_with(
+            show_name="mockpathparam"
+        )
 
 
 
