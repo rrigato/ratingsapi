@@ -65,6 +65,7 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
+
     return(show_access_query)
 
 
@@ -114,4 +115,4 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":   
-    main()
+    main(event={"pathParameters":{"show":"mockshow"}})
