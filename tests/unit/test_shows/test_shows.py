@@ -194,6 +194,21 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
         self.assertEqual(lambda_success_response["statusCode"], 200)
+        self.assertFalse(lambda_success_response["isBase64Encoded"])
+        self.assertEqual(lambda_success_response["body"], json.dumps(mock_success_response))
+
+
+        mock_show_not_found = {"error": "Show name not found"}
+        lambda_error_response = lambda_proxy_response(
+            status_code=404,
+            headers_dict={"Access-Control-Allow-Origin": "*"},
+            response_body=mock_show_not_found
+        )
+
+        self.assertEqual(lambda_error_response["statusCode"], 404)
+        self.assertFalse(lambda_error_response["isBase64Encoded"])
+        self.assertEqual(lambda_error_response["body"], json.dumps(mock_show_not_found))
+       
 
     @patch("microservices.shows.shows.get_boto_clients")
     def test_dynamodb_show_request(self, get_boto_clients_mock):
