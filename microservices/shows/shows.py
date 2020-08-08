@@ -58,6 +58,29 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
+def clean_show_path_parameter(show_name):
+    """Validates the show path parameter
+
+        Parameters
+        ----------
+        show_name : str
+            Name of the show to request
+
+        Returns
+        -------
+        valid_show_name : boolean
+            
+
+        Raises
+        ------
+    """
+    if len(show_name) > 500:
+        return (False)
+        
+    return(show_name.isascii())
+
+
+
 def dynamodb_show_request(show_name):
     """Query using the SHOW_ACCESS GSI
 

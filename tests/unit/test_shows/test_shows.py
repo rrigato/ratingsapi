@@ -150,6 +150,23 @@ class ShowsUnitTests(unittest.TestCase):
                 dir(dynamodb_table)
             )        
 
+    def test_main(self):
+        '''validates clean_show_path_parameter logic
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        from microservices.shows.shows import clean_show_path_parameter
+
+        self.assertFalse(clean_show_path_parameter(show_name="a" * 501))
+        self.assertTrue(show_name="A show with & and ; and '")
+
 
     @patch("microservices.shows.shows.get_boto_clients")
     def test_dynamodb_show_request(self, get_boto_clients_mock):
