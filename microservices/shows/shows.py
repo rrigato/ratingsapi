@@ -110,7 +110,7 @@ def lambda_handler(event, context):
 
     logging.info("main - Lambda proxy event: ")
     logging.info(event)
-    return(main())
+    return(main(event=event))
 
 
 if __name__ == "__main__":   
