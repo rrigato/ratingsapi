@@ -9,7 +9,7 @@ from microlib.microlib import get_boto_clients
 from microlib.microlib import lambda_proxy_response
 
 
-def clean_show_path_parameter(show_name):
+def clean_path_parameter_string(show_name):
     """Validates the show path parameter
 
         Parameters

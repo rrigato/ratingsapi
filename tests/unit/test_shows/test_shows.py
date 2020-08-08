@@ -36,7 +36,7 @@ class ShowsUnitTests(unittest.TestCase):
         """
         pass
 
-
+    @patch("microservices.shows.shows.get_boto_clients")
     @patch("microservices.shows.shows.get_boto_clients")
     def test_main(self, get_boto_clients_mock):
         '''Test for main function
@@ -68,7 +68,7 @@ class ShowsUnitTests(unittest.TestCase):
 
 
 
-    def test_main(self):
+    def test_clean_path_parameter_string(self):
         '''validates clean_show_path_parameter logic
 
             Parameters
@@ -80,10 +80,10 @@ class ShowsUnitTests(unittest.TestCase):
             Raises
             ------
         '''
-        from microservices.shows.shows import clean_show_path_parameter
+        from microservices.shows.shows import clean_path_parameter_string
 
-        self.assertFalse(clean_show_path_parameter(show_name="a" * 501))
-        self.assertTrue(clean_show_path_parameter(show_name="A show with & and ; and '"))
+        self.assertFalse(clean_path_parameter_string(show_name="a" * 501))
+        self.assertTrue(clean_path_parameter_string(show_name="A show with & and ; and '"))
 
     @patch("microservices.shows.shows.get_boto_clients")
     def test_dynamodb_show_request(self, get_boto_clients_mock):
