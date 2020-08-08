@@ -119,3 +119,45 @@ class ShowsUnitTests(unittest.TestCase):
             IndexName="SHOW_ACCESS",
             KeyConditionExpression=Key("SHOW").eq(mock_show_name)
         )
+
+
+
+
+    @patch("logging.getLogger")
+    @patch("microservices.shows.shows.main")
+    def test_lambda_handler_event(self, main_mock, 
+        getLogger_mock):
+        """Tests passing sample event to lambda_handler
+
+            Parameters
+            ----------
+            main_mock : unittest.mock.MagicMock
+                Mock object used to patch the main function
+
+            getLogger_mock : unittest.mock.MagicMock
+                Mock object used to patch get_logger for lambda handler
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        from microservices.shows.shows import lambda_handler
+
+        lambda_handler(
+            event=self.shows_proxy_event,
+            context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
+        )
+
+        '''
+            Testing call count and args passed
+        '''
+        main_mock.assert_called_once_with(
+            event=self.shows_proxy_event
+        )
