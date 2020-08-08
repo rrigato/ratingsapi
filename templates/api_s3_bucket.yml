@@ -206,8 +206,9 @@ Resources:
               - dynamodb:Query
 
             Resource:
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'       
-
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'  
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/SHOW_ACCESS'     
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/YEAR_ACCESS'
       Runtime: python3.7
       Tracing: Active
       #60 second timeout
