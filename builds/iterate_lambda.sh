@@ -8,6 +8,9 @@ for lambda_code in */ ; do
     endpoint_name="${lambda_code%/}"
     echo "$endpoint_name is a directory"; 
 
+    #add microlib module
+    cp -r ../../microlib .
+
     cd $endpoint_name
     #create deployment archive
     zip -r9 "${endpoint_name}.zip" .
