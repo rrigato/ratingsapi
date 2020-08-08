@@ -162,15 +162,8 @@ def main():
         ------
     """
     return(
-            {
-                "statusCode": 200,
-                "isBase64Encoded": False,
-                "headers": { 
-                    "headerName": "headerValue",
-                    "Access-Control-Allow-Origin": "*"
-                },
-                "body": json.dumps({})
-            }
+        lambda_proxy_response(status_code=200, headers_dict={}, 
+        response_body={"response": "stub"})
         
     )
 
