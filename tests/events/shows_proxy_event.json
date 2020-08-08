@@ -1,7 +1,7 @@
 {
     "body": "eyJ0ZXN0IjoiYm9keSJ9",
-    "resource": "/{show}",
-    "path": "/shows",
+    "resource": "/shows/{show}",
+    "path": "/shows/testvalue",
     "httpMethod": "GET",
     "isBase64Encoded": true,
     "queryStringParameters": {
@@ -13,7 +13,7 @@
       ]
     },
     "pathParameters": {
-      "proxy": "/path/to/resource"
+      "show": "mockpath"
     },
     "stageVariables": {
       "baz": "qux"
@@ -114,8 +114,8 @@
         "userAgent": "Custom User Agent String",
         "user": null
       },
-      "path": "/shows",
-      "resourcePath": "/{show}",
+      "path": "/shows/testvalue",
+      "resourcePath": "/shows/{show}",
       "httpMethod": "GET",
       "apiId": "1234567890",
       "protocol": "HTTP/1.1"

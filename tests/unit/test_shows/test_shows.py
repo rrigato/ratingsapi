@@ -36,7 +36,7 @@ class ShowsUnitTests(unittest.TestCase):
         """
         pass
 
-    @patch("microservices.shows.shows.get_boto_clients")
+    @patch("microservices.shows.shows.dynamodb_show_request")
     @patch("microservices.shows.shows.get_boto_clients")
     def test_main(self, get_boto_clients_mock):
         '''Test for main function
@@ -47,9 +47,8 @@ class ShowsUnitTests(unittest.TestCase):
                 Mock object to make sure the reddit api is 
                 not called
 
-            handle_ratings_iteration_mock : unittest.mock.MagicMock
-                Mock object used to ensure no logging is setup
-                for the test
+            dynamodb_show_request_mock : unittest.mock.MagicMock
+                Mock returning the dynamodb show request
 
             Returns
             -------
@@ -65,6 +64,8 @@ class ShowsUnitTests(unittest.TestCase):
         self.assertEqual(type(apigw_response["body"]), str)
 
         self.assertEqual(apigw_response["statusCode"], 200 )
+
+        dynamodb_show_request_mock.assert_called_once_with
 
 
 

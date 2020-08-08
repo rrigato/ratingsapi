@@ -67,10 +67,13 @@ def dynamodb_show_request(show_name):
 
 
 
-def main():
+def main(event):
     """Entry point into the script
+
         Parameters
         ----------
+        event : dict
+            api gateway lambda proxy event
 
         Returns
         -------
