@@ -203,6 +203,7 @@ Resources:
             Action:
               - dynamodb:ListTables
               - dynamodb:GetItem
+              - dynamodb:Query
 
             Resource:
               - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'       
