@@ -55,7 +55,7 @@ class MicrolibUnitTests(unittest.TestCase):
             Raises
             ------
         '''
-        from microservices.microlib.microlib import get_boto_clients
+        from microlib.microlib import get_boto_clients
 
         test_service_name="lambda"
         get_boto_clients(resource_name=test_service_name)
@@ -82,7 +82,7 @@ class MicrolibUnitTests(unittest.TestCase):
             Raises
             ------
         """
-        from microservices.microlib.microlib import get_boto_clients
+        from microlib.microlib import get_boto_clients
 
         dynamodb_functions_to_test = [
             "put_item",
@@ -131,7 +131,7 @@ class MicrolibUnitTests(unittest.TestCase):
             Raises
             ------
         '''
-        from microservices.microlib.microlib import lambda_proxy_response
+        from microlib.microlib import lambda_proxy_response
 
         mock_success_response = [
                 {"showname": "mockshow", "show_rating": 1500},
