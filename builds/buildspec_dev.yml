@@ -56,10 +56,12 @@ phases:
 
       - echo $REST_API_ID
 
+      - STAGE_DESCRIPTION="$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
+      - echo $STAGE_DESCRIPTION
       #create deployment
       - aws apigateway create-deployment
         --rest-api-id $REST_API_ID --stage-name $APIGW_VERSION
-        --stage-description "$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
+        --stage-description $STAGE_DESCRIPTION
 
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
       #     --template-body file://templates/api_s3_bucket.yml
