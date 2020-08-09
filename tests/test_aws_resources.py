@@ -298,3 +298,23 @@ class AwsDevBuild(unittest.TestCase):
 
                 self.assertEqual(apigw_response["status"], 200)
 
+
+
+    @unittest.skip("Skip until custom domain name is setup for API")
+    def test_custom_dns(self):
+        """tests the custom domain name
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        if os.environ.get("CLIENT_ID") is None:
+            unittest.skip("no CLIENT_ID environment variable")
+
+        elif os.environ.get("CLIENT_SECRET") is None:
+            unittest.skip("no CLIENT_SECRET environment variable")
