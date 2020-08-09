@@ -101,7 +101,7 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
         self.assertEqual(
-            bad_request_missing_show_parameter["body"]["message"],
+            json.loads(bad_request_missing_show_parameter["body"])["message"],
             "Path parameter show is required"
         )
 
@@ -115,7 +115,7 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
         self.assertEqual(
-            bad_request_invalid_show_parameter["body"]["message"],
+            json.loads(bad_request_invalid_show_parameter["body"])["message"],
             "Invalid show path parameter"
         )
 

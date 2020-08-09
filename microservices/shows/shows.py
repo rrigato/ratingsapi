@@ -92,6 +92,7 @@ def main(event):
         Raises
         ------
     """
+    error_response = None
     try:
         assert clean_path_parameter_string(event["pathParameters"]["show"]) is True, (
             "Show parameter invalid"
@@ -105,6 +106,12 @@ def main(event):
     except AssertionError:
         logging.info("show parameter invalid")
         error_response = {"message": "Invalid show path parameter"}
+
+    if error_response is not None:
+        '''
+            return http 400 bad request
+        '''
+        return(lambda_proxy_response(status_code=400, headers_dict={}, response_body=error_response))
 
     show_access_query = dynamodb_show_request(
         show_name=event["pathParameters"]["show"]
