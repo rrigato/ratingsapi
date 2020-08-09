@@ -39,11 +39,13 @@ phases:
 
       - echo $REST_API_ID
 
+      - STAGE_DESCRIPTION="$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
+
       #create deployment
       - aws apigateway create-deployment
-        --rest-api-id $REST_API_ID --stage-name $APIGW_VERSION
-        --stage-description "$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
-
+        --rest-api-id $REST_API_ID --stage-name "$APIGW_VERSION"
+        --stage-description "$STAGE_DESCRIPTION"
+        
       #runs prod tests
       - python -m unittest tests.test_aws_resources
 
