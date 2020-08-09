@@ -17,6 +17,8 @@ Television ratings api built with an api gateway frontend as a lambda proxy
       - [builds](#builds)
       - [devops](#devops)
       - [logs](#logs)
+      - [microlib](#microlib)
+      - [microservices](#microservices)
       - [templates](#templates)
       - [tests](#tests)
 
@@ -117,6 +119,8 @@ Provides information on each directory/ source file
 
 - buildspec_prod.yml = Buildspec to use for the prod deployment CodeBuild project that merges dev branch to master
 
+- iterate_lambda.sh = packages each lambda function for an api endpoint
+
 #### devops
 
 ci.sh = miscellaneous awscli commands to configure environment
@@ -124,6 +128,11 @@ ci.sh = miscellaneous awscli commands to configure environment
 #### logs
 - directory for python log files
 
+#### microlib
+- microlib.py = shared python functions used by microservice endpoints
+
+#### microservices
+Each microservice is a lambda function endpoint for the api
 
 #### templates
 
