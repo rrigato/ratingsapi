@@ -71,6 +71,38 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
 
+    @patch("microservices.shows.shows.dynamodb_show_request")
+    @patch("microservices.shows.shows.get_boto_clients")
+    def test_main_request_error(self, get_boto_clients_mock, dynamodb_show_request_mock):
+        '''Test for main function
+
+            Parameters
+            ----------
+            ratings_iteration_mock : unittest.mock.MagicMock
+                Mock object to make sure the reddit api is 
+                not called
+
+            dynamodb_show_request_mock : unittest.mock.MagicMock
+                Mock returning the dynamodb show request
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        from microservices.shows.shows import main
+
+        bad_request_missing_show_parameter = main(
+            event={}
+        )
+
+        self.assertEqual(
+            bad_request_missing_show_parameter["message"],
+            "Path parameter show is required"
+        )
+
+
 
     def test_clean_path_parameter_string(self):
         '''validates clean_show_path_parameter logic
