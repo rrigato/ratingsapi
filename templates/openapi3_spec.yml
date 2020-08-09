@@ -13,6 +13,7 @@ components:
       type: object
       properties:
         message:
+          example: Invalid path parameter
           type: string
       required:
         - message
@@ -127,3 +128,5 @@ paths:
                     YEAR: 2014
                     PERCENTAGE_OF_HOUSEHOLDS: 0.40                  
   
+        '400':
+          $ref: '#/components/responses/badRequest'

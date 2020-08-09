@@ -83,6 +83,20 @@ def main(event):
         Raises
         ------
     """
+    try:
+        assert clean_path_parameter_string(event["pathParameters"]["show"]) is True, (
+            "Show parameter invalid"
+        )
+        logging.info("show parameter valid")
+
+    except KeyError:
+        logging.info("show parameter not found in request")
+        error_response = {"message": "path parameter show is required"}
+
+    except AssertionError:
+        logging.info("show parameter invalid")
+        error_response = {"message": "Invalid show path parameter"}
+        
     show_access_query = dynamodb_show_request(
         show_name=event["pathParameters"]["show"]
     )
