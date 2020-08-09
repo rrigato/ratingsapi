@@ -26,7 +26,16 @@ def clean_path_parameter_string(show_name):
         ------
     """
     if len(show_name) > 500:
-        return (False)
+        logging.info("clean_path_parameter_string - string length")
+        return(False)
+
+    elif show_name == "":
+        logging.info("clean_path_parameter_string - empty string")
+        return(False)
+
+    elif show_name is None:
+        logging.info("clean_path_parameter_string - string is None")
+        return(False)
 
     return(show_name.isascii())
 

@@ -93,6 +93,9 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
+        '''
+            show parameter is not passed
+        '''
         bad_request_missing_show_parameter = main(
             event={}
         )
@@ -104,6 +107,9 @@ class ShowsUnitTests(unittest.TestCase):
 
         self.assertEqual(bad_request_missing_show_parameter["statusCode"], 400)
 
+        '''
+            Test invalid show parameter
+        '''
         bad_request_invalid_show_parameter = main(
             event={"pathParameters": {"show": "mockParameter" * 100}}
         )
