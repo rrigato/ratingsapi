@@ -20,6 +20,7 @@ phases:
 
     commands:
       - echo Entered the install phase...
+      - APIGW_VERSION=v1
       - BUILD_ENVIRONMENT=dev
       - PROJECT_NAME=ratingsapi       
       - APIGW_STACK="${BUILD_ENVIRONMENT}-${PROJECT_NAME}-apigw"    
@@ -27,6 +28,7 @@ phases:
   build:
     commands:
       - echo Defined build variables
+      - echo $APIGW_VERSION
       - echo $BUILD_ENVIRONMENT
       - echo $APIGW_STACK
 
@@ -53,6 +55,12 @@ phases:
         --stack-name $APIGW_STACK --output text)
 
       - echo $REST_API_ID
+
+      #create deployment
+      - aws apigateway create-deployment
+        --rest-api-id $REST_API_ID --stage-name $APIGW_VERSION
+        --stage-description "$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
+
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
       #     --template-body file://templates/api_s3_bucket.yml
       #     --capabilities CAPABILITY_NAMED_IAM
