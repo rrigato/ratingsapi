@@ -18,7 +18,7 @@ if BUILD_ENVIRONMENT is None:
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
-    '''Returns the boto client for various aws resources
+    """Returns the boto client for various aws resources
 
         Parameters
         ----------
@@ -43,7 +43,7 @@ def get_boto_clients(resource_name, region_name="us-east-1",
 
         Raises
         ------
-    '''
+    """
 
     service_client = boto3.client(
             service_name=resource_name, 
@@ -82,7 +82,7 @@ class AwsDevBuild(unittest.TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        '''Unitest function that is run once for the class
+        """Unitest function that is run once for the class
 
             Parameters
             ----------
@@ -92,7 +92,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         cls.PROJECT_NAME="ratingsapi"
         apigw_client = get_boto_clients(resource_name="apigateway")
         all_rest_apis = apigw_client.get_rest_apis()["items"]
@@ -118,7 +118,7 @@ class AwsDevBuild(unittest.TestCase):
         }
 
     def test_apigateway_resources(self):
-        '''Tests validates all paths in self.CALLABLE_ENDPOINTS have 
+        """Tests validates all paths in self.CALLABLE_ENDPOINTS have 
             a corresponding resource
 
             Parameters
@@ -129,7 +129,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         apigw_client = get_boto_clients(resource_name="apigateway")
 
@@ -151,7 +151,7 @@ class AwsDevBuild(unittest.TestCase):
         
 
     def test_apigateway_methods(self):
-        '''Tests all lambda proxy integrations in self.CALLABLE_ENDPOINTS
+        """Tests all lambda proxy integrations in self.CALLABLE_ENDPOINTS
 
             Parameters
             ----------
@@ -161,7 +161,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         apigw_client = get_boto_clients(resource_name="apigateway")
 
@@ -197,7 +197,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
     def test_apigateway_method_invoke(self):
-        '''Simulates a method response invoke for each self.CALLABLE_ENDPOINTS
+        """Simulates a method response invoke for each self.CALLABLE_ENDPOINTS
 
             Parameters
             ----------
@@ -207,7 +207,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         apigw_client = get_boto_clients(resource_name="apigateway")
 
@@ -239,7 +239,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
     def test_apigateway_stage(self):
-        '''tests the version stage
+        """tests the version stage
 
             Parameters
             ----------
@@ -249,7 +249,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         apigw_client = get_boto_clients(resource_name="apigateway")
 
@@ -263,7 +263,7 @@ class AwsDevBuild(unittest.TestCase):
 
     @unittest.skip("Skipping for now")
     def test_shows_endpoint(self):
-        '''tests the shows endpoint
+        """tests the shows endpoint
 
             Parameters
             ----------
@@ -273,7 +273,7 @@ class AwsDevBuild(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         apigw_resources = apigw_client.get_resources(
             restApiId=self.restapi_id,
             limit=100
