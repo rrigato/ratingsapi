@@ -98,10 +98,22 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
         self.assertEqual(
-            bad_request_missing_show_parameter["message"],
+            bad_request_missing_show_parameter["body"]["message"],
             "Path parameter show is required"
         )
 
+        self.assertEqual(bad_request_missing_show_parameter["statusCode"], 400)
+
+        bad_request_invalid_show_parameter = main(
+            event={"pathParameters": {"show": "mockParameter" * 100}}
+        )
+
+        self.assertEqual(
+            bad_request_invalid_show_parameter["body"]["message"],
+            "Invalid show path parameter"
+        )
+
+        self.assertEqual(bad_request_invalid_show_parameter["statusCode"], 400)
 
 
     def test_clean_path_parameter_string(self):
