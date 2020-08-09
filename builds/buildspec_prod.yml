@@ -13,9 +13,10 @@ phases:
     commands:
       - echo Entered the install phase...
 
-      - APIGW_STACK="${BUILD_ENVIRONMENT}-${PROJECT_NAME}-apigw" 
+      - APIGW_VERSION=v1
       - BUILD_ENVIRONMENT=prod
       - PROJECT_NAME=ratingsapi
+      - APIGW_STACK="${PROJECT_NAME}-${BUILD_ENVIRONMENT}" 
       - pip install -r tests/requirements_prod.txt
       - ls -l
     finally:
@@ -23,8 +24,10 @@ phases:
   build:
     commands:
       - echo Defined build variables
+      - echo $APIGW_VERSION
       - echo $BUILD_ENVIRONMENT
       - echo $PROJECT_NAME
+      - echo $APIGW_STACK
 
       - echo "Iterating lambda functions"
       - ./builds/iterate_lambda.sh
@@ -35,6 +38,11 @@ phases:
         --stack-name $APIGW_STACK --output text)
 
       - echo $REST_API_ID
+
+
+      - aws apigateway create-deployment
+        --rest-api-id $REST_API_ID --stage-name $APIGW_VERSION
+        --stage-description "$PROJECT_NAME $APIGW_VERSION on $(date +%Y-%m-%d)"
 
       #runs prod tests
       - python -m unittest tests.test_aws_resources
