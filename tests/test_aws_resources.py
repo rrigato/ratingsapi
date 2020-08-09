@@ -313,8 +313,23 @@ class AwsDevBuild(unittest.TestCase):
             Raises
             ------
         """
-        if os.environ.get("CLIENT_ID") is None:
-            unittest.skip("no CLIENT_ID environment variable")
+        secretsmanager_client = get_boto_clients(resource_name="secretsmanager")
+        '''
+            get client id, client secret and domain_url
+        '''
+        if latest_secrets["ratingsapi_" + BUILD_ENVIRONMENT + "pipeline_client_id"] is None:
+            unittest.skip("no client_id in secretsmanager")
 
-        elif os.environ.get("CLIENT_SECRET") is None:
-            unittest.skip("no CLIENT_SECRET environment variable")
+        elif latest_secrets["ratingsapi_" + BUILD_ENVIRONMENT + "pipeline_client_secret"] is None:
+            unittest.skip("no client_secret environment variable")
+
+        elif latest_secrets["ratingsapi_" + BUILD_ENVIRONMENT + "pipeline_custom_dns"] is None:
+            unittest.skip("no client_secret environment variable")
+
+        '''
+            test response
+        '''
+        response_to_test = requests.get(
+            latest_secrets["ratingsapi_" + BUILD_ENVIRONMENT + "pipeline_custom_dns"] 
+            + "/v1/shows/show"
+        )
