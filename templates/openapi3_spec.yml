@@ -5,6 +5,74 @@ info:
   description: Televison Ratings api for Adult Swim Saturday Night Toonami Block
 servers:
   - url: https
+
+components:
+  schemas:
+    # Schema for error response body
+    responseError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    televisionRating:
+      type: object
+      required: [RATINGS_OCCURRED_ON, TIME, SHOW, TOTAL_VIEWERS, YEAR]
+        
+      properties:
+        RATINGS_OCCURRED_ON:
+          description: Saturday night of the adult swim toonami block
+          format: date 
+          type: string
+        TIME:
+          description: timeslot of the show
+          type: string          
+        SHOW:
+          description: Name of show
+          type: string
+
+        TOTAL_VIEWERS:
+          description: |
+            Number of people who watched the show in thousands.
+          type: integer
+
+        YEAR:
+          description: Year the television rating occurred in
+          type: integer
+
+        PERCENTAGE_OF_HOUSEHOLDS:
+          description: |
+            Percentage of households who were watching the show. 
+            1.0 equates to one percent of households with a television
+            on at that time for all viewers were watching the show.
+          type: number
+
+        TOTAL_VIEWERS_AGE_18_49:
+          description: |
+            Number of viewers age 18 to 49 who watched the show in thousands.
+          type: integer
+
+        PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49:
+          description: |
+            Percentage of households where the viewer is age 18 to 49 
+            with a televion on at that time watching the show. 
+            1.0 equates to one percent of households with a television
+            on at that time for viewers age 18 to 49 were watching the show.
+          type: number
+
+        IS_RERUN:
+          description: If the show is a rerun          
+          type: boolean
+
+  responses:
+    badRequest:
+      description: HTTP 400 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+
 paths:
   /{version}/shows/{show}:
     get:
@@ -59,53 +127,3 @@ paths:
                     YEAR: 2014
                     PERCENTAGE_OF_HOUSEHOLDS: 0.40                  
   
-components:
-  schemas:
-    televisionRating:
-      type: object
-      required: [RATINGS_OCCURRED_ON, TIME, SHOW, TOTAL_VIEWERS, YEAR]
-        
-      properties:
-        RATINGS_OCCURRED_ON:
-          description: Saturday night of the adult swim toonami block
-          format: date 
-          type: string
-        TIME:
-          description: timeslot of the show
-          type: string          
-        SHOW:
-          description: Name of show
-          type: string
-
-        TOTAL_VIEWERS:
-          description: |
-            Number of people who watched the show in thousands.
-          type: integer
-
-        YEAR:
-          description: Year the television rating occurred in
-          type: integer
-
-        PERCENTAGE_OF_HOUSEHOLDS:
-          description: |
-            Percentage of households who were watching the show. 
-            1.0 equates to one percent of households with a television
-            on at that time for all viewers were watching the show.
-          type: number
-
-        TOTAL_VIEWERS_AGE_18_49:
-          description: |
-            Number of viewers age 18 to 49 who watched the show in thousands.
-          type: integer
-
-        PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49:
-          description: |
-            Percentage of households where the viewer is age 18 to 49 
-            with a televion on at that time watching the show. 
-            1.0 equates to one percent of households with a television
-            on at that time for viewers age 18 to 49 were watching the show.
-          type: number
-
-        IS_RERUN:
-          description: If the show is a rerun          
-          type: boolean
