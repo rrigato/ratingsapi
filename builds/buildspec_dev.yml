@@ -47,6 +47,12 @@ phases:
       - echo "Iterating lambda functions"
       - ./builds/iterate_lambda.sh
 
+      #rest api id for creating a deployment
+      - REST_API_ID=$(aws cloudformation describe-stacks --query
+        "Stacks[0].Outputs[?OutputKey=='ratingsApigatewayId'].OutputValue"
+        --stack-name $APIGW_STACK --output text)
+
+      - echo $REST_API_ID
       # - aws cloudformation create-stack --stack-name $APIGW_STACK
       #     --template-body file://templates/api_s3_bucket.yml
       #     --capabilities CAPABILITY_NAMED_IAM

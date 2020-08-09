@@ -13,6 +13,7 @@ phases:
     commands:
       - echo Entered the install phase...
 
+      - APIGW_STACK="${BUILD_ENVIRONMENT}-${PROJECT_NAME}-apigw" 
       - BUILD_ENVIRONMENT=prod
       - PROJECT_NAME=ratingsapi
       - pip install -r tests/requirements_prod.txt
@@ -27,6 +28,13 @@ phases:
 
       - echo "Iterating lambda functions"
       - ./builds/iterate_lambda.sh
+
+      #rest api id for creating a deployment
+      - REST_API_ID=$(aws cloudformation describe-stacks --query
+        "Stacks[0].Outputs[?OutputKey=='ratingsApigatewayId'].OutputValue"
+        --stack-name $APIGW_STACK --output text)
+
+      - echo $REST_API_ID
 
       #runs prod tests
       - python -m unittest tests.test_aws_resources

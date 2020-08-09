@@ -227,3 +227,7 @@ Resources:
         Value: !Ref ProjectName
 
 
+
+Outputs:
+  ratingsApigatewayId:
+    Value: !Ref ratingsApiGw
