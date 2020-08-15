@@ -94,8 +94,8 @@ class AwsDevBuild(unittest.TestCase):
             ------
         """
         cls.PROJECT_NAME="ratingsapi"
-        apigw_client = get_boto_clients(resource_name="apigateway")
-        all_rest_apis = apigw_client.get_rest_apis()["items"]
+        cls.apigw_client = get_boto_clients(resource_name="apigateway")
+        all_rest_apis = cls.apigw_client.get_rest_apis()["items"]
 
         '''
             iterates over all rest apis looking for the rest api id
@@ -196,47 +196,6 @@ class AwsDevBuild(unittest.TestCase):
                 ))
 
 
-    def test_apigateway_method_invoke(self):
-        """Simulates a method response invoke for each self.CALLABLE_ENDPOINTS
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-
-        apigw_client = get_boto_clients(resource_name="apigateway")
-
-        apigw_resources = apigw_client.get_resources(
-            restApiId=self.restapi_id,
-            limit=100
-        )["items"]
-
-        apigw_path_list = []
-        '''
-            Testing the lambda function integration settings
-            for each resource match
-        '''
-        for apigw_resource in apigw_resources:
-            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
-
-                '''
-                    invoke a test method
-                '''
-                apigw_response = apigw_client.test_invoke_method(
-                    restApiId=self.restapi_id,
-                    resourceId=apigw_resource["id"],
-                    httpMethod="GET"
-                )
-
-                self.assertEqual(apigw_response["status"], 200)
-
-
-
 
     def test_apigateway_stage(self):
         """tests the version stage
@@ -261,7 +220,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
 
-    @unittest.skip("Skipping for now")
+
     def test_shows_endpoint(self):
         """tests the shows endpoint
 
@@ -274,7 +233,7 @@ class AwsDevBuild(unittest.TestCase):
             Raises
             ------
         """
-        apigw_resources = apigw_client.get_resources(
+        apigw_resources = self.apigw_client.get_resources(
             restApiId=self.restapi_id,
             limit=100
         )["items"]
@@ -285,20 +244,34 @@ class AwsDevBuild(unittest.TestCase):
             for each resource match
         '''
         for apigw_resource in apigw_resources:
-            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
+            if apigw_resource["path"] == "/shows/{show}":
 
                 '''
-                    invoke a test method
+                    invoke a test method for valid input
                 '''
-                apigw_response = apigw_client.test_invoke_method(
+                apigw_response = self.apigw_client.test_invoke_method(
                     restApiId=self.restapi_id,
                     resourceId=apigw_resource["id"],
-                    httpMethod="GET"
+                    httpMethod="GET",
+                    pathWithQueryString="/shows/Star Wars:The Clone Wars"
                 )
+
 
                 self.assertEqual(apigw_response["status"], 200)
 
 
+                '''
+                    invoke a test method for invalid input
+                '''
+                apigw_error_response = self.apigw_client.test_invoke_method(
+                    restApiId=self.restapi_id,
+                    resourceId=apigw_resource["id"],
+                    httpMethod="GET",
+                    pathWithQueryString="/shows/Mock a show name"
+                )
+                
+                # To-do: test show name not found
+                # self.assertEqual(apigw_response["status"], 404)
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
