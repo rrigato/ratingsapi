@@ -13,7 +13,6 @@ components:
       type: object
       properties:
         message:
-          example: Invalid path parameter
           type: string
       required:
         - message
@@ -73,6 +72,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/responseError'
+          examples:
+            message: 'Invalid show path parameter'
+
+          
+
+    notFound:
+      description: HTTP 404 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: 'show: Corey in the House not found'
+
 
 paths:
   /{version}/shows/{show}:
@@ -130,3 +143,6 @@ paths:
   
         '400':
           $ref: '#/components/responses/badRequest'
+
+        '404':
+          $ref: '#/components/responses/notFound'
