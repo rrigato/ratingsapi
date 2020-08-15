@@ -238,7 +238,7 @@ class ShowsUnitTests(unittest.TestCase):
         
         mock_show_name = "mock_show"
 
-        mock_dynamodb_resource.return_value.query.return_value = {
+        mock_dynamodb_resource.query.return_value = {
             "Items": [], 
             "Count": 0, 
             "ScannedCount": 0, 

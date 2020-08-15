@@ -84,7 +84,7 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
-    logging.info("dynamodb_show_request - Count" + show_access_query["Count"])
+    logging.info("dynamodb_show_request - Count " + str(show_access_query["Count"]))
 
     '''
         If no items returned
@@ -95,10 +95,10 @@ def dynamodb_show_request(show_name):
                 show_name=show_name
             )
         }
-        
+
     logging.info(error_message)
     
-    return(show_access_query)
+    return(error_message, show_access_query["Items"])
 
 
 def main(event):
