@@ -74,7 +74,7 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
-
+    import pdb; pdb.set_trace()
     return(show_access_query)
 
 

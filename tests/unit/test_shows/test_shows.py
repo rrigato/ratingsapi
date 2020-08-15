@@ -121,6 +121,47 @@ class ShowsUnitTests(unittest.TestCase):
 
         self.assertEqual(bad_request_invalid_show_parameter["statusCode"], 400)
 
+    @unittest.skip("Skip for now")
+    @patch("microservices.shows.shows.dynamodb_show_request")
+    @patch("microservices.shows.shows.get_boto_clients")
+    def test_main_404_error(self, get_boto_clients_mock, dynamodb_show_request_mock):
+        '''Test for 404 show not found error
+
+            Parameters
+            ----------
+            ratings_iteration_mock : unittest.mock.MagicMock
+                Mock object to make sure the reddit api is 
+                not called
+
+            dynamodb_show_request_mock : unittest.mock.MagicMock
+                Mock returning the dynamodb show request
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        from microservices.shows.shows import main
+
+        dynamodb_show_request_mock.return_value = {
+            "Items": [], 
+            "Count": 0, 
+            "ScannedCount": 0, 
+            "ResponseMetadata": {}
+        }
+        apigw_response = main(event=self.shows_proxy_event)
+
+
+        self.assertEqual(type(apigw_response["body"]), str)
+
+        self.assertEqual(apigw_response["statusCode"], 200 )
+
+        dynamodb_show_request_mock.assert_called_once_with(
+            show_name="mockpathparam"
+        )
+
+
 
     def test_clean_path_parameter_string(self):
         '''validates clean_show_path_parameter logic
