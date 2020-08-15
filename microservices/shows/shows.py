@@ -153,7 +153,7 @@ def main(event):
     )
 
     if error_message is None:
-        logging.info("main - returning show_access_query" + len(show_access_query))
+        logging.info("main - returning show_access_query" + str(len(show_access_query)))
         return(
             lambda_proxy_response(status_code=200, headers_dict={}, 
             response_body=show_access_query)
