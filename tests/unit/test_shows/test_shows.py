@@ -197,14 +197,24 @@ class ShowsUnitTests(unittest.TestCase):
         from boto3.dynamodb.conditions import Key
 
         mock_dynamodb_resource = MagicMock()
-        
+
+        valid_show_response = {
+            "Items": [], 
+            "Count": 0, 
+            "ScannedCount": 0, 
+            "ResponseMetadata": {}
+        }
+        mock_dynamodb_resource.query.return_value = 
+
         '''
             return None for client, mock for dynamodb table resource
         '''
         get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
         
         mock_show_name = "mock_show"
-        dynamodb_show_request(show_name=mock_show_name)
+
+
+        error_message, dyanmodb_shows = dynamodb_show_request(show_name=mock_show_name)
 
         mock_dynamodb_resource.query.assert_called_once_with(
             IndexName="SHOW_ACCESS",

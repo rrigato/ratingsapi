@@ -72,7 +72,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/responseError'
-          examples:
+          example:
             message: 'Invalid show path parameter'
 
           
