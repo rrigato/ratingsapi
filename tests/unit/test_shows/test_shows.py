@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from decimal import Decimal
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -59,6 +60,7 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
+        dynamodb_show_request_mock.return_value = [None, {"statusCode": 200, "body": "{}"}]
         apigw_response = main(event=self.shows_proxy_event)
 
 
@@ -121,7 +123,7 @@ class ShowsUnitTests(unittest.TestCase):
 
         self.assertEqual(bad_request_invalid_show_parameter["statusCode"], 400)
 
-    @unittest.skip("Skip for now")
+
     @patch("microservices.shows.shows.dynamodb_show_request")
     @patch("microservices.shows.shows.get_boto_clients")
     def test_main_404_error(self, get_boto_clients_mock, dynamodb_show_request_mock):
@@ -144,18 +146,21 @@ class ShowsUnitTests(unittest.TestCase):
         '''
         from microservices.shows.shows import main
 
-        dynamodb_show_request_mock.return_value = {
-            "Items": [], 
-            "Count": 0, 
-            "ScannedCount": 0, 
-            "ResponseMetadata": {}
-        }
+        dynamodb_show_request_mock.return_value = [
+            {"message": "show: mockpathparam not found"}, []
+        ]
+        
         apigw_response = main(event=self.shows_proxy_event)
 
 
-        self.assertEqual(type(apigw_response["body"]), str)
+        self.assertEqual(
+            apigw_response["body"], 
+            json.dumps(
+                {"message": "show: mockpathparam not found"}
+            )
+        )
 
-        self.assertEqual(apigw_response["statusCode"], 200 )
+        self.assertEqual(apigw_response["statusCode"], 404 )
 
         dynamodb_show_request_mock.assert_called_once_with(
             show_name="mockpathparam"
@@ -199,12 +204,12 @@ class ShowsUnitTests(unittest.TestCase):
         mock_dynamodb_resource = MagicMock()
 
         valid_show_response = {
-            "Items": [], 
+            "Items": [{"TOTAL_VIEWERS": "727", "PERCENTAGE_OF_HOUSEHOLDS": "0.50", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "3:00", "RATINGS_OCCURRED_ON": "2013-08-17"}, {"TOTAL_VIEWERS": "683", "PERCENTAGE_OF_HOUSEHOLDS": "0.60", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "3:00", "RATINGS_OCCURRED_ON": "2013-08-24"}, {"TOTAL_VIEWERS": "638", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "2:45", "RATINGS_OCCURRED_ON": "2013-08-31"}],
             "Count": 0, 
             "ScannedCount": 0, 
             "ResponseMetadata": {}
         }
-        mock_dynamodb_resource.query.return_value = 
+        mock_dynamodb_resource.query.return_value = valid_show_response
 
         '''
             return None for client, mock for dynamodb table resource

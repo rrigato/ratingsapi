@@ -84,6 +84,7 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
+    show_ratings = show_access_query["Items"]
     logging.info("dynamodb_show_request - Count " + str(show_access_query["Count"]))
 
     '''
@@ -97,7 +98,6 @@ def dynamodb_show_request(show_name):
         }
     else:
         logging.info("dynamodb_show_request - preparing year for serialization")
-        show_ratings = show_access_query["Items"]
         '''
             convert from decimal to str for json serialization
         '''
@@ -108,7 +108,7 @@ def dynamodb_show_request(show_name):
                 logging.info("dynamodb_show_request - No year for " + individual_show["SHOW"])
         
     logging.info(error_message)
-    import pdb; pdb.set_trace()
+
     return(error_message, show_ratings)
 
 
@@ -147,14 +147,25 @@ def main(event):
         '''
         return(lambda_proxy_response(status_code=400, headers_dict={}, response_body=error_response))
 
+
     error_message, show_access_query = dynamodb_show_request(
         show_name=event["pathParameters"]["show"]
     )
-    return(
-        lambda_proxy_response(status_code=200, headers_dict={}, 
-        response_body={"response": "stub"})
-        
-    )
+
+    if error_message is None:
+        logging.info("main - returning show_access_query" + len(show_access_query))
+        return(
+            lambda_proxy_response(status_code=200, headers_dict={}, 
+            response_body=show_access_query)
+            
+        )
+    else:
+        logging.info("main - error_message " + str(error_message))
+        return(
+            lambda_proxy_response(status_code=404, headers_dict={}, 
+            response_body=error_message)
+            
+        )
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
