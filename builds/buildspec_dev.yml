@@ -32,9 +32,8 @@ phases:
       - echo $BUILD_ENVIRONMENT
       - echo $APIGW_STACK
 
-
-      - echo "running unit test directory"
-      - python -m unittest discover -s tests.unit
+      - echo "Iterating lambda functions"
+      - ./builds/iterate_lambda.sh
       
       - echo "Creating $APIGW_STACK"
       - aws cloudformation create-stack --stack-name $APIGW_STACK
@@ -46,8 +45,10 @@ phases:
       - aws cloudformation wait stack-create-complete
         --stack-name $APIGW_STACK
 
-      - echo "Iterating lambda functions"
-      - ./builds/iterate_lambda.sh
+
+
+      - echo "running unit test directory"
+      - python -m unittest discover -s tests.unit
 
       #rest api id for creating a deployment
       - REST_API_ID=$(aws cloudformation describe-stacks --query
