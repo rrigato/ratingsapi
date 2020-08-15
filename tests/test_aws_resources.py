@@ -220,7 +220,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
 
-
+    @unittest.skip("SKipping for now")
     def test_shows_endpoint(self):
         """tests the shows endpoint
 
@@ -253,7 +253,7 @@ class AwsDevBuild(unittest.TestCase):
                     restApiId=self.restapi_id,
                     resourceId=apigw_resource["id"],
                     httpMethod="GET",
-                    pathWithQueryString="/shows/Star Wars:The Clone Wars"
+                    pathWithQueryString="/shows/Star Wars the Clone Wars"
                 )
 
 
@@ -270,8 +270,8 @@ class AwsDevBuild(unittest.TestCase):
                     pathWithQueryString="/shows/Mock a show name"
                 )
                 
-                # To-do: test show name not found
-                # self.assertEqual(apigw_response["status"], 404)
+                
+                self.assertEqual(apigw_response["status"], 404)
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
