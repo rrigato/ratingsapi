@@ -51,10 +51,17 @@ def dynamodb_show_request(show_name):
 
         Returns
         -------
+        error_message : dict
+            None if items are returned, dict of 404 errors otherwise
+        show_access_query_items : list
+            list of dict where each dict is a television show
+            rating
 
         Raises
         ------
     """
+    error_message = None
+    
     if os.environ.get("DYNAMO_TABLE_NAME") is None:
         dynamo_table_name = "prod_toonami_ratings"
     else:
@@ -74,6 +81,19 @@ def dynamodb_show_request(show_name):
         KeyConditionExpression=Key("SHOW").eq(show_name)
     )
 
+    logging.info("dynamodb_show_request - Count" + show_access_query["Count"])
+
+    '''
+        If no items returned
+    '''
+    if show_access_query["Count"] == 0:
+        error_message = {
+            "message": "show: {show_name} not found".format(
+                show_name=show_name
+            )
+        }
+        
+    logging.info(error_message)
     import pdb; pdb.set_trace()
     return(show_access_query)
 
