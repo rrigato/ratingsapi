@@ -321,7 +321,7 @@ Resources:
               #Used to pass parameters to Cloudformation template
               ParameterOverrides: |
                 {
-                    "EnvironPrefix": "prod"
+                    "environPrefix": "prod"
                 }              
               StackName: !Sub "${ProjectName}-prod"
               #TemplatePath: !Ref GitRepoName !Sub "TemplateSource::${ProdStackConfig}"
