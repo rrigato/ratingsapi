@@ -17,16 +17,21 @@ Parameters:
     Type: String
     Default: 'prod_toonami_ratings'
     Description: Name of the dynamodb table
-    
-  ProjectName:
+
+  environPrefix:
+    Type: String
+    Default: dev
+    Description: String for prefixing resources to differentiate prod/dev
+
+
+  projectName:
     Type: String
     Default: 'ratingsapi'
     Description: Name of the project
 
-  EnvironPrefix:
-    Type: String
-    Default: dev
-    Description: String for prefixing resources to differentiate prod/dev
+
+Conditions: 
+  prodConfiguration: !Equals [ !Ref environPrefix, prod ]
 
 Resources:
 
@@ -59,24 +64,26 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256    
-      BucketName: !Sub '${EnvironPrefix}-${ProjectName}-openapi-dependency'
+      BucketName: !Sub '${environPrefix}-${projectName}-openapi-dependency'
       Tags:
           -
             Key: keep
             Value: 'yes'
           -
             Key: source
-            Value: !Ref ProjectName
+            Value: !Ref projectName
     Type: "AWS::S3::Bucket"
 
 
   ratingsApiGw:
     Type: AWS::ApiGateway::RestApi
     Properties:
+      #if we are deploying to prod we use EDGE, otherwise 
+      #we use a regional endpoint
       EndpointConfiguration:
         Types:
-          - REGIONAL
-      Name: !Sub '${ProjectName}-${EnvironPrefix}'
+          - !If [prodConfiguration, 'EDGE', 'REGIONAL']
+      Name: !Sub '${projectName}-${environPrefix}'
       Description: API used for television ratings
       Tags:
           -
@@ -84,7 +91,7 @@ Resources:
             Value: 'yes'
           -
             Key: source
-            Value: !Ref ProjectName
+            Value: !Ref projectName
 
 
   ratingsV1Deployment:
@@ -103,7 +110,7 @@ Resources:
               Value: 'yes'
             -
               Key: source
-              Value: !Ref ProjectName
+              Value: !Ref projectName
       StageName: !Ref apiStageName
 
 
@@ -167,7 +174,7 @@ Resources:
             Action:
               - sts:AssumeRole
       Policies:
-        - PolicyName: !Sub '${ProjectName}LambdaPolicy'
+        - PolicyName: !Sub '${projectName}LambdaPolicy'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -189,7 +196,7 @@ Resources:
         Variables:
           DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
 
-      FunctionName: !Sub '${ProjectName}-shows-endpoint-${EnvironPrefix}'
+      FunctionName: !Sub '${projectName}-shows-endpoint-${environPrefix}'
       Handler: index.handler
 
       #Policies to include in the lambda basic execution role
@@ -198,7 +205,7 @@ Resources:
         Version: '2012-10-17'
         Statement: 
           #dynamodb permissions     
-          - Sid: !Sub '${ProjectName}LambdaDynamoDbAllow'
+          - Sid: !Sub '${projectName}LambdaDynamoDbAllow'
             Effect: Allow
             Action:
               - dynamodb:ListTables
@@ -224,7 +231,7 @@ Resources:
         Value: 'yes'
       -
         Key: source
-        Value: !Ref ProjectName
+        Value: !Ref projectName
 
 
 
