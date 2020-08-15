@@ -212,6 +212,48 @@ class ShowsUnitTests(unittest.TestCase):
         )
 
 
+    @patch("microservices.shows.shows.get_boto_clients")
+    def test_dynamodb_show_request_404(self, get_boto_clients_mock):
+        """tests dynamodb_show_request for no show match http 404
+
+            Parameters
+            ----------
+            get_boto_clients_mock : Mocks the get_boto_clients call
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        from microservices.shows.shows import dynamodb_show_request
+        from boto3.dynamodb.conditions import Key
+
+        mock_dynamodb_resource = MagicMock()
+        
+        '''
+            return None for client, mock for dynamodb table resource
+        '''
+        get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
+        
+        mock_show_name = "mock_show"
+
+        mock_dynamodb_resource.return_value.query.return_value = {
+            "Items": [], 
+            "Count": 0, 
+            "ScannedCount": 0, 
+            "ResponseMetadata": {}
+        }
+
+        error_message, dyanmodb_shows = dynamodb_show_request(show_name=mock_show_name)
+
+        self.assertEqual(error_message, {
+            "message": "show: {show_name} not found".format(
+                show_name=mock_show_name
+                )
+            }
+        )
+        self.assertEqual(dyanmodb_shows, [])
 
 
     @patch("logging.getLogger")

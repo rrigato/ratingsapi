@@ -61,18 +61,21 @@ def dynamodb_show_request(show_name):
         ------
     """
     error_message = None
-    
+
     if os.environ.get("DYNAMO_TABLE_NAME") is None:
         dynamo_table_name = "prod_toonami_ratings"
     else:
         dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
 
+    logging.info("dynamodb_show_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
             region_name="us-east-1",
             table_name=dynamo_table_name
     )
-    
+
+    logging.info("dynamodb_show_request - show_access_query" )
+
     '''
         Query one show using the GSI
     '''
@@ -94,7 +97,7 @@ def dynamodb_show_request(show_name):
         }
         
     logging.info(error_message)
-    import pdb; pdb.set_trace()
+    
     return(show_access_query)
 
 
