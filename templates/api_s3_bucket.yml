@@ -114,31 +114,31 @@ Resources:
         RateLimit: 100
       UsagePlanName: all_clients
 
-  apiGatewayInvokeLambda:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - apigateway.amazonaws.com
-                - lambda.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Policies:
-        - PolicyName: !Sub '${projectName}LambdaPolicy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Sid: LambdaAccess
-                Effect: Allow
-                Action:
-                  - lambda:InvokeFunction
-                  - lambda:GetFunctionConfiguration
-                Resource: '*'
-                  #- !GetAtt 'LambdaFunction.Arn'
+  # apiGatewayInvokeLambda:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: '2012-10-17'
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             Service:
+  #               - apigateway.amazonaws.com
+  #               - lambda.amazonaws.com
+  #           Action:
+  #             - sts:AssumeRole
+  #     Policies:
+  #       - PolicyName: !Sub '${projectName}LambdaPolicy'
+  #         PolicyDocument:
+  #           Version: '2012-10-17'
+  #           Statement:
+  #             - Sid: LambdaAccess
+  #               Effect: Allow
+  #               Action:
+  #                 - lambda:InvokeFunction
+  #                 - lambda:GetFunctionConfiguration
+  #               Resource: '*'
+  #                 #- !GetAtt 'LambdaFunction.Arn'
 
 
   #########################
@@ -159,6 +159,15 @@ Resources:
       ParentId: !Ref ratingsShowsResource
       PathPart: '{show}'
 
+  permission: 
+    Type: AWS::Lambda::Permission 
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt showsEndpoint.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
+        !Ref ratingsShowProxyMethod, '/*/GET/']]
+
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
@@ -168,7 +177,6 @@ Resources:
       HttpMethod: GET
       AuthorizationType: NONE
       Integration:
-        Credentials: !GetAtt apiGatewayInvokeLambda.Arn
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub >-
