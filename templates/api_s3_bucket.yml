@@ -130,6 +130,34 @@ Resources:
         RateLimit: 100
       UsagePlanName: all_clients
 
+  apiGatewayInvokeLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub '${projectName}LambdaPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: LambdaAccess
+                Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:GetFunctionConfiguration
+                Resource: '*'
+                  #- !GetAtt 'LambdaFunction.Arn'
+
+
+
   ratingsShowsResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
@@ -160,31 +188,7 @@ Resources:
           arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${showsEndpoint.Arn}/invocations
 
 
-  apiGatewayInvokeLambda:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - apigateway.amazonaws.com
-                - lambda.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Policies:
-        - PolicyName: !Sub '${projectName}LambdaPolicy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Sid: LambdaAccess
-                Effect: Allow
-                Action:
-                  - lambda:InvokeFunction
-                  - lambda:GetFunctionConfiguration
-                Resource: '*'
-                  #- !GetAtt 'LambdaFunction.Arn'
+
   showsEndpoint:
     Type: AWS::Serverless::Function
     Properties:                               
@@ -232,6 +236,21 @@ Resources:
       -
         Key: source
         Value: !Ref projectName
+
+
+  ratingsYearsResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !GetAtt ratingsApiGw.RootResourceId
+      PathPart: 'years'
+
+  ratingsYearProxyResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !Ref ratingsShowsResource
+      PathPart: '{year}'
 
 
 
