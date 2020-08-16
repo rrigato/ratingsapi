@@ -51,28 +51,12 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+
   #account setup for CW logs
   restApiCwLogs:
     Type: 'AWS::ApiGateway::Account'
     Properties:
       CloudWatchRoleArn: !GetAtt apigwToCwLogsServiceRole.Arn
-
-
-  ProjectBucket:
-    Properties:
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256    
-      BucketName: !Sub '${environPrefix}-${projectName}-openapi-dependency'
-      Tags:
-          -
-            Key: keep
-            Value: 'yes'
-          -
-            Key: source
-            Value: !Ref projectName
-    Type: "AWS::S3::Bucket"
 
 
   ratingsApiGw:
@@ -157,6 +141,9 @@ Resources:
                   #- !GetAtt 'LambdaFunction.Arn'
 
 
+  #########################
+  #Individual path resources/parameters with their lambda proxies
+  #########################
 
   ratingsShowsResource:
     Type: 'AWS::ApiGateway::Resource'
