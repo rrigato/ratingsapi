@@ -116,6 +116,22 @@ class AwsDevBuild(unittest.TestCase):
                 }
             }
         }
+        apigw_resources = cls.apigw_client.get_resources(
+            restApiId=cls.restapi_id,
+            limit=100
+        )["items"]
+
+
+        '''
+            dict where key is the path (ex: /shows/{show})
+            and the value is the resource id random string in api gateway 
+            that identifies the resource (ex: aaaabc)
+        '''
+        cls.path_to_resource_id = {}
+
+        for apigw_resource in apigw_resources:
+            cls.path_to_resource_id[apigw_resource["path"]] = apigw_resource["id"]
+
 
     def test_apigateway_resources(self):
         """Tests validates all paths in self.CALLABLE_ENDPOINTS have 
@@ -220,7 +236,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
 
-
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
     def test_shows_endpoint(self):
         """tests the shows endpoint
 
@@ -233,10 +249,6 @@ class AwsDevBuild(unittest.TestCase):
             Raises
             ------
         """
-        apigw_resources = self.apigw_client.get_resources(
-            restApiId=self.restapi_id,
-            limit=100
-        )["items"]
 
         apigw_path_list = []
         '''
