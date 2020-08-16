@@ -194,8 +194,7 @@ Resources:
     Properties:                               
       Description: |
         Lambda function to handle shows endpoint
-      #passed to os.environ for python used to
-      #determine which table to update in scripts.reddit_ratings.main
+      #passed to os.environ for lambda python script
       Environment:
         Variables:
           DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
@@ -252,6 +251,54 @@ Resources:
       ParentId: !Ref ratingsYearsResource
       PathPart: '{year}'
 
+
+
+  yearsEndpoint:
+    Type: AWS::Serverless::Function
+    Properties:                               
+      Description: |
+        Lambda function to handle years endpoint
+      #passed to os.environ for lambda python script
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
+
+      FunctionName: !Sub '${projectName}-years-endpoint-${environPrefix}'
+      Handler: index.handler
+
+      #Policies to include in the lambda basic execution role
+      #created by SAM
+      Policies:
+        Version: '2012-10-17'
+        Statement: 
+          #dynamodb permissions     
+          - Sid: !Sub '${projectName}LambdaDynamoDbAllow'
+            Effect: Allow
+            Action:
+              - dynamodb:ListTables
+              - dynamodb:GetItem
+              - dynamodb:Query
+
+            Resource:
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'  
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/SHOW_ACCESS'     
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/YEAR_ACCESS'
+      Runtime: python3.7
+      Tracing: Active
+      #60 second timeout
+      Timeout: 5
+      #Default code that will be updated by
+      #CodeBuild Job
+      InlineCode: |
+        def handler(event, context):
+          print("Hello, world!")
+    Tags:
+      -
+        Key: keep
+        Value: 'yes'
+      -
+        Key: source
+        Value: !Ref projectName
 
 
 Outputs:
