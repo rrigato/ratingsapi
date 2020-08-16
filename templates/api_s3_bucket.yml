@@ -159,14 +159,18 @@ Resources:
       ParentId: !Ref ratingsShowsResource
       PathPart: '{show}'
 
-  permission: 
+  ####################################################
+  #Docs for giving api gateway permission to invoke a lambda function
+  #https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html#apigateway-permissions
+  ####################################################
+  ratingsShowPermission: 
     Type: AWS::Lambda::Permission 
     Properties: 
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt showsEndpoint.Arn
       Principal: apigateway.amazonaws.com
       SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
-        !Ref ratingsShowProxyMethod, '/*/GET/']]
+        !Ref ratingsShowProxyMethod, '/*/GET/shows']]
 
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
