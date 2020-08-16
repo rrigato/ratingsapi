@@ -220,7 +220,7 @@ class AwsDevBuild(unittest.TestCase):
 
 
 
-    @unittest.skip("SKipping for now")
+
     def test_shows_endpoint(self):
         """tests the shows endpoint
 
@@ -259,6 +259,19 @@ class AwsDevBuild(unittest.TestCase):
 
                 self.assertEqual(apigw_response["status"], 200)
 
+                star_wars_ratings = json.loads(apigw_response["body"])
+                '''
+                    should have at least 50 airing of the show
+                    Star Wars the Clone Wars
+                '''
+                self.assertGreater(len(star_wars_ratings), 50)
+
+                '''
+                    test structure of random ratings
+                '''
+                self.assertTrue(star_wars_ratings[10]["TOTAL_VIEWERS"].isnumeric())
+
+                self.assertTrue(star_wars_ratings[10]["YEAR"].isnumeric())
 
                 '''
                     invoke a test method for invalid input
@@ -270,8 +283,7 @@ class AwsDevBuild(unittest.TestCase):
                     pathWithQueryString="/shows/Mock a show name"
                 )
                 
-                
-                self.assertEqual(apigw_response["status"], 404)
+                self.assertEqual(apigw_error_response["status"], 404)
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
