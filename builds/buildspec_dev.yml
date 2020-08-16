@@ -31,9 +31,6 @@ phases:
       - echo $APIGW_VERSION
       - echo $BUILD_ENVIRONMENT
       - echo $APIGW_STACK
-
-      - echo "Iterating lambda functions"
-      - ./builds/iterate_lambda.sh
       
       - echo "Creating $APIGW_STACK"
       - aws cloudformation create-stack --stack-name $APIGW_STACK
@@ -45,6 +42,8 @@ phases:
       - aws cloudformation wait stack-create-complete
         --stack-name $APIGW_STACK
 
+      - echo "Iterating lambda functions"
+      - ./builds/iterate_lambda.sh
 
 
       - echo "running unit test directory"
@@ -82,7 +81,7 @@ phases:
     commands:
       - echo cleaning up resources
 
-      # - aws cloudformation delete-stack --stack-name $APIGW_STACK
+      - aws cloudformation delete-stack --stack-name $APIGW_STACK
 
 
 artifacts:
