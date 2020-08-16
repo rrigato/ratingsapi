@@ -170,7 +170,7 @@ Resources:
       FunctionName: !GetAtt showsEndpoint.Arn
       Principal: apigateway.amazonaws.com
       SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
-        !Ref ratingsShowProxyMethod, '/*/GET/shows']]
+        !Ref ratingsApiGw, '/*/GET/*']]
 
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
