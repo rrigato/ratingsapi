@@ -124,52 +124,6 @@ class AwsDevBuild(unittest.TestCase):
 
 
         
-    @unittest.skip("Skipping for now")
-    def test_apigateway_methods(self):
-        """Tests all lambda proxy integrations in self.CALLABLE_ENDPOINTS
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-
-        apigw_client = get_boto_clients(resource_name="apigateway")
-
-        apigw_resources = apigw_client.get_resources(
-            restApiId=self.restapi_id,
-            limit=100
-        )["items"]
-
-        apigw_path_list = []
-        '''
-            Testing the lambda function integration settings
-            for each resource match
-        '''
-        for apigw_resource in apigw_resources:
-            if apigw_resource["path"] in list(self.CALLABLE_ENDPOINTS.keys()):
-
-                apigw_method = apigw_client.get_method(
-                    restApiId=self.restapi_id,
-                    resourceId=apigw_resource["id"],
-                    httpMethod="GET"
-                )
-
-                self.assertTrue(apigw_method["apiKeyRequired"])
-                '''
-                    Test pattern of lambda for endpoint
-                '''
-                self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
-                    self.PROJECT_NAME + "-" + 
-                    self.CALLABLE_ENDPOINTS[apigw_resource["path"]]["name"] + 
-                    "-endpoint-" + BUILD_ENVIRONMENT + 
-                    "/invocations"
-                ))
-
 
 
     def test_apigateway_stage(self):
@@ -195,9 +149,66 @@ class AwsDevBuild(unittest.TestCase):
 
 
 
-    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+
     def test_shows_endpoint(self):
-        """tests the shows endpoint
+        """Tests shows lambda proxy integrations setup
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        apigw_method = self.apigw_client.get_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/shows/{show}"],
+            httpMethod="GET"
+        )
+
+        '''
+            Test api key is required for lambda proxy and that
+            correct lambda arn is used as a backend
+        '''
+        self.assertTrue(apigw_method["apiKeyRequired"])
+
+        self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+            self.PROJECT_NAME + "-shows-endpoint-" + BUILD_ENVIRONMENT + 
+            "/invocations"
+        ))
+
+
+    def test_shows_not_found(self):
+        """Tests 404 is returned for shows not found
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        '''
+            invoke a test method for invalid input
+        '''
+        apigw_error_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/shows/{show}"],
+            httpMethod="GET",
+            pathWithQueryString="/shows/Mock a show name"
+        )
+        
+        self.assertEqual(apigw_error_response["status"], 404)
+
+
+
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+    def test_shows_endpoint_prod(self):
+        """tests the shows endpoint where there is production data
 
             Parameters
             ----------
@@ -239,17 +250,6 @@ class AwsDevBuild(unittest.TestCase):
 
         self.assertTrue(star_wars_ratings[10]["YEAR"].isnumeric())
 
-        '''
-            invoke a test method for invalid input
-        '''
-        apigw_error_response = self.apigw_client.test_invoke_method(
-            restApiId=self.restapi_id,
-            resourceId=self.path_to_resource_id["/shows/{show}"],
-            httpMethod="GET",
-            pathWithQueryString="/shows/Mock a show name"
-        )
-        
-        self.assertEqual(apigw_error_response["status"], 404)
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
