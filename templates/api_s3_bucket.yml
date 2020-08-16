@@ -244,36 +244,36 @@ Resources:
       ParentId: !GetAtt ratingsApiGw.RootResourceId
       PathPart: 'years'
 
-  # ratingsYearsProxyResource:
-  #   Type: 'AWS::ApiGateway::Resource'
-  #   Properties:
-  #     RestApiId: !Ref ratingsApiGw
-  #     ParentId: !Ref ratingsYearsResource
-  #     PathPart: '{year}'
+  ratingsYearsProxyResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !Ref ratingsYearsResource
+      PathPart: '{year}'
 
-  # ratingsYearsPermission: 
-  #   Type: AWS::Lambda::Permission 
-  #   Properties: 
-  #     Action: lambda:InvokeFunction
-  #     FunctionName: !GetAtt yearsEndpoint.Arn
-  #     Principal: apigateway.amazonaws.com
-  #     #allow any stage to perform http get on the /years/{year} path
-  #     SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
-  #       !Ref ratingsApiGw, '/*/GET/years/*']]
+  ratingsYearsPermission: 
+    Type: AWS::Lambda::Permission 
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt yearsEndpoint.Arn
+      Principal: apigateway.amazonaws.com
+      #allow any stage to perform http get on the /years/{year} path
+      SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
+        !Ref ratingsApiGw, '/*/GET/years/*']]
 
-  # ratingsYearProxyMethod:
-  #   Type: 'AWS::ApiGateway::Method'
-  #   Properties:
-  #     ApiKeyRequired: True
-  #     RestApiId: !Ref ratingsApiGw
-  #     ResourceId: !Ref ratingsYearsProxyResource
-  #     HttpMethod: GET
-  #     AuthorizationType: NONE
-  #     Integration:
-  #       Type: AWS_PROXY
-  #       IntegrationHttpMethod: POST
-  #       Uri: !Sub >-
-  #         arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${yearsEndpoint.Arn}/invocations
+  ratingsYearsProxyMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      ApiKeyRequired: True
+      RestApiId: !Ref ratingsApiGw
+      ResourceId: !Ref ratingsYearsProxyResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${yearsEndpoint.Arn}/invocations
 
 
 
