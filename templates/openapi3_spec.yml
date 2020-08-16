@@ -146,3 +146,55 @@ paths:
 
         '404':
           $ref: '#/components/responses/notFound'
+
+  /{version}/years/{year}:
+    get:
+      description: |
+        Returns all the ratings associated with the given year.
+      parameters:
+        - name: version
+          in: path
+          description: Version of api to use
+          required: true
+          schema:
+            type: string  
+                
+        - name: year
+          in: path
+          description: year you want to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: year response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/televisionRating'
+                example:
+                  - RATINGS_OCCURRED_ON: '2013-04-27'
+                    TIME: '2:00'
+                    SHOW: IGPX
+                    TOTAL_VIEWERS: 848
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.80
+                    TOTAL_VIEWERS_AGE_18_49: 404
+
+
+                  - RATINGS_OCCURRED_ON: '2013-05-04'
+                    TIME: '2:00'
+                    SHOW: IGPX
+                    TOTAL_VIEWERS: 776
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.60
+                    TOTAL_VIEWERS_AGE_18_49: 392
+               
+  
+        '400':
+          $ref: '#/components/responses/badRequest'
+
+        '404':
+          $ref: '#/components/responses/notFound'
