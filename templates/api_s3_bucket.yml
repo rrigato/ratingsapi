@@ -114,33 +114,6 @@ Resources:
         RateLimit: 100
       UsagePlanName: all_clients
 
-  # apiGatewayInvokeLambda:
-  #   Type: AWS::IAM::Role
-  #   Properties:
-  #     AssumeRolePolicyDocument:
-  #       Version: '2012-10-17'
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service:
-  #               - apigateway.amazonaws.com
-  #               - lambda.amazonaws.com
-  #           Action:
-  #             - sts:AssumeRole
-  #     Policies:
-  #       - PolicyName: !Sub '${projectName}LambdaPolicy'
-  #         PolicyDocument:
-  #           Version: '2012-10-17'
-  #           Statement:
-  #             - Sid: LambdaAccess
-  #               Effect: Allow
-  #               Action:
-  #                 - lambda:InvokeFunction
-  #                 - lambda:GetFunctionConfiguration
-  #               Resource: '*'
-  #                 #- !GetAtt 'LambdaFunction.Arn'
-
-
   #########################
   #Individual path resources/parameters with their lambda proxies
   #########################
