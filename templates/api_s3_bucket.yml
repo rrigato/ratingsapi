@@ -169,8 +169,9 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt showsEndpoint.Arn
       Principal: apigateway.amazonaws.com
+      #allow any stage to perform http get on the /shows/{show} path
       SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
-        !Ref ratingsApiGw, '/*/GET/*']]
+        !Ref ratingsApiGw, '/*/GET/shows/*']]
 
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
