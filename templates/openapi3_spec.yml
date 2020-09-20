@@ -94,6 +94,52 @@ components:
             message: 'year: 3005 not found'
 
 paths:
+  /{version}/nights/{night}:
+    get:
+      description: |
+        Returns all the ratings associated with a given night. 
+      parameters:
+        - name: version
+          in: path
+          description: Version of api to use
+          required: true
+          schema:
+            type: string  
+                
+        - name: night
+          in: path
+          description: Saturday night ratings in YYYY-MM-DD format
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: one night response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/televisionRating'
+                example:
+                  - RATINGS_OCCURRED_ON: '2013-04-27'
+                    TIME: '2:00'
+                    SHOW: IGPX
+                    TOTAL_VIEWERS: 848
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.80
+                    TOTAL_VIEWERS_AGE_18_49: 404
+            
+  
+        '400':
+          $ref: '#/components/responses/badRequest'
+
+        '404':
+          $ref: '#/components/responses/notFoundNight'
+
+
+
+
   /{version}/shows/{show}:
     get:
       description: |
