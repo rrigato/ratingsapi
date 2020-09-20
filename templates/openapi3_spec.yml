@@ -73,11 +73,9 @@ components:
           schema:
             $ref: '#/components/schemas/responseError'
           example:
-            message: 'Invalid show path parameter'
-
-          
-
-    notFound:
+            message: 'Invalid path parameter'
+      
+    notFoundShow:
       description: HTTP 404 error 
       content:
         application/json:
@@ -86,6 +84,14 @@ components:
           example:
             message: 'show: Corey in the House not found'
 
+    notFoundYear:
+      description: HTTP 404 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: 'year: 3005 not found'
 
 paths:
   /{version}/shows/{show}:
@@ -145,7 +151,7 @@ paths:
           $ref: '#/components/responses/badRequest'
 
         '404':
-          $ref: '#/components/responses/notFound'
+          $ref: '#/components/responses/notFoundShow'
 
   /{version}/years/{year}:
     get:
@@ -203,4 +209,4 @@ paths:
           $ref: '#/components/responses/badRequest'
 
         '404':
-          $ref: '#/components/responses/notFound'
+          $ref: '#/components/responses/notFoundYear'
