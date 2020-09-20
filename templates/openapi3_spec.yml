@@ -191,7 +191,13 @@ paths:
                     YEAR: 2013
                     PERCENTAGE_OF_HOUSEHOLDS: 0.60
                     TOTAL_VIEWERS_AGE_18_49: 392
-               
+
+                  - RATINGS_OCCURRED_ON: '2013-11-23'
+                    TIME: '3:00'
+                    SHOW: Star Wars the Clone Wars
+                    TOTAL_VIEWERS: 750
+                    YEAR: 2013
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.60           
   
         '400':
           $ref: '#/components/responses/badRequest'
