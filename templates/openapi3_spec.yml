@@ -74,7 +74,17 @@ components:
             $ref: '#/components/schemas/responseError'
           example:
             message: 'Invalid path parameter'
-      
+
+    notFoundNight:
+      description: HTTP 404 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: 'night: 3005-11-28 not found'
+
+
     notFoundShow:
       description: HTTP 404 error 
       content:
