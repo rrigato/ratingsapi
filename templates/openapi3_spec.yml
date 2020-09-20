@@ -201,8 +201,16 @@ paths:
     get:
       description: |
         Return all saturday night ratings by passing a startDate
-        and endDate. The search will be inclusive and will paginate 
-        if the search criteria covers multiple years
+        and endDate. The search will be inclusive and a next key will be provided in the response
+        for pagination if the search criteria covers multiple years.                      
+        
+        In the response example provided the original client request was 
+        /{versionNumber}/search?startDate=2019-12-21&endDate=2020-06-13
+        The actual response returned from the api will have all shows on 2019-12-21 and 2019-12-28
+        but the below response was truncated to only the first shows for brevity.
+        The next url key will not be provided in the response if the 
+        startDate and endDate do not cover overlapping years
+
       parameters:
         - name: version
           in: path
@@ -237,6 +245,11 @@ paths:
               schema:
                 type: object
                 properties:
+                  next: 
+                    type: string
+                    description: Not present if pagination is not required
+                    example:
+                      /v1/search?startDate=2020-01-04&endDate=2020-06-13
                   ratings:
                     type: array
                     items:
