@@ -258,11 +258,11 @@ paths:
                         PERCENTAGE_OF_HOUSEHOLDS: 0.48
                         TOTAL_VIEWERS_AGE_18_49: 613  
 
-          '400':
-            $ref: '#/components/responses/badRequest'
+        '400':
+          $ref: '#/components/responses/badRequest'
 
-          '404':
-            $ref: '#/components/responses/notFoundNight'
+        '404':
+          $ref: '#/components/responses/notFoundNight'
 
 
 
