@@ -267,12 +267,13 @@ paths:
                         TOTAL_VIEWERS_AGE_18_49: 285
 
                       - RATINGS_OCCURRED_ON: '2019-12-28'
-                        TIME: '12:30'
-                        SHOW: Jojo's Bizarre Adventure
-                        TOTAL_VIEWERS: 995
+                        TIME: '11:00'
+                        SHOW: Dr. Stone
+                        TOTAL_VIEWERS: 312
                         YEAR: 2019
-                        PERCENTAGE_OF_HOUSEHOLDS: 0.48
-                        TOTAL_VIEWERS_AGE_18_49: 613  
+                        PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49: 0.12
+                        IS_RERUN: true
+                        TOTAL_VIEWERS_AGE_18_49: 158
 
         '400':
           $ref: '#/components/responses/badRequest'
