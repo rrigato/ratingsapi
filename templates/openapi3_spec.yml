@@ -2,7 +2,10 @@ openapi: "3.0.0"
 info:
   version: '1.0'
   title: RatingsAPI
-  description: Televison Ratings api for Adult Swim Saturday Night Toonami Block
+  description: |
+    Televison Ratings api for Adult Swim Saturday Night Toonami Block. 
+    Known Issues:
+      - Missing 2017-06-03 until 2018-11-03
 servers:
   - url: https
 
@@ -206,7 +209,7 @@ paths:
         
         In the response example provided the original client request was 
 
-        /{versionNumber}/search?startDate=2019-12-21&endDate=2020-06-13
+        /v1/search?startDate=2019-12-21&endDate=2020-06-13
 
         The actual response returned from the api will have all shows on 2019-12-21 and 2019-12-28
         but the below response was truncated to only the first shows for brevity (AKA - developer laziness).
