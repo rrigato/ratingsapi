@@ -200,14 +200,16 @@ paths:
   /{version}/search/:
     get:
       description: |
-        Return all saturday night ratings by passing a startDate
+        Return all saturday night ratings by searching with a startDate
         and endDate. The search will be inclusive and a next key will be provided in the response
         for pagination if the search criteria covers multiple years.                      
         
         In the response example provided the original client request was 
+
         /{versionNumber}/search?startDate=2019-12-21&endDate=2020-06-13
+
         The actual response returned from the api will have all shows on 2019-12-21 and 2019-12-28
-        but the below response was truncated to only the first shows for brevity.
+        but the below response was truncated to only the first shows for brevity (AKA - developer laziness).
         The next url key will not be provided in the response if the 
         startDate and endDate do not cover overlapping years
 
@@ -255,19 +257,20 @@ paths:
                     items:
                         $ref: '#/components/schemas/televisionRating'
                     example:
-                      - RATINGS_OCCURRED_ON: '2016-11-05'
-                        TIME: '12:00'
-                        SHOW: Dragon Ball Z Kai
-                        TOTAL_VIEWERS: 1293
-                        YEAR: 2016
-                        PERCENTAGE_OF_HOUSEHOLDS: 0.62
-                        TOTAL_VIEWERS_AGE_18_49: 802
+                      - RATINGS_OCCURRED_ON: '2019-12-21'
+                        TIME: '11:00'
+                        SHOW: One Punch Man
+                        TOTAL_VIEWERS: 493
+                        YEAR: 2019
+                        PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49: 0.22
+                        IS_RERUN: true
+                        TOTAL_VIEWERS_AGE_18_49: 285
 
-                      - RATINGS_OCCURRED_ON: '2016-11-05'
+                      - RATINGS_OCCURRED_ON: '2019-12-28'
                         TIME: '12:30'
                         SHOW: Jojo's Bizarre Adventure
                         TOTAL_VIEWERS: 995
-                        YEAR: 2016
+                        YEAR: 2019
                         PERCENTAGE_OF_HOUSEHOLDS: 0.48
                         TOTAL_VIEWERS_AGE_18_49: 613  
 
