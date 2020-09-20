@@ -114,7 +114,7 @@ paths:
             type: string
       responses:
         '200':
-          description: one night response
+          description: All shows for a broadcast run of Toonami
           content:
             application/json:
               schema:
@@ -122,15 +122,63 @@ paths:
                 items:
                     $ref: '#/components/schemas/televisionRating'
                 example:
-                  - RATINGS_OCCURRED_ON: '2013-04-27'
-                    TIME: '2:00'
-                    SHOW: IGPX
-                    TOTAL_VIEWERS: 848
-                    YEAR: 2013
-                    PERCENTAGE_OF_HOUSEHOLDS: 0.80
-                    TOTAL_VIEWERS_AGE_18_49: 404
-            
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '12:00'
+                    SHOW: Dragon Ball Z Kai
+                    TOTAL_VIEWERS: 1293
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.62
+                    TOTAL_VIEWERS_AGE_18_49: 802
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '12:30'
+                    SHOW: Jojo's Bizarre Adventure
+                    TOTAL_VIEWERS: 995
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.48
+                    TOTAL_VIEWERS_AGE_18_49: 613  
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '1:00'
+                    SHOW: 'Gundam: Iron-Blooded Orphans'
+                    TOTAL_VIEWERS: 878
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.41
+                    TOTAL_VIEWERS_AGE_18_49: 530         
   
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '1:30'
+                    SHOW: Hunter x Hunter
+                    TOTAL_VIEWERS: 860
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.40
+                    TOTAL_VIEWERS_AGE_18_49: 516    
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '2:00'
+                    SHOW: Naruto Shippuden
+                    TOTAL_VIEWERS: 848
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.36
+                    TOTAL_VIEWERS_AGE_18_49: 462    
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '2:30'
+                    SHOW: One Piece
+                    TOTAL_VIEWERS: 674
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.32
+                    TOTAL_VIEWERS_AGE_18_49: 409  
+
+                  - RATINGS_OCCURRED_ON: '2016-11-05'
+                    TIME: '3:00'
+                    SHOW: Children Who Chase Lost Voices
+                    TOTAL_VIEWERS: 492
+                    YEAR: 2016
+                    PERCENTAGE_OF_HOUSEHOLDS: 0.25
+                    TOTAL_VIEWERS_AGE_18_49: 326    
+
         '400':
           $ref: '#/components/responses/badRequest'
 
