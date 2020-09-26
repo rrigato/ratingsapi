@@ -1,7 +1,7 @@
 {
     "body": "",
-    "resource": "/shows/{show}",
-    "path": "/shows/mockpathparam",
+    "resource": "/year/{year}",
+    "path": "/years/2020",
     "httpMethod": "GET",
     "isBase64Encoded": true,
     "queryStringParameters": {
@@ -13,7 +13,7 @@
       ]
     },
     "pathParameters": {
-      "show": "mockpathparam"
+      "year": "2020"
     },
     "stageVariables": {
       "baz": "qux"
@@ -106,8 +106,8 @@
         "userAgent": "Custom User Agent String",
         "user": null
       },
-      "path": "/shows/mockpathparam",
-      "resourcePath": "/shows/{show}",
+      "path": "/years/2020",
+      "resourcePath": "/years/{year}",
       "httpMethod": "GET",
       "apiId": "1234567890",
       "protocol": "HTTP/1.1"
