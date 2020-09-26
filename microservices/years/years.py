@@ -71,13 +71,13 @@ def validate_request_parameters(event):
 
     return(error_response)
 
-def dynamodb_show_request(show_name):
-    """Query using the SHOW_ACCESS GSI
+def dynamodb_year_request(year):
+    """Query using the YEAR_ACCESS GSI
 
         Parameters
         ----------
-        show_name : str
-            Name of the show to request
+        year : int
+            year to request
 
         Returns
         -------
@@ -97,37 +97,37 @@ def dynamodb_show_request(show_name):
     else:
         dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
 
-    logging.info("dynamodb_show_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
+    logging.info("dynamodb_year_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
             region_name="us-east-1",
             table_name=dynamo_table_name
     )
 
-    logging.info("dynamodb_show_request - show_access_query" )
+    logging.info("dynamodb_year_request - year_access_query" )
 
     '''
-        Query one show using the GSI
+        Query one year using the GSI
     '''
-    show_access_query = dynamo_table.query(
-        IndexName="SHOW_ACCESS",
-        KeyConditionExpression=Key("SHOW").eq(show_name)
+    year_access_query = dynamo_table.query(
+        IndexName="YEAR_ACCESS",
+        KeyConditionExpression=Key("YEAR").eq(year)
     )
 
-    show_ratings = show_access_query["Items"]
-    logging.info("dynamodb_show_request - Count " + str(show_access_query["Count"]))
+    show_ratings = year_access_query["Items"]
+    logging.info("dynamodb_year_request - Count " + str(year_access_query["Count"]))
 
     '''
         If no items returned
     '''
-    if show_access_query["Count"] == 0:
+    if year_access_query["Count"] == 0:
         error_message = {
-            "message": "show: {show_name} not found".format(
-                show_name=show_name
+            "message": "year: {year} not found".format(
+                year=year
             )
         }
     else:
-        logging.info("dynamodb_show_request - preparing year for serialization")
+        logging.info("dynamodb_year_request - preparing year for serialization")
         '''
             convert from decimal to str for json serialization
         '''
@@ -135,7 +135,7 @@ def dynamodb_show_request(show_name):
             try:
                 individual_show["YEAR"] = str(individual_show["YEAR"])
             except KeyError:
-                logging.info("dynamodb_show_request - No year for " + individual_show["SHOW"])
+                logging.info("dynamodb_year_request - No year for " + individual_show["SHOW"])
         
     logging.info(error_message)
 
