@@ -54,5 +54,14 @@ class YearsUnitTests(unittest.TestCase):
         from microservices.years.years import validate_request_parameters
         
         self.assertIsNone(validate_request_parameters(event=self.years_proxy_event))
-        # self.assertFalse(clean_path_parameter_string(year="12345"))
+
+        mock_error_response = validate_request_parameters(event={})
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Path parameter year is required",
+                "status_code": 400 
+            }
+
+        )
         # self.assertTrue(clean_path_parameter_string(year="2020"))

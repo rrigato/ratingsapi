@@ -48,6 +48,29 @@ def validate_request_parameters(event):
         Raises
         ------
     """
+    error_response = None
+    try:
+        assert clean_path_parameter_string(event["pathParameters"]["year"]) is True, (
+            "year parameter invalid"
+        )
+        logging.info("validate_request_parameters - year parameter valid")
+
+    except KeyError:
+        logging.info("validate_request_parameters - year parameter not found in request")
+        error_response = {
+            "message": "Path parameter year is required",
+            "status_code": 400 
+        }
+
+    except AssertionError:
+        logging.info("validate_request_parameters - year parameter invalid")
+        error_response = {
+            "message": "Invalid year path parameter, must be numeric",
+            "status_code": 404 
+        }
+
+    return(error_response)
+
 def dynamodb_show_request(show_name):
     """Query using the SHOW_ACCESS GSI
 
@@ -133,26 +156,13 @@ def main(event):
         Raises
         ------
     """
-    error_response = None
-    try:
-        assert clean_path_parameter_string(event["pathParameters"]["show"]) is True, (
-            "Show parameter invalid"
-        )
-        logging.info("show parameter valid")
-
-    except KeyError:
-        logging.info("show parameter not found in request")
-        error_response = {"message": "Path parameter show is required"}
-
-    except AssertionError:
-        logging.info("show parameter invalid")
-        error_response = {"message": "Invalid show path parameter"}
 
     if error_response is not None:
         '''
-            return http 400 bad request
+            return http 400 level error response
         '''
-        return(lambda_proxy_response(status_code=400, headers_dict={}, response_body=error_response))
+        return(lambda_proxy_response(status_code=error_response["status_code"], 
+        headers_dict={}, response_body=error_response.pop("status_code")))
 
 
     error_message, show_access_query = dynamodb_show_request(
