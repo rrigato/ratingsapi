@@ -32,7 +32,22 @@ def clean_path_parameter_string(year):
     return(year.isnumeric())
 
 
+def validate_request_parameters(event):
+    """Validates the request passed in via the lambda handler event
 
+        Parameters
+        ----------
+        event : dict
+            lambda_handler event from api gateway
+
+        Returns
+        -------
+        error_response : boolean
+            
+
+        Raises
+        ------
+    """
 def dynamodb_show_request(show_name):
     """Query using the SHOW_ACCESS GSI
 
