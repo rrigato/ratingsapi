@@ -122,8 +122,8 @@ def dynamodb_year_request(year):
     '''
     if year_access_query["Count"] == 0:
         error_message = {
-            "message": "year: {year} not found".format(
-                year=year
+            "message": "year: {year_number} not found".format(
+                year_number=year
             )
         }
     else:

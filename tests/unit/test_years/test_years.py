@@ -98,22 +98,12 @@ class YearsUnitTests(unittest.TestCase):
             KeyConditionExpression=Key("YEAR").eq(mock_year)
         )
 
-    @unittest.skip("Skipping for now")
-    @patch("microservices.shows.shows.get_boto_clients")
-    def test_dynamodb_show_request_404(self, get_boto_clients_mock):
-        """tests dynamodb_show_request for no show match http 404
+    @patch("microservices.years.years.get_boto_clients")
+    def test_dynamodb_year_request_404(self, get_boto_clients_mock):
+        """tests dynamodb_year_request for no year match http 404
 
-            Parameters
-            ----------
-            get_boto_clients_mock : Mocks the get_boto_clients call
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
-        from microservices.shows.shows import dynamodb_show_request
+        from microservices.years.years import dynamodb_year_request
         from boto3.dynamodb.conditions import Key
 
         mock_dynamodb_resource = MagicMock()
@@ -123,7 +113,7 @@ class YearsUnitTests(unittest.TestCase):
         '''
         get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
         
-        mock_show_name = "mock_show"
+        mock_year = 2010
 
         mock_dynamodb_resource.query.return_value = {
             "Items": [], 
@@ -132,13 +122,13 @@ class YearsUnitTests(unittest.TestCase):
             "ResponseMetadata": {}
         }
 
-        error_message, dyanmodb_shows = dynamodb_show_request(show_name=mock_show_name)
+        error_message, television_ratings = dynamodb_year_request(year=mock_year)
 
         self.assertEqual(error_message, {
-            "message": "show: {show_name} not found".format(
-                show_name=mock_show_name
+            "message": "year: {year} not found".format(
+                year=mock_year
                 )
             }
         )
-        self.assertEqual(dyanmodb_shows, [])
+        self.assertEqual(television_ratings, [])
         
