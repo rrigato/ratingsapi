@@ -156,7 +156,7 @@ def main(event):
         Raises
         ------
     """
-
+    error_response = validate_request_parameters(event=event)
     if error_response is not None:
         '''
             return http 400 level error response
@@ -203,7 +203,11 @@ def lambda_handler(event, context):
 
     logging.info("main - Lambda proxy event: ")
     logging.info(event)
-    return(main(event=event))
+    return(main(event=lambda_proxy_response(status_code=204,
+        headers_dict={}, response_body={
+            "message": "no content"
+        }
+    )))
 
 
 if __name__ == "__main__":   
