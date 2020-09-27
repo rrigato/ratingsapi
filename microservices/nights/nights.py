@@ -21,6 +21,8 @@ def clean_path_parameter_string(night):
         Returns
         -------
         valid_night : boolean
+            True if night is valid in YYYY-MM-DD
+            format False otherwise
             
         Raises
         ------
@@ -220,4 +222,4 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":   
-    main(event={"pathParameters":{"show":"Star Wars the Clone Wars"}})
+    main(event={"pathParameters":{"night":"2020-06-20"}})

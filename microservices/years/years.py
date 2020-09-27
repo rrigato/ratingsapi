@@ -20,7 +20,7 @@ def clean_path_parameter_string(year):
         Returns
         -------
         valid_year : boolean
-            
+            True if year is a valid, False otherwise
 
         Raises
         ------
@@ -42,7 +42,10 @@ def validate_request_parameters(event):
 
         Returns
         -------
-        error_response : boolean
+        error_response : dict
+            None if request is valid. Otherwise a dict with 
+            keys status_code and message detailing the error in
+            the request
             
 
         Raises
@@ -207,6 +210,3 @@ def lambda_handler(event, context):
     logging.info(event)
     return(main(event=event))
 
-
-if __name__ == "__main__":   
-    main(event={"pathParameters":{"show":"Star Wars the Clone Wars"}})
