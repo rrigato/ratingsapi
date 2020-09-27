@@ -23,24 +23,28 @@ def clean_query_parameter_string(query_parameter_date):
         valid_date : boolean
             True if query_parameter_date is valid in YYYY-MM-DD
             format False otherwise
+
+        valid_date_format : datetime.datetime
+            datetime object or None
             
         Raises
         ------
     """
+    valid_date_format = None
     if type(query_parameter_date) != str:
         logging.info("clean_query_parameter_string - datatype")
-        return(False)    
+        return(False, valid_date_format)    
     if len(query_parameter_date) > 10:
         logging.info("clean_query_parameter_string - string length")
-        return(False)
+        return(False, valid_date_format)
     try:
         valid_date_format = datetime.strptime(query_parameter_date, "%Y-%m-%d")        
 
     except ValueError:
         logging.info("clean_query_parameter_string - Invalid date format")
-        return(False)    
+        return(False, valid_date_format)    
 
-    return(True)
+    return(True, valid_date_format)
 
 
 def validate_request_parameters(event):
