@@ -121,17 +121,17 @@ def dynamodb_night_request(night):
     '''
         Query one night using the PK RATINGS_OCCURRED_ON
     '''
-    night_access_query = dynamo_table.query(
+    ratings_query_response = dynamo_table.query(
         KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(night)
     )
 
-    show_ratings = night_access_query["Items"]
-    logging.info("dynamodb_night_request - Count " + str(night_access_query["Count"]))
+    show_ratings = ratings_query_response["Items"]
+    logging.info("dynamodb_night_request - Count " + str(ratings_query_response["Count"]))
 
     '''
         If no items returned
     '''
-    if night_access_query["Count"] == 0:
+    if ratings_query_response["Count"] == 0:
         error_message = {
             "message": "night: {night_number} not found".format(
                 night_number=night
@@ -178,15 +178,15 @@ def main(event):
         headers_dict={}, response_body=error_response))
 
 
-    error_message, year_access_query = dynamodb_year_request(
-        year=event["pathParameters"]["year"]
+    error_message, ratings_query_response = dynamodb_night_request(
+        night=event["pathParameters"]["night"]
     )
 
     if error_message is None:
-        logging.info("main - returning year_access_query" + str(len(year_access_query)))
+        logging.info("main - returning ratings_query_response" + str(len(ratings_query_response)))
         return(
             lambda_proxy_response(status_code=200, headers_dict={}, 
-            response_body=year_access_query)
+            response_body=ratings_query_response)
             
         )
     else:
