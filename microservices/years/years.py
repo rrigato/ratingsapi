@@ -159,11 +159,12 @@ def main(event):
     error_response = validate_request_parameters(event=event)
 
     if error_response is not None:
+        status_code = error_response.pop("status_code")
         '''
             return http 400 level error response
         '''
-        return(lambda_proxy_response(status_code=error_response["status_code"], 
-        headers_dict={}, response_body=error_response.pop("status_code")))
+        return(lambda_proxy_response(status_code=status_code, 
+        headers_dict={}, response_body=error_response))
 
 
     error_message, year_access_query = dynamodb_year_request(

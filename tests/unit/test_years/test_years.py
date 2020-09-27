@@ -163,6 +163,14 @@ class YearsUnitTests(unittest.TestCase):
         )
 
 
+        self.assertEqual(json.loads(main_failure_response["body"]),
+            {
+                "message": "Path parameter year is required"
+            }
+        )
+        self.assertEqual(main_failure_response["statusCode"], 400)
+
+
 
 
     @patch("logging.getLogger")
