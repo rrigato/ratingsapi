@@ -25,9 +25,13 @@ class SearchUnitTests(unittest.TestCase):
         """
         from microservices.search.search import clean_query_parameter_string
 
-        self.assertFalse(clean_path_parameter_string(night="a" * 501))
-        self.assertFalse(clean_path_parameter_string(night="12345"))
-        self.assertTrue(clean_path_parameter_string(night="3005-11-28"))
+        query_date_status, query_datetime = clean_query_parameter_string(
+            query_parameter_date="a" * 501
+        )
+        self.assertFalse(query_date_status)
+        self.assertIsNone(query_datetime)
+        # self.assertFalse(clean_path_parameter_string(night="12345"))
+        # self.assertTrue(clean_path_parameter_string(night="3005-11-28"))
 
 
     # def test_validate_request_parameters(self):
