@@ -58,38 +58,38 @@ class NightsUnitTests(unittest.TestCase):
 
         )        
 
-    # @patch("microservices.years.years.get_boto_clients")
-    # def test_dynamodb_year_request(self, get_boto_clients_mock):
-    #     """tests dynamodb_year_request is called with the correct arguements
+    @patch("microservices.nights.nights.get_boto_clients")
+    def test_dynamodb_night_request(self, get_boto_clients_mock):
+        """tests dynamodb_night_request is called with the correct arguements
 
-    #     """
-    #     from microservices.years.years import dynamodb_year_request
-    #     from boto3.dynamodb.conditions import Key
+        """
+        from microservices.nights.nights import dynamodb_night_request
+        from boto3.dynamodb.conditions import Key
 
-    #     mock_dynamodb_resource = MagicMock()
+        mock_dynamodb_resource = MagicMock()
 
-    #     valid_year_response = {
-    #         "Items": [{"TOTAL_VIEWERS": "727", "PERCENTAGE_OF_HOUSEHOLDS": "0.50", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "3:00", "RATINGS_OCCURRED_ON": "2013-08-17"}, {"TOTAL_VIEWERS": "683", "PERCENTAGE_OF_HOUSEHOLDS": "0.60", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "3:00", "RATINGS_OCCURRED_ON": "2013-08-24"}, {"TOTAL_VIEWERS": "638", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "2:45", "RATINGS_OCCURRED_ON": "2013-08-31"}],
-    #         "Count": 0, 
-    #         "ScannedCount": 0, 
-    #         "ResponseMetadata": {}
-    #     }
-    #     mock_dynamodb_resource.query.return_value = valid_year_response
+        valid_night_response = {
+            "Items": [{"TOTAL_VIEWERS": "727", "PERCENTAGE_OF_HOUSEHOLDS": "0.50", "YEAR": Decimal("2013"), "SHOW": "Star Wars the Clone Wars", "TIME": "3:00", "RATINGS_OCCURRED_ON": "2013-08-17"}],
+            "Count": 0, 
+            "ScannedCount": 0, 
+            "ResponseMetadata": {}
+        }
+        mock_dynamodb_resource.query.return_value = valid_year_response
 
-    #     '''
-    #         return None for client, mock for dynamodb table resource
-    #     '''
-    #     get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
+        '''
+            return None for client, mock for dynamodb table resource
+        '''
+        get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
         
-    #     mock_year = "2020"
+        mock_night = "2019-11-14"
 
 
-    #     error_message, dyanmodb_years = dynamodb_year_request(year=mock_year)
+        error_message, dyanmodb_night = dynamodb_night_request(night=mock_night)
 
-    #     mock_dynamodb_resource.query.assert_called_once_with(
-    #         IndexName="YEAR_ACCESS",
-    #         KeyConditionExpression=Key("YEAR").eq(int(mock_year))
-    #     )
+        mock_dynamodb_resource.query.assert_called_once_with(
+            IndexName="YEAR_ACCESS",
+            KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(int(mock_night))
+        )
 
     # @patch("microservices.years.years.get_boto_clients")
     # def test_dynamodb_year_request_404(self, get_boto_clients_mock):
