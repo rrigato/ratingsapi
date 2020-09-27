@@ -30,8 +30,18 @@ class SearchUnitTests(unittest.TestCase):
         )
         self.assertFalse(query_date_status)
         self.assertIsNone(query_datetime)
-        # self.assertFalse(clean_path_parameter_string(night="12345"))
-        # self.assertTrue(clean_path_parameter_string(night="3005-11-28"))
+
+        query_date_status, query_datetime = clean_query_parameter_string(
+            query_parameter_date="2018/05/26"
+        )
+        self.assertFalse(query_date_status)
+        self.assertIsNone(query_datetime)
+
+        query_date_status, query_datetime = clean_query_parameter_string(
+            query_parameter_date="2018-05-26"
+        )
+        self.assertTrue(query_date_status)
+        self.assertEqual(type(query_datetime), type(datetime.now()))
 
 
     # def test_validate_request_parameters(self):
