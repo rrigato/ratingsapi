@@ -25,16 +25,16 @@ def clean_path_parameter_string(night):
         Raises
         ------
     """
-    if type(year) != str:
+    if type(night) != str:
         logging.info("clean_path_parameter_string - datatype")
         return(False)    
-    if len(year) > 10:
+    if len(night) > 10:
         logging.info("clean_path_parameter_string - string length")
         return(False)
     try:
         valid_date_format = datetime.strptime(night, "%Y-%m-%d")        
 
-    assert ValueError:
+    except ValueError:
         logging.info("clean_path_parameter_string - Invalid date format")
         return(False)    
 
