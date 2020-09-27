@@ -82,13 +82,14 @@ def validate_request_parameters(event):
 
     return(error_response)
 
-def dynamodb_year_request(year):
-    """Query using the YEAR_ACCESS GSI
+def dynamodb_night_request(night):
+    """Query using the night_ACCESS GSI
 
         Parameters
         ----------
-        year : int
-            year to request
+        night : str
+            night passed to the request, must be in YYYY-MM-DD
+            format
 
         Returns
         -------
@@ -108,37 +109,36 @@ def dynamodb_year_request(year):
     else:
         dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
 
-    logging.info("dynamodb_year_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
+    logging.info("dynamodb_night_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
             region_name="us-east-1",
             table_name=dynamo_table_name
     )
 
-    logging.info("dynamodb_year_request - year_access_query" )
+    logging.info("dynamodb_night_request - Access table through PK" )
 
     '''
-        Query one year using the GSI
+        Query one night using the PK RATINGS_OCCURRED_ON
     '''
-    year_access_query = dynamo_table.query(
-        IndexName="YEAR_ACCESS",
-        KeyConditionExpression=Key("YEAR").eq(int(year))
+    night_access_query = dynamo_table.query(
+        KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(night)
     )
 
-    show_ratings = year_access_query["Items"]
-    logging.info("dynamodb_year_request - Count " + str(year_access_query["Count"]))
+    show_ratings = night_access_query["Items"]
+    logging.info("dynamodb_night_request - Count " + str(night_access_query["Count"]))
 
     '''
         If no items returned
     '''
-    if year_access_query["Count"] == 0:
+    if night_access_query["Count"] == 0:
         error_message = {
-            "message": "year: {year_number} not found".format(
-                year_number=year
+            "message": "night: {night_number} not found".format(
+                night_number=night
             )
         }
     else:
-        logging.info("dynamodb_year_request - preparing year for serialization")
+        logging.info("dynamodb_night_request - preparing night for serialization")
         '''
             convert from decimal to str for json serialization
         '''
@@ -146,7 +146,7 @@ def dynamodb_year_request(year):
             try:
                 individual_show["YEAR"] = str(individual_show["YEAR"])
             except KeyError:
-                logging.info("dynamodb_year_request - No year for " + individual_show["SHOW"])
+                logging.info("dynamodb_night_request - No YEAR for " + individual_show["SHOW"])
         
     logging.info(error_message)
 

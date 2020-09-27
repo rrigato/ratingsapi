@@ -74,7 +74,7 @@ class NightsUnitTests(unittest.TestCase):
             "ScannedCount": 0, 
             "ResponseMetadata": {}
         }
-        mock_dynamodb_resource.query.return_value = valid_year_response
+        mock_dynamodb_resource.query.return_value = valid_night_response
 
         '''
             return None for client, mock for dynamodb table resource
@@ -87,8 +87,7 @@ class NightsUnitTests(unittest.TestCase):
         error_message, dyanmodb_night = dynamodb_night_request(night=mock_night)
 
         mock_dynamodb_resource.query.assert_called_once_with(
-            IndexName="YEAR_ACCESS",
-            KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(int(mock_night))
+            KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(mock_night)
         )
 
     # @patch("microservices.years.years.get_boto_clients")
