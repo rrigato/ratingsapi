@@ -151,16 +151,8 @@ class AwsDevBuild(unittest.TestCase):
 
 
     def test_shows_endpoint(self):
-        """Tests shows lambda proxy integrations setup
+        """Tests that the shows lambda proxy integrations is setup
 
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         apigw_method = self.apigw_client.get_method(
             restApiId=self.restapi_id,
@@ -249,6 +241,28 @@ class AwsDevBuild(unittest.TestCase):
         self.assertTrue(star_wars_ratings[10]["TOTAL_VIEWERS"].isnumeric())
 
         self.assertTrue(star_wars_ratings[10]["YEAR"].isnumeric())
+
+
+    def test_years_endpoint(self):
+        """Tests that the year lambda proxy integrations is setup
+
+        """
+        apigw_method = self.apigw_client.get_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/years/{year}"],
+            httpMethod="GET"
+        )
+
+        '''
+            Test api key is required for lambda proxy and that
+            correct lambda arn is used as a backend
+        '''
+        self.assertTrue(apigw_method["apiKeyRequired"])
+
+        self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+            self.PROJECT_NAME + "-years-endpoint-" + BUILD_ENVIRONMENT + 
+            "/invocations"
+        ))
 
 
     @unittest.skip("Skip until custom domain name is setup for API")
