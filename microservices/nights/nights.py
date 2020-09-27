@@ -51,30 +51,32 @@ def validate_request_parameters(event):
 
         Returns
         -------
-        error_response : boolean
-            
+        error_response : dict
+            None if request is valid. Otherwise a dict with 
+            keys status_code and message detailing the error in
+            the request
 
         Raises
         ------
     """
     error_response = None
     try:
-        assert clean_path_parameter_string(event["pathParameters"]["year"]) is True, (
-            "year parameter invalid"
+        assert clean_path_parameter_string(event["pathParameters"]["night"]) is True, (
+            "night parameter invalid"
         )
-        logging.info("validate_request_parameters - year parameter valid")
+        logging.info("validate_request_parameters - night parameter valid")
 
     except KeyError:
-        logging.info("validate_request_parameters - year parameter not found in request")
+        logging.info("validate_request_parameters - night parameter not found in request")
         error_response = {
-            "message": "Path parameter year is required",
+            "message": "Path parameter night is required",
             "status_code": 400 
         }
 
     except AssertionError:
-        logging.info("validate_request_parameters - year parameter invalid")
+        logging.info("validate_request_parameters - night parameter invalid")
         error_response = {
-            "message": "Invalid year path parameter, must be numeric",
+            "message": "Invalid night path parameter, must be numeric",
             "status_code": 404 
         }
 

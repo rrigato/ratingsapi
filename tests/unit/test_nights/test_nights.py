@@ -17,8 +17,8 @@ class NightsUnitTests(unittest.TestCase):
     def setUpClass(cls):
         """Unitest function that is run once for the class
         """
-        with open("tests/events/years_proxy_event.json", "r") as lambda_event:
-            cls.years_proxy_event = json.load(lambda_event)
+        with open("tests/events/nights_proxy_event.json", "r") as lambda_event:
+            cls.nights_proxy_event = json.load(lambda_event)
 
     def test_clean_path_parameter_string(self):
         """validates clean_night_path_parameter logic
@@ -30,22 +30,22 @@ class NightsUnitTests(unittest.TestCase):
         self.assertTrue(clean_path_parameter_string(night="3005-11-28"))
 
 
-    # def test_validate_request_parameters(self):
-    #     """lambda handler event validation
-    #     """
-    #     from microservices.years.years import validate_request_parameters
+    def test_validate_request_parameters(self):
+        """validates fail early on bad request paramters
+        """
+        from microservices.nights.nights import validate_request_parameters
         
-    #     self.assertIsNone(validate_request_parameters(event=self.years_proxy_event))
+        self.assertIsNone(validate_request_parameters(event=self.nights_proxy_event))
 
-    #     mock_error_response = validate_request_parameters(event={})
-    #     self.assertEqual(
-    #         mock_error_response,
-    #         {
-    #             "message": "Path parameter year is required",
-    #             "status_code": 400 
-    #         }
+        mock_error_response = validate_request_parameters(event={})
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Path parameter night is required",
+                "status_code": 400 
+            }
 
-    #     )
+        )
 
     # @patch("microservices.years.years.get_boto_clients")
     # def test_dynamodb_year_request(self, get_boto_clients_mock):
