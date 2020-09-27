@@ -111,7 +111,7 @@ def dynamodb_year_request(year):
     '''
     year_access_query = dynamo_table.query(
         IndexName="YEAR_ACCESS",
-        KeyConditionExpression=Key("YEAR").eq(year)
+        KeyConditionExpression=Key("YEAR").eq(int(year))
     )
 
     show_ratings = year_access_query["Items"]

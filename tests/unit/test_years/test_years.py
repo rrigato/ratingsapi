@@ -88,14 +88,14 @@ class YearsUnitTests(unittest.TestCase):
         '''
         get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
         
-        mock_year = 2020
+        mock_year = "2020"
 
 
         error_message, dyanmodb_years = dynamodb_year_request(year=mock_year)
 
         mock_dynamodb_resource.query.assert_called_once_with(
             IndexName="YEAR_ACCESS",
-            KeyConditionExpression=Key("YEAR").eq(mock_year)
+            KeyConditionExpression=Key("YEAR").eq(int(mock_year))
         )
 
     @patch("microservices.years.years.get_boto_clients")

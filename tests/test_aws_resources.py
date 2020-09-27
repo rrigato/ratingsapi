@@ -174,15 +174,6 @@ class AwsDevBuild(unittest.TestCase):
 
     def test_shows_not_found(self):
         """Tests 404 is returned for shows not found
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         '''
             invoke a test method for invalid input
@@ -264,6 +255,20 @@ class AwsDevBuild(unittest.TestCase):
             "/invocations"
         ))
 
+    def test_years_not_found(self):
+        """Tests 404 is returned for years not found
+        """
+        '''
+            invoke a test method for invalid input
+        '''
+        apigw_error_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/years/{year}"],
+            httpMethod="GET",
+            pathWithQueryString="/years/2009"
+        )
+        
+        self.assertEqual(apigw_error_response["status"], 404)
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
