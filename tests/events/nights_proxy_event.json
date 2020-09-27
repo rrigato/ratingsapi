@@ -1,7 +1,7 @@
 {
     "body": "",
-    "resource": "/years/{year}",
-    "path": "/years/2020",
+    "resource": "/nights/{nights}",
+    "path": "/nights/2020-02-01",
     "httpMethod": "GET",
     "isBase64Encoded": true,
     "queryStringParameters": {
@@ -13,7 +13,7 @@
       ]
     },
     "pathParameters": {
-      "year": "2020"
+      "night": "2020-02-01"
     },
     "stageVariables": {
       "baz": "qux"
@@ -106,8 +106,8 @@
         "userAgent": "Custom User Agent String",
         "user": null
       },
-      "path": "/years/2020",
-      "resourcePath": "/years/{year}",
+      "path": "/nights/2020-02-01",
+      "resourcePath": "/nights/{night}",
       "httpMethod": "GET",
       "apiId": "1234567890",
       "protocol": "HTTP/1.1"
