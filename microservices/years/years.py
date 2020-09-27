@@ -157,6 +157,7 @@ def main(event):
         ------
     """
     error_response = validate_request_parameters(event=event)
+
     if error_response is not None:
         '''
             return http 400 level error response
@@ -165,15 +166,15 @@ def main(event):
         headers_dict={}, response_body=error_response.pop("status_code")))
 
 
-    error_message, show_access_query = dynamodb_show_request(
-        show_name=event["pathParameters"]["show"]
+    error_message, year_access_query = dynamodb_year_request(
+        year=event["pathParameters"]["year"]
     )
 
     if error_message is None:
-        logging.info("main - returning show_access_query" + str(len(show_access_query)))
+        logging.info("main - returning year_access_query" + str(len(year_access_query)))
         return(
             lambda_proxy_response(status_code=200, headers_dict={}, 
-            response_body=show_access_query)
+            response_body=year_access_query)
             
         )
     else:
@@ -203,11 +204,7 @@ def lambda_handler(event, context):
 
     logging.info("main - Lambda proxy event: ")
     logging.info(event)
-    return(main(event=lambda_proxy_response(status_code=204,
-        headers_dict={}, response_body={
-            "message": "no content"
-        }
-    )))
+    return(main(event=event))
 
 
 if __name__ == "__main__":   

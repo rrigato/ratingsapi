@@ -131,4 +131,30 @@ class YearsUnitTests(unittest.TestCase):
             }
         )
         self.assertEqual(television_ratings, [])
-        
+
+
+
+    @patch("logging.getLogger")
+    @patch("microservices.years.years.main")
+    def test_lambda_handler_event(self, main_mock, 
+        getLogger_mock):
+        """Tests passing sample event to lambda_handler
+        """
+        from microservices.years.years import lambda_handler
+
+        lambda_handler(
+            event=self.years_proxy_event,
+            context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
+        )
+
+        '''
+            Testing call count and args passed
+        '''
+        main_mock.assert_called_once_with(
+            event=self.years_proxy_event
+        )
