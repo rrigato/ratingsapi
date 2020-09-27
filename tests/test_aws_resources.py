@@ -193,14 +193,6 @@ class AwsDevBuild(unittest.TestCase):
     def test_shows_endpoint_prod(self):
         """tests the shows endpoint where there is production data
 
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
 
         apigw_path_list = []
@@ -255,6 +247,7 @@ class AwsDevBuild(unittest.TestCase):
             "/invocations"
         ))
 
+
     def test_years_not_found(self):
         """Tests 404 is returned for years not found
         """
@@ -269,6 +262,41 @@ class AwsDevBuild(unittest.TestCase):
         )
         
         self.assertEqual(apigw_error_response["status"], 404)
+
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+    def test_years_endpoint_prod(self):
+        """tests the years endpoint where there is production data
+        """
+
+        apigw_path_list = []
+
+
+        '''
+            invoke a test method for valid input
+        '''
+        apigw_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/years/{year}"],
+            httpMethod="GET",
+            pathWithQueryString="/years/2014"
+        )
+
+
+        self.assertEqual(apigw_response["status"], 200)
+
+        ratings_2014 = json.loads(apigw_response["body"])
+        '''
+            should have 674 television ratings from 201
+        '''
+        self.assertGreater(len(ratings_2014), 500)
+
+        '''
+            test structure of random ratings
+        '''
+        self.assertTrue(ratings_2014[100]["TOTAL_VIEWERS"].isnumeric())
+
+        self.assertTrue(ratings_2014[100]["YEAR"].isnumeric())
+
 
     @unittest.skip("Skip until custom domain name is setup for API")
     def test_custom_dns(self):
