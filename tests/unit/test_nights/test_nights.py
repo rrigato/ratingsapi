@@ -47,6 +47,17 @@ class NightsUnitTests(unittest.TestCase):
 
         )
 
+
+        mock_error_response = validate_request_parameters(event={"pathParameters":{"night":"2020/02/01"}})
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
+                "status_code": 404 
+            }
+
+        )        
+
     # @patch("microservices.years.years.get_boto_clients")
     # def test_dynamodb_year_request(self, get_boto_clients_mock):
     #     """tests dynamodb_year_request is called with the correct arguements

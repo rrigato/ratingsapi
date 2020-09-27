@@ -76,7 +76,7 @@ def validate_request_parameters(event):
     except AssertionError:
         logging.info("validate_request_parameters - night parameter invalid")
         error_response = {
-            "message": "Invalid night path parameter, must be numeric",
+            "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
             "status_code": 404 
         }
 
