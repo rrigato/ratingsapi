@@ -61,7 +61,6 @@ class NightsUnitTests(unittest.TestCase):
     @patch("microservices.nights.nights.get_boto_clients")
     def test_dynamodb_night_request(self, get_boto_clients_mock):
         """tests dynamodb_night_request is called with the correct arguements
-
         """
         from microservices.nights.nights import dynamodb_night_request
         from boto3.dynamodb.conditions import Key
@@ -90,39 +89,39 @@ class NightsUnitTests(unittest.TestCase):
             KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(mock_night)
         )
 
-    # @patch("microservices.years.years.get_boto_clients")
-    # def test_dynamodb_year_request_404(self, get_boto_clients_mock):
-    #     """tests dynamodb_year_request for no year match http 404
+    @patch("microservices.nights.nights.get_boto_clients")
+    def test_dynamodb_night_request_404(self, get_boto_clients_mock):
+        """tests dynamodb_night_request for no night match http 404
 
-    #     """
-    #     from microservices.years.years import dynamodb_year_request
-    #     from boto3.dynamodb.conditions import Key
+        """
+        from microservices.nights.nights import dynamodb_night_request
+        from boto3.dynamodb.conditions import Key
 
-    #     mock_dynamodb_resource = MagicMock()
+        mock_dynamodb_resource = MagicMock()
         
-    #     '''
-    #         return None for client, mock for dynamodb table resource
-    #     '''
-    #     get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
+        '''
+            return None for client, mock for dynamodb table resource
+        '''
+        get_boto_clients_mock.return_value = (None, mock_dynamodb_resource)
         
-    #     mock_year = 2010
+        mock_night = "2008-09-27"
 
-    #     mock_dynamodb_resource.query.return_value = {
-    #         "Items": [], 
-    #         "Count": 0, 
-    #         "ScannedCount": 0, 
-    #         "ResponseMetadata": {}
-    #     }
+        mock_dynamodb_resource.query.return_value = {
+            "Items": [], 
+            "Count": 0, 
+            "ScannedCount": 0, 
+            "ResponseMetadata": {}
+        }
 
-    #     error_message, television_ratings = dynamodb_year_request(year=mock_year)
+        error_message, television_ratings = dynamodb_night_request(night=mock_night)
 
-    #     self.assertEqual(error_message, {
-    #         "message": "year: {year} not found".format(
-    #             year=mock_year
-    #             )
-    #         }
-    #     )
-    #     self.assertEqual(television_ratings, [])
+        self.assertEqual(error_message, {
+            "message": "night: {night} not found".format(
+                night=mock_night
+                )
+            }
+        )
+        self.assertEqual(television_ratings, [])
 
     # @patch("microservices.years.years.dynamodb_year_request")
     # def test_main_success(self, dynamodb_year_request_mock):
