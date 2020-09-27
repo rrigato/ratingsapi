@@ -147,6 +147,76 @@ class AwsDevBuild(unittest.TestCase):
         )
         self.assertTrue(apigw_version_stage["tracingEnabled"])
 
+    def test_nights_endpoint(self):
+        """Tests that the night lambda proxy integrations is setup
+
+        """
+        apigw_method = self.apigw_client.get_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/nights/{night}"],
+            httpMethod="GET"
+        )
+
+        '''
+            Test api key is required for lambda proxy and that
+            correct lambda arn is used as a backend
+        '''
+        self.assertTrue(apigw_method["apiKeyRequired"])
+
+        self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+            self.PROJECT_NAME + "-nights-endpoint-" + BUILD_ENVIRONMENT + 
+            "/invocations"
+        ))
+
+
+    def test_nights_not_found(self):
+        """Tests 404 is returned for nights not found
+        """
+        '''
+            invoke a test method for invalid input
+        '''
+        apigw_error_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/nights/{night}"],
+            httpMethod="GET",
+            pathWithQueryString="/nights/2008-09-27"
+        )
+        
+        self.assertEqual(apigw_error_response["status"], 404)
+
+
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+    def test_nights_endpoint_prod(self):
+        """tests the nights endpoint where there is production data
+        """
+
+        apigw_path_list = []
+
+
+        '''
+            invoke a test method for valid input
+        '''
+        apigw_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/nights/{night}"],
+            httpMethod="GET",
+            pathWithQueryString="/nights/2014-01-04"
+        )
+
+
+        self.assertEqual(apigw_response["status"], 200)
+
+        first_night_2014 = json.loads(apigw_response["body"])
+        '''
+            13 television ratings from 2014-01-04
+        '''
+        self.assertEqual(len(first_night_2014), 13)
+        '''
+            test structure of random ratings
+        '''
+        self.assertTrue(first_night_2014[0]["TOTAL_VIEWERS"].isnumeric())
+
+        self.assertTrue(first_night_2014[0]["YEAR"].isnumeric())
 
 
 
@@ -286,7 +356,7 @@ class AwsDevBuild(unittest.TestCase):
 
         ratings_2014 = json.loads(apigw_response["body"])
         '''
-            should have 674 television ratings from 201
+            should have 674 television ratings from 2014
         '''
         self.assertGreater(len(ratings_2014), 500)
 
