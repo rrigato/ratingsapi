@@ -123,22 +123,22 @@ class NightsUnitTests(unittest.TestCase):
         )
         self.assertEqual(television_ratings, [])
 
-    # @patch("microservices.years.years.dynamodb_year_request")
-    # def test_main_success(self, dynamodb_year_request_mock):
-    #     """Tests main function for a successful request
-    #     """
-    #     from microservices.years.years import main
+    @patch("microservices.nights.nights.dynamodb_night_request")
+    def test_main_success(self, dynamodb_night_request_mock):
+        """Tests main function for a successful request
+        """
+        from microservices.nights.nights import main
 
-    #     dynamodb_year_request_mock.return_value = (None, {})
+        dynamodb_night_request_mock.return_value = (None, {})
 
-    #     main_success_response = main(
-    #         event=self.years_proxy_event
-    #     )
+        main_success_response = main(
+            event=self.nights_proxy_event
+        )
 
 
-    #     dynamodb_year_request_mock.assert_called_once_with(
-    #         year=self.years_proxy_event["pathParameters"]["year"]
-    #     )
+        dynamodb_night_request_mock.assert_called_once_with(
+            night=self.nights_proxy_event["pathParameters"]["night"]
+        )
 
 
     # @patch("microservices.years.years.dynamodb_year_request")
