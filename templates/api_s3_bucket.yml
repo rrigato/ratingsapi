@@ -209,6 +209,87 @@ Resources:
         Value: !Ref projectName
 
 
+  ratingsSearchResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ratingsApiGw
+      ParentId: !GetAtt ratingsApiGw.RootResourceId
+      PathPart: 'search'
+
+  ratingsSearchPermission: 
+    Type: AWS::Lambda::Permission 
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt searchEndpoint.Arn
+      Principal: apigateway.amazonaws.com
+      #allow any stage to perform http get on the /search path
+      SourceArn: !Join [ '', [!Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:',
+        !Ref ratingsApiGw, '/*/GET/search*']]
+
+  ratingsSearchProxyMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      ApiKeyRequired: True
+      RestApiId: !Ref ratingsApiGw
+      ResourceId: !Ref ratingsSearchResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${searchEndpoint.Arn}/invocations
+
+
+
+  searchEndpoint:
+    Type: AWS::Serverless::Function
+    Properties:                               
+      Description: |
+        Lambda function to handle search endpoint
+      #passed to os.environ for lambda python script
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref dynamoDbTableName
+
+      FunctionName: !Sub '${projectName}-search-endpoint-${environPrefix}'
+      Handler: index.handler
+
+      #Policies to include in the lambda basic execution role
+      #created by SAM
+      Policies:
+        Version: '2012-10-17'
+        Statement: 
+          #dynamodb permissions     
+          - Sid: !Sub '${projectName}LambdaDynamoDbAllow'
+            Effect: Allow
+            Action:
+              - dynamodb:ListTables
+              - dynamodb:GetItem
+              - dynamodb:Query
+
+            Resource:
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}'  
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/SHOW_ACCESS'     
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${dynamoDbTableName}/index/YEAR_ACCESS'
+      Runtime: python3.7
+      Tracing: Active
+      #60 second timeout
+      Timeout: 5
+      #Default code that will be updated by
+      #CodeBuild Job
+      InlineCode: |
+        def handler(event, context):
+          print("Hello, world!")
+    Tags:
+      -
+        Key: keep
+        Value: 'yes'
+      -
+        Key: source
+        Value: !Ref projectName
+
+
   ratingsShowsResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
