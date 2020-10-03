@@ -73,12 +73,12 @@ def validate_request_parameters(event):
         start_date_valid, start_date = clean_query_parameter_string(
             event["queryStringParameters"]["startDate"]
         )
-        logging.info("validate_request_parameters - startDate " + start_date)
+        logging.info("validate_request_parameters - startDate " + str(start_date))
 
         end_date_valid, end_date = clean_query_parameter_string(
             event["queryStringParameters"]["endDate"]
         )
-        logging.info("validate_request_parameters - endDate " + end_date)
+        logging.info("validate_request_parameters - endDate " + str(end_date))
 
         assert start_date_valid is True, (
             "startDate parameter not in YYYY-MM-DD format"

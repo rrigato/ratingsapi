@@ -1,4 +1,4 @@
-
+from copy import deepcopy
 from datetime import datetime
 from decimal import Decimal
 from unittest.mock import MagicMock
@@ -55,18 +55,20 @@ class SearchUnitTests(unittest.TestCase):
         self.assertEqual(
             mock_error_response,
             {
-                "message": "Path parameter night is required",
+                "message": "Query parameters startDate and endDate are required",
                 "status_code": 400 
             }
 
         )
 
+        invalid_search_request = deepcopy(self.search_proxy_event)
 
-        mock_error_response = validate_request_parameters(event={"pathParameters":{"night":"2020/02/01"}})
+        invalid_search_request["queryStringParameters"]["startDate"] = "2020-03-01"
+        mock_error_response = validate_request_parameters(event=invalid_search_request)
         self.assertEqual(
             mock_error_response,
             {
-                "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
+                "message": "startDate must be less than endDate",
                 "status_code": 404 
             }
 
