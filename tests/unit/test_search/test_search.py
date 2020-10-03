@@ -247,6 +247,19 @@ class SearchUnitTests(unittest.TestCase):
         self.assertEqual(len(search_criteria_ratings), 8)
 
 
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 12, 30),
+            end_date=datetime(2019, 12, 30)
+        )
+        self.assertEqual(search_criteria_ratings, [])
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 12, 15),
+            end_date=datetime(2019, 12, 15)
+        )
+        self.assertEqual(len(search_criteria_ratings), 2)
     
     def test_filter_ratings_start_date(self):
         """Filter the results when the start date is filtered on
