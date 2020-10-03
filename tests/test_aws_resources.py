@@ -255,7 +255,7 @@ class AwsDevBuild(unittest.TestCase):
         
         self.assertEqual(apigw_error_response["status"], 404)
 
-    @unittest.skip("Skipping for now")
+
     @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
     def test_search_endpoint_prod(self):
         """tests the seach endpoint where there is production data
@@ -279,16 +279,23 @@ class AwsDevBuild(unittest.TestCase):
 
         ratings_response = json.loads(apigw_response["body"])
         '''
-            should have 
+            should have 384 ratings for 2012
         '''
-        self.assertGreater(ratings_response, 500)
+        self.assertEqual(len(ratings_response["ratings"]), 384)
+
+        self.assertEqual(
+            ratings_response["next"], 
+            "/search?startDate=2013-01-01&endDate=2013-05-25"
+        )
 
         '''
             test structure of random ratings
         '''
-        self.assertTrue(ratings_2014[200]["TOTAL_VIEWERS"].isnumeric())
+        self.assertTrue(ratings_response["ratings"][200]["TOTAL_VIEWERS"].isnumeric())
 
-        self.assertTrue(ratings_2014[200]["YEAR"].isnumeric())
+        self.assertTrue(ratings_response["ratings"][200]["YEAR"].isnumeric())
+
+
 
 
 
