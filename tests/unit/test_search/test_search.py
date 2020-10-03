@@ -61,6 +61,34 @@ class SearchUnitTests(unittest.TestCase):
 
         )
 
+
+
+        invalid_search_request["queryStringParameters"]["startDate"] = "2020-04-01"
+        invalid_search_request["queryStringParameters"].pop("endDate")
+        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Query parameters startDate and endDate are required",
+                "status_code": 400 
+            }
+
+        )  
+
+        invalid_search_request["queryStringParameters"]["endDate"] = "2020-04-01"
+        invalid_search_request["queryStringParameters"].pop("startDate")
+        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Query parameters startDate and endDate are required",
+                "status_code": 400 
+            }
+
+        )  
+
+
+
         invalid_search_request = deepcopy(self.search_proxy_event)
 
         invalid_search_request["queryStringParameters"]["startDate"] = "2020-03-01"
@@ -73,6 +101,32 @@ class SearchUnitTests(unittest.TestCase):
             }
 
         )        
+
+        invalid_search_request["queryStringParameters"]["endDate"] = "2020/04/01"
+        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "endDate parameter not in YYYY-MM-DD format",
+                "status_code": 404 
+            }
+
+        )    
+
+
+
+        invalid_search_request["queryStringParameters"]["startDate"] = "2020/04/01"
+        invalid_search_request["queryStringParameters"]["endDate"] = "2020-04-01"
+        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "startDate parameter not in YYYY-MM-DD format",
+                "status_code": 404 
+            }
+
+        )    
+
 
     # @patch("microservices.nights.nights.get_boto_clients")
     # def test_dynamodb_night_request(self, get_boto_clients_mock):
