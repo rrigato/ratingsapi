@@ -235,6 +235,34 @@ def dynamodb_year_request(year):
     return(error_message, show_ratings)
 
 
+
+def filter_ratings(ratings_query_response, start_date, end_date):
+    """filters a year of television ratings to be between the start_date
+    and end_date parameters
+
+        Parameters
+        ----------
+        ratings_query_response : list
+            list of dict where each dict is a television show
+            rating
+
+        start_date : datetime.datetime
+            converted startDate query parameter 
+
+        end_date : datetime.datetime
+            converted endDate query parameter
+
+        Returns
+        -------
+        filtered_show_ratings : list
+            list of dict where the ratings_occurred_on is greater than or
+            equal to start_date and less than or equal to end date
+
+        Raises
+        ------
+    """
+    pass
+
 def main(event):
     """Entry point into the script
 

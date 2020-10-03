@@ -247,12 +247,12 @@ class SearchUnitTests(unittest.TestCase):
         self.assertEqual(len(search_criteria_ratings), 8)
 
 
-    @patch("microservices.years.years.get_boto_clients")
+    @patch("microservices.search.search.get_boto_clients")
     def test_dynamodb_year_request(self, get_boto_clients_mock):
         """tests dynamodb_year_request is called with the correct arguements
 
         """
-        from microservices.years.years import dynamodb_year_request
+        from microservices.search.search import dynamodb_year_request
         from boto3.dynamodb.conditions import Key
 
         mock_dynamodb_resource = MagicMock()
@@ -280,12 +280,12 @@ class SearchUnitTests(unittest.TestCase):
             KeyConditionExpression=Key("YEAR").eq(int(mock_year))
         )
 
-    @patch("microservices.years.years.get_boto_clients")
+    @patch("microservices.search.search.get_boto_clients")
     def test_dynamodb_year_request_404(self, get_boto_clients_mock):
         """tests dynamodb_year_request for no year match http 404
 
         """
-        from microservices.years.years import dynamodb_year_request
+        from microservices.search.search import dynamodb_year_request
         from boto3.dynamodb.conditions import Key
 
         mock_dynamodb_resource = MagicMock()
