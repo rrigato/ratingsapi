@@ -400,50 +400,50 @@ class SearchUnitTests(unittest.TestCase):
         )
 
 
-    # @patch("microservices.years.years.dynamodb_year_request")
-    # def test_main_error(self, dynamodb_year_request_mock):
-    #     """Tests main function with an error response
-    #     """
-    #     from microservices.years.years import main
+    @patch("microservices.search.search.dynamodb_year_request")
+    def test_main_error(self, dynamodb_year_request_mock):
+        """Tests main function with an error response
+        """
+        from microservices.search.search import main
 
-    #     dynamodb_year_request_mock.return_value = (None, {})
+        dynamodb_year_request_mock.return_value = (None, {})
 
-    #     main_failure_response = main(
-    #         event={}
-    #     )
-
-
-    #     self.assertEqual(json.loads(main_failure_response["body"]),
-    #         {
-    #             "message": "Path parameter year is required"
-    #         }
-    #     )
-    #     self.assertEqual(main_failure_response["statusCode"], 400)
+        main_failure_response = main(
+            event={}
+        )
 
 
+        self.assertEqual(json.loads(main_failure_response["body"]),
+            {
+                "message": "Query parameters startDate and endDate are required"
+            }
+        )
+        self.assertEqual(main_failure_response["statusCode"], 400)
 
 
-    # @patch("logging.getLogger")
-    # @patch("microservices.years.years.main")
-    # def test_lambda_handler_event(self, main_mock, 
-    #     getLogger_mock):
-    #     """Tests passing sample event to lambda_handler
-    #     """
-    #     from microservices.years.years import lambda_handler
 
-    #     lambda_handler(
-    #         event=self.years_proxy_event,
-    #         context={}
-    #     )
 
-    #     self.assertEqual(
-    #         getLogger_mock.call_count,
-    #         1
-    #     )
+    @patch("logging.getLogger")
+    @patch("microservices.search.search.main")
+    def test_lambda_handler_event(self, main_mock, 
+        getLogger_mock):
+        """Tests passing sample event to lambda_handler
+        """
+        from microservices.search.search import lambda_handler
 
-    #     '''
-    #         Testing call count and args passed
-    #     '''
-    #     main_mock.assert_called_once_with(
-    #         event=self.years_proxy_event
-    #     )
+        lambda_handler(
+            event=self.search_proxy_event,
+            context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
+        )
+
+        '''
+            Testing call count and args passed
+        '''
+        main_mock.assert_called_once_with(
+            event=self.search_proxy_event
+        )
