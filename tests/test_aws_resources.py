@@ -240,8 +240,9 @@ class AwsDevBuild(unittest.TestCase):
         ))
 
     @unittest.skip("Skipping for now")
-    def test_years_not_found(self):
-        """Tests 404 is returned for years not found
+    def test_search_not_found(self):
+        """Tests that 404 is returned if the startDate is greater than the
+            endDate
         """
         '''
             invoke a test method for invalid input
@@ -250,7 +251,7 @@ class AwsDevBuild(unittest.TestCase):
             restApiId=self.restapi_id,
             resourceId=self.path_to_resource_id["/years/{year}"],
             httpMethod="GET",
-            pathWithQueryString="/years/2009"
+            pathWithQueryString="/search?startDate=2"
         )
         
         self.assertEqual(apigw_error_response["status"], 404)

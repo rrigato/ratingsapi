@@ -324,8 +324,8 @@ def main(event):
         )
 
         paginated_response = {
-            "ratings": filtered_show_ratings,
-            "next": next_url
+            "next": next_url,
+            "ratings": filtered_show_ratings
         }
 
         logging.info("main - returning year_access_query" + str(len(year_access_query)))
