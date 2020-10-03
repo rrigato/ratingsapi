@@ -4,6 +4,7 @@ import logging
 import os
 
 from boto3.dynamodb.conditions import Key
+from copy import deepcopy
 from datetime import datetime
 from microlib.microlib import get_boto_clients
 from microlib.microlib import lambda_proxy_response
@@ -261,7 +262,30 @@ def filter_ratings(ratings_query_response, start_date, end_date):
         Raises
         ------
     """
-    pass
+    if ratings_query_response == []:
+        logging.info("filter_ratings - no ratings to filter")
+
+        return(ratings_query_response)
+    
+    
+    filtered_show_ratings = []
+    for individual_ratings in ratings_query_response:
+        ratings_date = datetime.strptime(individual_ratings["RATINGS_OCCURRED_ON"], "%Y-%m-%d")
+        if (
+                (ratings_date < start_date)
+            or
+                (ratings_date > end_date)
+            ):
+            logging.info("filter_ratings - removing {ratings_occurred_on}".format(
+                ratings_occurred_on=individual_ratings["RATINGS_OCCURRED_ON"]
+            ))
+            if end_date ==datetime(2019, 12, 30):
+                import pdb; pdb.set_trace()            
+        else:
+            filtered_show_ratings.append(individual_ratings)
+
+
+    return(filtered_show_ratings)
 
 def main(event):
     """Entry point into the script
