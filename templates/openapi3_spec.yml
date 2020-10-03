@@ -230,7 +230,7 @@ paths:
 
         The actual response returned from the api will have all shows on 2019-12-21 and 2019-12-28
         but the below response was truncated to only the first shows for brevity (AKA - developer laziness).
-        The next url key will not be provided in the response if the 
+        The next url key will be null in the response if the 
         startDate and endDate do not cover overlapping years
 
       parameters:
