@@ -118,6 +118,33 @@ def validate_request_parameters(event):
 
     return(error_response, start_date, end_date)
 
+
+def get_next_url(night):
+    """Returns the next_url depending on if the start_date and end_date
+        span multiple years
+
+        Parameters
+        ----------
+        start_date : datetime.datetime
+            converted startDate query parameter 
+
+        end_date : datetime.datetime
+            converted endDate query parameter
+
+        Returns
+        -------
+        next_url : str
+            path and query parameters for the next paginated api call
+
+        Raises
+        ------
+    """
+    next_url = None
+    if end_date.year > datetime.now().year:
+        logging.info("get_next_url - end_date is in the future")
+        return(next_url)
+
+
 def dynamodb_night_request(night):
     """Query using the night_ACCESS GSI
 

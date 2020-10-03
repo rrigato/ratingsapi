@@ -178,10 +178,18 @@ class SearchUnitTests(unittest.TestCase):
 
 
         self.assertEqual(
-            "/search?startDate=2021-01-01&endDate=2021-12-11",
+            "/search?startDate=2018-4-14&endDate=2020-11-20",
             get_next_url(
-                start_date=datetime(2020, 11, 20),
-                end_date=datetime(2021, 12, 11)
+                start_date=datetime(2018, 4, 14),
+                end_date=datetime(2020, 11, 20)
+            )
+        )
+
+
+        self.assertIsNone(
+            get_next_url(
+                start_date=datetime.now(),
+                end_date=datetime.now() - timedelta(days=367)
             )
         )
 
