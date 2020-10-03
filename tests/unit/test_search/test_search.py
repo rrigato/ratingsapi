@@ -49,9 +49,26 @@ class SearchUnitTests(unittest.TestCase):
         """
         from microservices.search.search import validate_request_parameters
         
-        self.assertIsNone(validate_request_parameters(event=self.search_proxy_event))
+        mock_error_response, start_date, end_date =  validate_request_parameters(
+            event=self.search_proxy_event
+        )
+        self.assertIsNone(mock_error_response)
 
-        mock_error_response = validate_request_parameters(event={})
+        self.assertEqual(
+            start_date, 
+            datetime.strptime(
+                self.search_proxy_event["queryStringParameters"]["startDate"], "%Y-%m-%d"
+            )
+        )
+
+        self.assertEqual(
+            end_date, 
+            datetime.strptime(
+                self.search_proxy_event["queryStringParameters"]["endDate"], "%Y-%m-%d"
+            )
+        )
+
+        mock_error_response, start_date, end_date = validate_request_parameters(event={})
         self.assertEqual(
             mock_error_response,
             {
@@ -62,10 +79,13 @@ class SearchUnitTests(unittest.TestCase):
         )
 
 
+        invalid_search_request = deepcopy(self.search_proxy_event)
 
         invalid_search_request["queryStringParameters"]["startDate"] = "2020-04-01"
         invalid_search_request["queryStringParameters"].pop("endDate")
-        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
         self.assertEqual(
             mock_error_response,
             {
@@ -77,7 +97,9 @@ class SearchUnitTests(unittest.TestCase):
 
         invalid_search_request["queryStringParameters"]["endDate"] = "2020-04-01"
         invalid_search_request["queryStringParameters"].pop("startDate")
-        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
         self.assertEqual(
             mock_error_response,
             {
@@ -92,7 +114,9 @@ class SearchUnitTests(unittest.TestCase):
         invalid_search_request = deepcopy(self.search_proxy_event)
 
         invalid_search_request["queryStringParameters"]["startDate"] = "2020-03-01"
-        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
         self.assertEqual(
             mock_error_response,
             {
@@ -103,7 +127,9 @@ class SearchUnitTests(unittest.TestCase):
         )        
 
         invalid_search_request["queryStringParameters"]["endDate"] = "2020/04/01"
-        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
         self.assertEqual(
             mock_error_response,
             {
@@ -117,7 +143,9 @@ class SearchUnitTests(unittest.TestCase):
 
         invalid_search_request["queryStringParameters"]["startDate"] = "2020/04/01"
         invalid_search_request["queryStringParameters"]["endDate"] = "2020-04-01"
-        mock_error_response = validate_request_parameters(event=invalid_search_request)
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
         self.assertEqual(
             mock_error_response,
             {
@@ -127,7 +155,9 @@ class SearchUnitTests(unittest.TestCase):
 
         )    
 
-
+    def test_get_next_url(self):
+        pass
+        # get_next_url
     # @patch("microservices.nights.nights.get_boto_clients")
     # def test_dynamodb_night_request(self, get_boto_clients_mock):
     #     """tests dynamodb_night_request is called with the correct arguements

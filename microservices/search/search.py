@@ -62,11 +62,18 @@ def validate_request_parameters(event):
             keys status_code and message detailing the error in
             the request
 
+        start_date : datetime.datetime
+            converted startDate query parameter or None
+
+        end_date : datetime.datetime
+            converted endDate query parameter or None
+
         Raises
         ------
     """
     error_response = None
-
+    start_date = None
+    end_date = None
          
     try:
         
@@ -109,7 +116,7 @@ def validate_request_parameters(event):
             "status_code": 404 
         }
 
-    return(error_response)
+    return(error_response, start_date, end_date)
 
 def dynamodb_night_request(night):
     """Query using the night_ACCESS GSI
