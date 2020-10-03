@@ -382,13 +382,16 @@ class SearchUnitTests(unittest.TestCase):
         )
         self.assertEqual(television_ratings, [])
 
+    @patch("microservices.search.search.filter_ratings")
     @patch("microservices.search.search.dynamodb_year_request")
-    def test_main_success(self, dynamodb_year_request_mock):
+    def test_main_success(self, dynamodb_year_request_mock, filter_ratings_mock):
         """Tests main function for a successful request
         """
         from microservices.search.search import main
 
-        dynamodb_year_request_mock.return_value = (None, {})
+        dynamodb_year_request_mock.return_value = (None, [])
+
+        filter_ratings_mock.return_value = []
 
         main_success_response = main(
             event=self.search_proxy_event
@@ -399,6 +402,15 @@ class SearchUnitTests(unittest.TestCase):
             year=int(self.search_proxy_event["queryStringParameters"]["startDate"][0:4])
         )
 
+        filter_ratings_mock.assert_called_once_with(
+            ratings_query_response=[],
+            start_date=datetime.strptime(
+                self.search_proxy_event["queryStringParameters"]["startDate"], "%Y-%m-%d"
+            ),
+            end_date=datetime.strptime(
+                self.search_proxy_event["queryStringParameters"]["endDate"], "%Y-%m-%d"
+            ),
+        )
 
     @patch("microservices.search.search.dynamodb_year_request")
     def test_main_error(self, dynamodb_year_request_mock):

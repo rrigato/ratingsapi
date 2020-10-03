@@ -316,11 +316,18 @@ def main(event):
     )
 
     if error_message is None:
+        filtered_show_ratings = filter_ratings(
+            ratings_query_response=year_access_query,
+            start_date=start_date,
+            end_date=end_date
+        )
         logging.info("main - returning year_access_query" + str(len(year_access_query)))
         return(
-            lambda_proxy_response(status_code=200, headers_dict={}, 
-            response_body=year_access_query)
-            
+            lambda_proxy_response(
+                status_code=200, 
+                headers_dict={}, 
+                response_body=filtered_show_ratings
+            ) 
         )
     else:
         logging.info("main - error_message " + str(error_message))
