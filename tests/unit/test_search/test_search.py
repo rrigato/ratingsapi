@@ -17,8 +17,8 @@ class SearchUnitTests(unittest.TestCase):
     def setUpClass(cls):
         """Unitest function that is run once for the class
         """
-        with open("tests/events/nights_proxy_event.json", "r") as lambda_event:
-            cls.nights_proxy_event = json.load(lambda_event)
+        with open("tests/events/search_proxy_event.json", "r") as lambda_event:
+            cls.search_proxy_event = json.load(lambda_event)
 
     def test_clean_query_parameter_string(self):
         """validates clean_night_path_parameter logic
