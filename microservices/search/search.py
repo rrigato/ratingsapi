@@ -316,17 +316,24 @@ def main(event):
     )
 
     if error_message is None:
+        next_url = get_next_url(start_date=start_date, end_date=end_date)
         filtered_show_ratings = filter_ratings(
             ratings_query_response=year_access_query,
             start_date=start_date,
             end_date=end_date
         )
+
+        paginated_response = {
+            "ratings": filtered_show_ratings,
+            "next_url": next_url
+        }
+        
         logging.info("main - returning year_access_query" + str(len(year_access_query)))
         return(
             lambda_proxy_response(
                 status_code=200, 
                 headers_dict={}, 
-                response_body=filtered_show_ratings
+                response_body=paginated_response
             ) 
         )
     else:

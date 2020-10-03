@@ -412,6 +412,14 @@ class SearchUnitTests(unittest.TestCase):
             ),
         )
 
+        self.assertEqual(
+            json.loads(main_success_response["body"]),
+            {
+                "ratings": [],
+                "next_url": None
+            }
+        )
+
     @patch("microservices.search.search.dynamodb_year_request")
     def test_main_error(self, dynamodb_year_request_mock):
         """Tests main function with an error response

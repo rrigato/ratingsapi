@@ -218,6 +218,78 @@ class AwsDevBuild(unittest.TestCase):
 
         self.assertTrue(first_night_2014[0]["YEAR"].isnumeric())
 
+    @unittest.skip("skipping for now")
+    def test_years_endpoint(self):
+        """Tests that the year lambda proxy integrations is setup
+
+        """
+        apigw_method = self.apigw_client.get_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/years/{year}"],
+            httpMethod="GET"
+        )
+
+        '''
+            Test api key is required for lambda proxy and that
+            correct lambda arn is used as a backend
+        '''
+        self.assertTrue(apigw_method["apiKeyRequired"])
+
+        self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
+            self.PROJECT_NAME + "-years-endpoint-" + BUILD_ENVIRONMENT + 
+            "/invocations"
+        ))
+
+    @unittest.skip("Skipping for now")
+    def test_years_not_found(self):
+        """Tests 404 is returned for years not found
+        """
+        '''
+            invoke a test method for invalid input
+        '''
+        apigw_error_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/years/{year}"],
+            httpMethod="GET",
+            pathWithQueryString="/years/2009"
+        )
+        
+        self.assertEqual(apigw_error_response["status"], 404)
+
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+    def test_search_endpoint_prod(self):
+        """tests the seach endpoint where there is production data
+        """
+
+        apigw_path_list = []
+
+
+        '''
+            invoke a test method for valid input
+        '''
+        apigw_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/search"],
+            httpMethod="GET",
+            pathWithQueryString="/search?startDate=2012-05-26&endDate=2013-05-25"
+        )
+
+
+        self.assertEqual(apigw_response["status"], 200)
+
+        ratings_response = json.loads(apigw_response["body"])
+        '''
+            should have 
+        '''
+        self.assertGreater(ratings_response, 500)
+
+        '''
+            test structure of random ratings
+        '''
+        self.assertTrue(ratings_2014[200]["TOTAL_VIEWERS"].isnumeric())
+
+        self.assertTrue(ratings_2014[200]["YEAR"].isnumeric())
+
 
 
     def test_shows_endpoint(self):
