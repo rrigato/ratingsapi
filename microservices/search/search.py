@@ -140,6 +140,7 @@ def get_next_url(start_date, end_date):
         ------
     """
     request_path = "/search?startDate={new_start_date}&endDate={same_end_date}"
+    
     if end_date.year > datetime.now().year:
         logging.info("get_next_url - end_date is in the future")
         return(None)

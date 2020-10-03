@@ -189,7 +189,7 @@ class SearchUnitTests(unittest.TestCase):
         self.assertIsNone(
             get_next_url(
                 start_date=datetime.now(),
-                end_date=datetime.now() + timedelta(days=367)
+                end_date=datetime(datetime.now().year + 1, 6, 25 )
             )
         )
 
