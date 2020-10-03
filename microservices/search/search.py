@@ -66,9 +66,26 @@ def validate_request_parameters(event):
         ------
     """
     error_response = None
+
+         
     try:
-        assert clean_query_parameter_string(event["pathParameters"]["night"]) is True, (
-            "night parameter invalid"
+        
+        start_date_valid, start_date = clean_query_parameter_string(
+            event["queryStringParameters"]["startDate"]
+        )
+        logging.info("validate_request_parameters - startDate " + start_date)
+
+        end_date_valid, end_date = clean_query_parameter_string(
+            event["queryStringParameters"]["endDate"]
+        )
+        logging.info("validate_request_parameters - endDate " + end_date)
+
+        assert start_date_valid is True, (
+            "end_date_valid parameter invalid"
+        )
+
+        assert end_date_valid is True, (
+            "end_date_valid parameter invalid"
         )
         logging.info("validate_request_parameters - night parameter valid")
 

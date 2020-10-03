@@ -44,33 +44,33 @@ class SearchUnitTests(unittest.TestCase):
         self.assertEqual(type(query_datetime), type(datetime.now()))
 
 
-    # def test_validate_request_parameters(self):
-    #     """validates fail early on bad request paramters
-    #     """
-    #     from microservices.nights.nights import validate_request_parameters
+    def test_validate_request_parameters(self):
+        """validates fail early on bad request paramters
+        """
+        from microservices.search.search import validate_request_parameters
         
-    #     self.assertIsNone(validate_request_parameters(event=self.nights_proxy_event))
+        self.assertIsNone(validate_request_parameters(event=self.search_proxy_event))
 
-    #     mock_error_response = validate_request_parameters(event={})
-    #     self.assertEqual(
-    #         mock_error_response,
-    #         {
-    #             "message": "Path parameter night is required",
-    #             "status_code": 400 
-    #         }
+        mock_error_response = validate_request_parameters(event={})
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Path parameter night is required",
+                "status_code": 400 
+            }
 
-    #     )
+        )
 
 
-    #     mock_error_response = validate_request_parameters(event={"pathParameters":{"night":"2020/02/01"}})
-    #     self.assertEqual(
-    #         mock_error_response,
-    #         {
-    #             "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
-    #             "status_code": 404 
-    #         }
+        mock_error_response = validate_request_parameters(event={"pathParameters":{"night":"2020/02/01"}})
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
+                "status_code": 404 
+            }
 
-    #     )        
+        )        
 
     # @patch("microservices.nights.nights.get_boto_clients")
     # def test_dynamodb_night_request(self, get_boto_clients_mock):
