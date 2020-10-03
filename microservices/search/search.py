@@ -300,7 +300,7 @@ def main(event):
         Raises
         ------
     """
-    error_response = validate_request_parameters(event=event)
+    error_response, start_date, end_date = validate_request_parameters(event=event)
 
     if error_response is not None:
         status_code = error_response.pop("status_code")
@@ -312,7 +312,7 @@ def main(event):
 
 
     error_message, year_access_query = dynamodb_year_request(
-        year=event["pathParameters"]["year"]
+        year=start_date.year
     )
 
     if error_message is None:
