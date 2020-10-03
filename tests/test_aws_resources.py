@@ -239,7 +239,6 @@ class AwsDevBuild(unittest.TestCase):
             "/invocations"
         ))
 
-    @unittest.skip("Skipping for now")
     def test_search_not_found(self):
         """Tests that 404 is returned if the startDate is greater than the
             endDate
@@ -249,9 +248,9 @@ class AwsDevBuild(unittest.TestCase):
         '''
         apigw_error_response = self.apigw_client.test_invoke_method(
             restApiId=self.restapi_id,
-            resourceId=self.path_to_resource_id["/years/{year}"],
+            resourceId=self.path_to_resource_id["/search"],
             httpMethod="GET",
-            pathWithQueryString="/search?startDate=2"
+            pathWithQueryString="/search?startDate=2015-9-24&endDate=2015-9-8"
         )
         
         self.assertEqual(apigw_error_response["status"], 404)
