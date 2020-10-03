@@ -120,7 +120,7 @@ class SearchUnitTests(unittest.TestCase):
         self.assertEqual(
             mock_error_response,
             {
-                "message": "startDate must be less than endDate",
+                "message": "startDate must be less than or equal to endDate",
                 "status_code": 404 
             }
 

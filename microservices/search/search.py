@@ -98,8 +98,8 @@ def validate_request_parameters(event):
         logging.info("validate_request_parameters - query parameters valid dates")
 
 
-        assert start_date < end_date, (
-            "startDate must be less than endDate"
+        assert start_date <= end_date, (
+            "startDate must be less than or equal to endDate"
         )
 
     except KeyError:
@@ -139,11 +139,28 @@ def get_next_url(night):
         Raises
         ------
     """
-    next_url = None
-    if end_date.year > datetime.now().year:
+    request_path = "/search?startDate={new_start_date}&endDate={same_end_date}"
+    if end_date.year >= datetime.now().year:
         logging.info("get_next_url - end_date is in the future")
-        return(next_url)
+        return(None)
 
+    if end_date.year == start_date.year:
+        logging.info("get_next_url - start_date == end_date")
+        return(None)
+
+    new_start_date = datetime(start_date.year + 1, 1, 1)
+
+    ''' 
+        First day of the next year
+    '''
+    next_url = request_path.format(
+        new_start_date= datetime.strftime(new_start_date, "%Y-%m-%d"),
+        same_end_date= datetime.strftime(end_date, "%Y-%m-%d"),
+
+    )
+    logging.info("get_next_url - request_path " + next_url)
+    
+    return(next_url)
 
 def dynamodb_night_request(night):
     """Query using the night_ACCESS GSI
