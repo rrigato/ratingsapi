@@ -279,8 +279,7 @@ def filter_ratings(ratings_query_response, start_date, end_date):
             logging.info("filter_ratings - removing {ratings_occurred_on}".format(
                 ratings_occurred_on=individual_ratings["RATINGS_OCCURRED_ON"]
             ))
-            if end_date ==datetime(2019, 12, 30):
-                import pdb; pdb.set_trace()            
+        
         else:
             filtered_show_ratings.append(individual_ratings)
 

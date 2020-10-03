@@ -195,8 +195,7 @@ class SearchUnitTests(unittest.TestCase):
 
     
     def test_filter_ratings_end_date(self):
-        """Filter the results when the end date is before the 
-            end of the year
+        """Filter the results when the end date is filtered on
         """
         from microservices.search.search import filter_ratings
         MOCK_RATINGS_DATA = [
@@ -246,6 +245,61 @@ class SearchUnitTests(unittest.TestCase):
             end_date=datetime(2019, 12, 30)
         )
         self.assertEqual(len(search_criteria_ratings), 8)
+
+
+    
+    def test_filter_ratings_start_date(self):
+        """Filter the results when the start date is filtered on
+        """
+        from microservices.search.search import filter_ratings
+        MOCK_RATINGS_DATA = [
+            {
+                "RATINGS_OCCURRED_ON": "2013-02-02"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-02-02"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-02-09"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-02-09"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-02-02"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-02-02"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-08-24"
+            },{
+                "RATINGS_OCCURRED_ON": "2013-01-05"
+            }
+        ]
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response=deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2013, 1, 1),
+            end_date=datetime(2019, 12, 22)
+        )
+
+        self.assertEqual(len(search_criteria_ratings), len(MOCK_RATINGS_DATA))
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response=deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2013, 2, 3),
+            end_date=datetime(2019, 12, 23)
+        )
+        self.assertEqual(len(search_criteria_ratings), 3)
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response=deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2013, 2, 2),
+            end_date=datetime(2019, 12, 21)
+        )
+        self.assertEqual(len(search_criteria_ratings), 7)
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2013, 8, 21),
+            end_date=datetime(2019, 12, 30)
+        )
+        self.assertEqual(len(search_criteria_ratings), 1)
+
 
 
     @patch("microservices.search.search.get_boto_clients")
