@@ -254,7 +254,7 @@ paths:
                     type: string
                     description: Not present if pagination is not required
                     example:
-                      /v1/search?startDate=2020-01-04&endDate=2020-06-13
+                      /search?startDate=2020-01-04&endDate=2020-06-13
                   ratings:
                     type: array
                     items:

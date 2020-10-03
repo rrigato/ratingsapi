@@ -416,7 +416,7 @@ class SearchUnitTests(unittest.TestCase):
             json.loads(main_success_response["body"]),
             {
                 "ratings": [],
-                "next_url": None
+                "next": None
             }
         )
 

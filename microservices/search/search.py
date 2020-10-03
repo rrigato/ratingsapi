@@ -325,9 +325,9 @@ def main(event):
 
         paginated_response = {
             "ratings": filtered_show_ratings,
-            "next_url": next_url
+            "next": next_url
         }
-        
+
         logging.info("main - returning year_access_query" + str(len(year_access_query)))
         return(
             lambda_proxy_response(
