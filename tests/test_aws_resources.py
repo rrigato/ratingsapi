@@ -296,7 +296,44 @@ class AwsDevBuild(unittest.TestCase):
         self.assertTrue(ratings_response["ratings"][200]["YEAR"].isnumeric())
 
 
+    @unittest.skipIf(BUILD_ENVIRONMENT != "prod", "Skipping when there is no prod ratings data")
+    def test_search_matches_nights(self):
+        """tests the seach endpoint matches nights when the startDate is
+        equal to the endDate is equal to the night requested
+        """
+        '''
+            invoke a test method for valid input
+        '''
+        apigw_search_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/search"],
+            httpMethod="GET",
+            pathWithQueryString="/search?startDate=2019-10-26&endDate=2019-10-26"
+        )
 
+        ratings_search_response = json.loads(apigw_search_response["body"])
+
+        apigw_nights_response = self.apigw_client.test_invoke_method(
+            restApiId=self.restapi_id,
+            resourceId=self.path_to_resource_id["/nights/{night}"],
+            httpMethod="GET",
+            pathWithQueryString="/nights/2019-10-26"
+        )
+
+        nights_search_response = json.loads(apigw_nights_response["body"])
+        
+        
+        self.assertIsNone(ratings_search_response["next"])
+        self.assertEqual(
+            len(ratings_search_response["ratings"]), 
+            len(nights_search_response)
+        )
+
+        self.assertEqual(
+            len(ratings_search_response["ratings"]), 
+            11
+        )
+        
 
 
     def test_shows_endpoint(self):
