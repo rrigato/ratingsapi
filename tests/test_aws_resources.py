@@ -218,14 +218,13 @@ class AwsDevBuild(unittest.TestCase):
 
         self.assertTrue(first_night_2014[0]["YEAR"].isnumeric())
 
-    @unittest.skip("skipping for now")
-    def test_years_endpoint(self):
-        """Tests that the year lambda proxy integrations is setup
+    def test_search_endpoint(self):
+        """Tests that the search integrations is setup
 
         """
         apigw_method = self.apigw_client.get_method(
             restApiId=self.restapi_id,
-            resourceId=self.path_to_resource_id["/years/{year}"],
+            resourceId=self.path_to_resource_id["/search"],
             httpMethod="GET"
         )
 
@@ -236,7 +235,7 @@ class AwsDevBuild(unittest.TestCase):
         self.assertTrue(apigw_method["apiKeyRequired"])
 
         self.assertTrue(apigw_method["methodIntegration"]["uri"].endswith(
-            self.PROJECT_NAME + "-years-endpoint-" + BUILD_ENVIRONMENT + 
+            self.PROJECT_NAME + "-search-endpoint-" + BUILD_ENVIRONMENT + 
             "/invocations"
         ))
 
