@@ -1,12 +1,12 @@
 from copy import deepcopy
 from datetime import datetime
+from datetime import timedelta
 from decimal import Decimal
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
 import json
 import os
-import requests
 import unittest
 
 
@@ -178,7 +178,7 @@ class SearchUnitTests(unittest.TestCase):
 
 
         self.assertEqual(
-            "/search?startDate=2018-4-14&endDate=2020-11-20",
+            "/search?startDate=2019-01-01&endDate=2020-11-20",
             get_next_url(
                 start_date=datetime(2018, 4, 14),
                 end_date=datetime(2020, 11, 20)
@@ -189,7 +189,7 @@ class SearchUnitTests(unittest.TestCase):
         self.assertIsNone(
             get_next_url(
                 start_date=datetime.now(),
-                end_date=datetime.now() - timedelta(days=367)
+                end_date=datetime.now() + timedelta(days=367)
             )
         )
 

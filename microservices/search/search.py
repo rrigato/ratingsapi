@@ -119,7 +119,7 @@ def validate_request_parameters(event):
     return(error_response, start_date, end_date)
 
 
-def get_next_url(night):
+def get_next_url(start_date, end_date):
     """Returns the next_url depending on if the start_date and end_date
         span multiple years
 
@@ -140,7 +140,7 @@ def get_next_url(night):
         ------
     """
     request_path = "/search?startDate={new_start_date}&endDate={same_end_date}"
-    if end_date.year >= datetime.now().year:
+    if end_date.year > datetime.now().year:
         logging.info("get_next_url - end_date is in the future")
         return(None)
 
