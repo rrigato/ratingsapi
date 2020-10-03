@@ -78,6 +78,15 @@ components:
           example:
             message: 'Invalid path parameter'
 
+    badRequestSearch:
+      description: HTTP 400 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: Query parameters startDate and endDate are required
+
     notFoundNight:
       description: HTTP 404 error 
       content:
@@ -87,6 +96,14 @@ components:
           example:
             message: 'night: 3005-11-28 not found'
 
+    notFoundSearch:
+      description: HTTP 404 error 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: 'startDate must be less than or equal to endDate'
 
     notFoundShow:
       description: HTTP 404 error 
@@ -279,10 +296,10 @@ paths:
                         TOTAL_VIEWERS_AGE_18_49: 158
 
         '400':
-          $ref: '#/components/responses/badRequest'
+          $ref: '#/components/responses/badRequestSearch'
 
         '404':
-          $ref: '#/components/responses/notFoundNight'
+          $ref: '#/components/responses/notFoundSearch'
 
 
 
