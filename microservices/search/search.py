@@ -81,25 +81,31 @@ def validate_request_parameters(event):
         logging.info("validate_request_parameters - endDate " + end_date)
 
         assert start_date_valid is True, (
-            "end_date_valid parameter invalid"
+            "startDate parameter not in YYYY-MM-DD format"
         )
 
         assert end_date_valid is True, (
-            "end_date_valid parameter invalid"
+            "endDate parameter not in YYYY-MM-DD format"
         )
-        logging.info("validate_request_parameters - night parameter valid")
+
+        logging.info("validate_request_parameters - query parameters valid dates")
+
+
+        assert start_date < end_date, (
+            "startDate must be less than endDate"
+        )
 
     except KeyError:
-        logging.info("validate_request_parameters - night parameter not found in request")
+        logging.info("validate_request_parameters - not all query parameters found")
         error_response = {
-            "message": "Path parameter night is required",
+            "message": "Query parameters startDate and endDate are required",
             "status_code": 400 
         }
 
-    except AssertionError:
+    except AssertionError as query_param_error:
         logging.info("validate_request_parameters - night parameter invalid")
         error_response = {
-            "message": "Invalid night path parameter, must be in YYYY-MM-DD format",
+            "message": str(query_param_error),
             "status_code": 404 
         }
 
