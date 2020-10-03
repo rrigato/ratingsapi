@@ -193,6 +193,57 @@ class SearchUnitTests(unittest.TestCase):
             )
         )
 
+    def test_filter_ratings_end_date(self):
+        """Filter the results when the end date is before the 
+            end of the year
+        """
+        MOCK_RATINGS_DATA = [
+            {
+                "RATINGS_OCCURRED_ON": "2019-12-22"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-22"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-22"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-29"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-29"
+            },{
+                "RATINGS_OCCURRED_ON": "2018-12-29"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-15"
+            },{
+                "RATINGS_OCCURRED_ON": "2019-12-15"
+            }
+        ]
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 1, 1),
+            end_date=datetime(2019, 12, 22)
+        )
+
+        self.assertEqual(len(search_criteria_ratings), 5)
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 1, 1),
+            end_date=datetime(2019, 12, 23)
+        )
+        self.assertEqual(len(search_criteria_ratings), 5)
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 1, 1),
+            end_date=datetime(2019, 12, 21)
+        )
+        self.assertEqual(len(search_criteria_ratings), 2)
+
+        search_criteria_ratings = filter_ratings(
+            ratings_query_response =deepcopy(MOCK_RATINGS_DATA),
+            start_date=datetime(2019, 1, 1),
+            end_date=datetime(2019, 12, 30)
+        )
+        self.assertEqual(len(search_criteria_ratings), 8)
     # @patch("microservices.nights.nights.get_boto_clients")
     # def test_dynamodb_night_request(self, get_boto_clients_mock):
     #     """tests dynamodb_night_request is called with the correct arguements
