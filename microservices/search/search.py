@@ -163,14 +163,14 @@ def get_next_url(start_date, end_date):
     
     return(next_url)
 
-def dynamodb_night_request(night):
-    """Query using the night_ACCESS GSI
+
+def dynamodb_year_request(year):
+    """Query using the YEAR_ACCESS GSI
 
         Parameters
         ----------
-        night : str
-            night passed to the request, must be in YYYY-MM-DD
-            format
+        year : int
+            year to request
 
         Returns
         -------
@@ -190,36 +190,37 @@ def dynamodb_night_request(night):
     else:
         dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
 
-    logging.info("dynamodb_night_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
+    logging.info("dynamodb_year_request - DYNAMO_TABLE_NAME" + dynamo_table_name)
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
             region_name="us-east-1",
             table_name=dynamo_table_name
     )
 
-    logging.info("dynamodb_night_request - Access table through PK" )
+    logging.info("dynamodb_year_request - year_access_query" )
 
     '''
-        Query one night using the PK RATINGS_OCCURRED_ON
+        Query one year using the GSI
     '''
-    ratings_query_response = dynamo_table.query(
-        KeyConditionExpression=Key("RATINGS_OCCURRED_ON").eq(night)
+    year_access_query = dynamo_table.query(
+        IndexName="YEAR_ACCESS",
+        KeyConditionExpression=Key("YEAR").eq(int(year))
     )
 
-    show_ratings = ratings_query_response["Items"]
-    logging.info("dynamodb_night_request - Count " + str(ratings_query_response["Count"]))
+    show_ratings = year_access_query["Items"]
+    logging.info("dynamodb_year_request - Count " + str(year_access_query["Count"]))
 
     '''
         If no items returned
     '''
-    if ratings_query_response["Count"] == 0:
+    if year_access_query["Count"] == 0:
         error_message = {
-            "message": "night: {night_number} not found".format(
-                night_number=night
+            "message": "year: {year_number} not found".format(
+                year_number=year
             )
         }
     else:
-        logging.info("dynamodb_night_request - preparing night for serialization")
+        logging.info("dynamodb_year_request - preparing year for serialization")
         '''
             convert from decimal to str for json serialization
         '''
@@ -227,7 +228,7 @@ def dynamodb_night_request(night):
             try:
                 individual_show["YEAR"] = str(individual_show["YEAR"])
             except KeyError:
-                logging.info("dynamodb_night_request - No YEAR for " + individual_show["SHOW"])
+                logging.info("dynamodb_year_request - No year for " + individual_show["SHOW"])
         
     logging.info(error_message)
 
@@ -259,15 +260,15 @@ def main(event):
         headers_dict={}, response_body=error_response))
 
 
-    error_message, ratings_query_response = dynamodb_night_request(
-        night=event["pathParameters"]["night"]
+    error_message, year_access_query = dynamodb_year_request(
+        year=event["pathParameters"]["year"]
     )
 
     if error_message is None:
-        logging.info("main - returning ratings_query_response" + str(len(ratings_query_response)))
+        logging.info("main - returning year_access_query" + str(len(year_access_query)))
         return(
             lambda_proxy_response(status_code=200, headers_dict={}, 
-            response_body=ratings_query_response)
+            response_body=year_access_query)
             
         )
     else:
@@ -300,5 +301,3 @@ def lambda_handler(event, context):
     return(main(event=event))
 
 
-if __name__ == "__main__":   
-    main(event={"pathParameters":{"night":"2020-06-20"}})
