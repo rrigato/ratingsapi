@@ -156,8 +156,35 @@ class SearchUnitTests(unittest.TestCase):
         )    
 
     def test_get_next_url(self):
-        pass
-        # get_next_url
+        """Validates the next_url returned
+        """
+        from microservices.search.search import get_next_url
+
+        self.assertIsNone(
+            get_next_url(
+                start_date=datetime(2019, 10, 15),
+                end_date=datetime(2019, 11, 10)
+            )
+        )
+
+
+        self.assertEqual(
+            "/search?startDate=2014-01-01&endDate=2019-11-16",
+            get_next_url(
+                start_date=datetime(2013, 5, 11),
+                end_date=datetime(2019, 11, 16)
+            )
+        )
+
+
+        self.assertEqual(
+            "/search?startDate=2021-01-01&endDate=2021-12-11",
+            get_next_url(
+                start_date=datetime(2020, 11, 20),
+                end_date=datetime(2021, 12, 11)
+            )
+        )
+
     # @patch("microservices.nights.nights.get_boto_clients")
     # def test_dynamodb_night_request(self, get_boto_clients_mock):
     #     """tests dynamodb_night_request is called with the correct arguements
