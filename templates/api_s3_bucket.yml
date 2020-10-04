@@ -39,6 +39,7 @@ Resources:
   #for the account
   apigwToCwLogsServiceRole:
     Type: 'AWS::IAM::Role'
+    Condition: prodConfiguration
     Properties:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -55,6 +56,7 @@ Resources:
   #account setup for CW logs
   restApiCwLogs:
     Type: 'AWS::ApiGateway::Account'
+    Condition: prodConfiguration
     Properties:
       CloudWatchRoleArn: !GetAtt apigwToCwLogsServiceRole.Arn
 
