@@ -53,6 +53,12 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
 
+  developerPortalBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: BucketOwnerFullControl
+      BucketName: !Sub 'dev-portal-${projectName}-${environPrefix}' 
+
   #iam role used by cloudwatch, only need this resource in the 
   #prod cloudformation stack
   restApiCwLogs:
@@ -244,8 +250,8 @@ Resources:
       #required query parameters, request will not be passed to
       #lambda if these are not provided
       RequestParameters:
-        method.request.querystring.startDate: true
-        method.request.querystring.endDate: true
+        - method.request.querystring.startDate: true
+        - method.request.querystring.endDate: true
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsSearchResource
       HttpMethod: GET
