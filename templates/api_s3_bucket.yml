@@ -85,7 +85,7 @@ Resources:
     Properties:
       Name: !Sub '${projectName}-${environPrefix}-request-validation'
       RestApiId: !Ref ratingsApiGw
-      ValidateRequestBody: true
+      ValidateRequestBody: false
       ValidateRequestParameters: true
 
   ratingsV1Deployment:
@@ -240,6 +240,12 @@ Resources:
     Type: 'AWS::ApiGateway::Method'
     Properties:
       ApiKeyRequired: True
+      RequestValidatorId: !Ref ratingsRequestValidator 
+      #required query parameters, request will not be passed to
+      #lambda if these are not provided
+      RequestParameters:
+        - method.request.querystring.startDate
+        - method.request.querystring.endDate
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsSearchResource
       HttpMethod: GET
@@ -420,7 +426,6 @@ Resources:
     Type: 'AWS::ApiGateway::Method'
     Properties:
       ApiKeyRequired: True
-      RequestValidatorId: !Ref ratingsRequestValidator 
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsYearsProxyResource
       HttpMethod: GET
