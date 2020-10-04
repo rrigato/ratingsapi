@@ -155,6 +155,28 @@ class SearchUnitTests(unittest.TestCase):
 
         )    
 
+
+    def test_validate_request_parameters_type_error(self):
+        """TypeError is thrown when queryStringParameters is None
+        """
+        from microservices.search.search import validate_request_parameters
+        invalid_search_request = deepcopy(self.search_proxy_event)
+
+        invalid_search_request["queryStringParameters"] = None
+        mock_error_response, start_date, end_date = validate_request_parameters(
+            event=invalid_search_request
+        )
+        self.assertEqual(
+            mock_error_response,
+            {
+                "message": "No query parameters found - startDate and endDate are required",
+                "status_code": 400 
+            }
+
+        )  
+
+
+
     def test_get_next_url(self):
         """Validates the next_url returned
         """

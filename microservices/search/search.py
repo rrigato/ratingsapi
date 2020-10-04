@@ -110,6 +110,12 @@ def validate_request_parameters(event):
             "status_code": 400 
         }
 
+    except TypeError:
+        logging.info("validate_request_parameters - queryStringParameters is None")
+        error_response = {
+            "message": "No query parameters found - startDate and endDate are required",
+            "status_code": 400 
+        }
     except AssertionError as query_param_error:
         logging.info("validate_request_parameters - night parameter invalid")
         error_response = {
