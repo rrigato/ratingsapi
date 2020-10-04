@@ -36,7 +36,7 @@ Conditions:
 Resources:
 
   #service linked role for apigateway to write to cloudwatch logs
-  #for the account
+  #for the entire account, only need to set this up for prod
   apigwToCwLogsServiceRole:
     Type: 'AWS::IAM::Role'
     Condition: prodConfiguration
@@ -53,7 +53,8 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
 
-  #account setup for CW logs
+  #iam role used by cloudwatch, only need this resource in the 
+  #prod cloudformation stack
   restApiCwLogs:
     Type: 'AWS::ApiGateway::Account'
     Condition: prodConfiguration
