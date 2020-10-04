@@ -80,13 +80,13 @@ Resources:
             Key: source
             Value: !Ref projectName
 
-  # requestValidator:
-  #   Type: AWS::ApiGateway::RequestValidator
-  #   Properties:
-  #     Name: !Sub '${projectName}-${environPrefix}-request-validation'
-  #     RestApiId: !Ref ratingsApiGw
-  #     ValidateRequestBody: true
-  #     ValidateRequestParameters: true
+  ratingsRequestValidator:
+    Type: AWS::ApiGateway::RequestValidator
+    Properties:
+      Name: !Sub '${projectName}-${environPrefix}-request-validation'
+      RestApiId: !Ref ratingsApiGw
+      ValidateRequestBody: true
+      ValidateRequestParameters: true
 
   ratingsV1Deployment:
     Type: 'AWS::ApiGateway::Deployment'
@@ -420,7 +420,7 @@ Resources:
     Type: 'AWS::ApiGateway::Method'
     Properties:
       ApiKeyRequired: True
-      # RequestValidatorId: !Ref 
+      RequestValidatorId: !Ref ratingsRequestValidator 
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsYearsProxyResource
       HttpMethod: GET
