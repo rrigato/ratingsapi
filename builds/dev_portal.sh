@@ -16,10 +16,10 @@ sam package --template-file ./cloudformation/template.yaml \
 
 
 sam deploy --template-file ./cloudformation/packaged.yaml \
-    --stack-name "${CUSTOM_PREFIX}-prod-developers-portal" \
+    --stack-name "ratingsapi-devportal" \
     --s3-bucket "${S3_ARTIFACT_BUCKET}" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
-    DevPortalSiteS3BucketName="${S3_ARTIFACT_BUCKET}-dev-portal-static-assets" \
-    ArtifactsS3BucketName="${S3_ARTIFACT_BUCKET}-dev-portal-artifacts" \
-    CognitoDomainNameOrPrefix="${S3_ARTIFACT_BUCKET}"
+    DevPortalSiteS3BucketName="${CUSTOM_PREFIX}-dev-portal-static-assets" \
+    ArtifactsS3BucketName="${CUSTOM_PREFIX}-dev-portal-artifacts" \
+    CognitoDomainNameOrPrefix="${CUSTOM_PREFIX}"
