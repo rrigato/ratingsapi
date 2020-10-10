@@ -302,6 +302,34 @@ paths:
           $ref: '#/components/responses/notFoundSearch'
 
 
+  /{version}/showNames:
+    get:
+      description: |
+        Returns all valid show names that have been on toonami
+      parameters:
+        - name: version
+          in: path
+          description: Version of api to use
+          required: true
+          schema:
+            type: string  
+                
+      responses:
+        '200':
+          description: showName response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: [ 'Show 1', 'Show 2']
+                
+  
+        '400':
+          $ref: '#/components/responses/badRequest'
+
+
 
   /{version}/shows/{show}:
     get:
