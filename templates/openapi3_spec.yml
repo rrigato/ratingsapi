@@ -123,6 +123,15 @@ components:
           example:
             message: 'year: 3005 not found'
 
+    badGatewayError:
+      description: HTTP 502 error. Unexpected error on the server 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseError'
+          example:
+            message: 'Internal error returning result'
+
 paths:
   /{version}/nights/{night}:
     get:
@@ -216,6 +225,8 @@ paths:
         '404':
           $ref: '#/components/responses/notFoundNight'
 
+        '502':
+          $ref: '#/components/responses/badGatewayError'
 
   /{version}/search/:
     get:
@@ -300,12 +311,15 @@ paths:
 
         '404':
           $ref: '#/components/responses/notFoundSearch'
-
+          
+        '502':
+          $ref: '#/components/responses/badGatewayError'
 
   /{version}/showNames:
     get:
       description: |
-        Returns all valid show names that have been on toonami
+        Returns all valid show names that have been on toonami to pass as the {show}
+        parameter to the /shows endpoint
       parameters:
         - name: version
           in: path
@@ -329,13 +343,15 @@ paths:
         '400':
           $ref: '#/components/responses/badRequest'
 
-
+        '502':
+          $ref: '#/components/responses/badGatewayError'
 
   /{version}/shows/{show}:
     get:
       description: |
         Returns all the ratings associated with the given show. Can span years
-        if the show was on during multiple years
+        if the show was on during multiple years. To get a list of valid show names
+        use the /showNames endpoint
       parameters:
         - name: version
           in: path
@@ -389,6 +405,9 @@ paths:
 
         '404':
           $ref: '#/components/responses/notFoundShow'
+
+        '502':
+          $ref: '#/components/responses/badGatewayError'
 
   /{version}/years/{year}:
     get:
@@ -447,3 +466,6 @@ paths:
 
         '404':
           $ref: '#/components/responses/notFoundYear'
+
+        '502':
+          $ref: '#/components/responses/badGatewayError'
