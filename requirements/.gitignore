@@ -1,6 +1,0 @@
-/avenv
-__pycache__/
-/adhoc
-/deployment
-*.zip
-.DS_Store

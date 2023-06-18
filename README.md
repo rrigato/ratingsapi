@@ -8,12 +8,12 @@ Television ratings api built with an api gateway frontend as a lambda proxy
 
 
 - [ratingsapi](#ratingsapi)
-  - [table_of_contents](#table_of_contents)
-    - [dev_tools](#dev_tools)
-      - [cfn_lint](#cfn_lint)
-      - [git_secrets](#git_secrets)
-      - [ci_cd_pipeline](#ci_cd_pipeline)
-    - [project_directory_overview](#project_directory_overview)
+  - [table\_of\_contents](#table_of_contents)
+    - [dev\_tools](#dev_tools)
+      - [cfn\_lint](#cfn_lint)
+      - [git\_secrets](#git_secrets)
+      - [ci\_cd\_pipeline](#ci_cd_pipeline)
+    - [project\_directory\_overview](#project_directory_overview)
       - [builds](#builds)
       - [devops](#devops)
       - [logs](#logs)
@@ -21,6 +21,7 @@ Television ratings api built with an api gateway frontend as a lambda proxy
       - [microservices](#microservices)
       - [templates](#templates)
       - [tests](#tests)
+      - [secrets-scan](#secrets-scan)
 
 
 
@@ -155,3 +156,10 @@ to be in s3 for api gateway to be created in http_api.yml
 - test_dev_aws_resources.py = dev environment tests run in the CodeBuild project for builds/buildspec_dev.yml
 
 - test_prod_aws_resources.py = test cases run for the prod CodeBuild environment in builds/buildspec_prod.yml
+
+
+#### secrets-scan
+```bash
+detect-secrets scan | \
+python3 -c "import sys, json; print(json.load(sys.stdin)['results'])"
+```
