@@ -164,7 +164,7 @@ Resources:
   ratingsNightProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      ApiKeyRequired: True
+      ApiKeyRequired: True # pragma: allowlist secret
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsNightsProxyResource
       HttpMethod: GET

@@ -1,0 +1,7 @@
+# git will checkout with line endings based on OS
+* text=auto
+
+
+# binary files that should not be modified
+*.png binary
+*.jpg binary

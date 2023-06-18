@@ -463,7 +463,7 @@ Resources:
                 - Sid: SecretsManagerAccess
                   Effect: Allow
                   Action:
-                    - secretsmanager:GetSecretValue
+                    - secretsmanager:GetSecretValue # pragma: allowlist secret
                     - secretsmanager:UpdateSecret
                     - secretsmanager:DeleteSecret
                   Resource:
