@@ -1,19 +1,21 @@
 [![made-with-pipelinetemplate](https://img.shields.io/badge/Made%20with-pipelinetemplate-blue.svg)](https://github.com/rrigato/pipelinetemplate.git) ![Build Status](https://img.shields.io/badge/Build%20Status-unknown-lightgray) ![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg) 
 
 # ratingsapi
-Television ratings api built with an api gateway frontend as a lambda proxy
+Deprecated 2023-06-18
+Original intent was to build a
+Television ratings api, but upstream data challenges proved too difficult to overcome.
 
 
 ## table_of_contents
 
 
 - [ratingsapi](#ratingsapi)
-  - [table_of_contents](#table_of_contents)
-    - [dev_tools](#dev_tools)
-      - [cfn_lint](#cfn_lint)
-      - [git_secrets](#git_secrets)
-      - [ci_cd_pipeline](#ci_cd_pipeline)
-    - [project_directory_overview](#project_directory_overview)
+  - [table\_of\_contents](#table_of_contents)
+    - [dev\_tools](#dev_tools)
+      - [cfn\_lint](#cfn_lint)
+      - [git\_secrets](#git_secrets)
+      - [ci\_cd\_pipeline](#ci_cd_pipeline)
+    - [project\_directory\_overview](#project_directory_overview)
       - [builds](#builds)
       - [devops](#devops)
       - [logs](#logs)
