@@ -245,7 +245,7 @@ Resources:
   ratingsSearchProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      ApiKeyRequired: True
+      ApiKeyRequired: True # pragma: allowlist secret
       RequestValidatorId: !Ref ratingsRequestValidator 
       #required query parameters, request will not be passed to
       #lambda if these are not provided
@@ -343,7 +343,7 @@ Resources:
   ratingsShowProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      ApiKeyRequired: True
+      ApiKeyRequired: True # pragma: allowlist secret
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsShowsProxyResource
       HttpMethod: GET
@@ -431,7 +431,7 @@ Resources:
   ratingsYearsProxyMethod:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      ApiKeyRequired: True
+      ApiKeyRequired: True # pragma: allowlist secret
       RestApiId: !Ref ratingsApiGw
       ResourceId: !Ref ratingsYearsProxyResource
       HttpMethod: GET

@@ -1,7 +1,9 @@
 [![made-with-pipelinetemplate](https://img.shields.io/badge/Made%20with-pipelinetemplate-blue.svg)](https://github.com/rrigato/pipelinetemplate.git) ![Build Status](https://img.shields.io/badge/Build%20Status-unknown-lightgray) ![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg) 
 
 # ratingsapi
-Television ratings api built with an api gateway frontend as a lambda proxy
+Deprecated 2023-06-18
+Original intent was to build a
+Television ratings api, but upstream data challenges proved too difficult to overcome.
 
 
 ## table_of_contents
@@ -21,7 +23,6 @@ Television ratings api built with an api gateway frontend as a lambda proxy
       - [microservices](#microservices)
       - [templates](#templates)
       - [tests](#tests)
-      - [secrets-scan](#secrets-scan)
 
 
 
@@ -156,10 +157,3 @@ to be in s3 for api gateway to be created in http_api.yml
 - test_dev_aws_resources.py = dev environment tests run in the CodeBuild project for builds/buildspec_dev.yml
 
 - test_prod_aws_resources.py = test cases run for the prod CodeBuild environment in builds/buildspec_prod.yml
-
-
-#### secrets-scan
-```bash
-detect-secrets scan | \
-python3 -c "import sys, json; print(json.load(sys.stdin)['results'])"
-```
